@@ -10,6 +10,7 @@ import {
 
 import { Signup } from "./user/Signup";
 import { Login } from "./user/Login";
+import { Homepage } from "./home/Homepage";
 
 const Main = () => {
   return (
@@ -20,6 +21,9 @@ const Main = () => {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route exact path="/">
+          <Homepage />
         </Route>
         <Route path="*">
           <Redirect to={{ pathname: "/login" }} />
