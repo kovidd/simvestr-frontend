@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 import { Signup } from "./user/Signup";
+import { Login } from "./user/Login";
 
 const Main = () => {
   return (
@@ -18,7 +19,7 @@ const Main = () => {
           <Signup />
         </Route>
         <Route path="/login">
-          <div>login page</div>
+          <Login />
         </Route>
         <Route path="*">
           <Redirect to={{ pathname: "/login" }} />

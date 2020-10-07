@@ -25,16 +25,10 @@ const SignupForm = () => {
       >
         <Typography variant="h2">Simvstr</Typography>
         <Typography varaint="body2">
-          Welcome, please create your account.
+          Welcome Back, please login to your account.
         </Typography>
         <form>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField name="firstName" label="First Name" fullWidth />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField name="lastName" label="Last Name" fullWidth />
-            </Grid>
             <Grid item xs={12}>
               <TextField name="email" type="email" label="Email" fullWidth />
             </Grid>
@@ -45,19 +39,14 @@ const SignupForm = () => {
                 label="Password"
                 fullWidth
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="confirmPassword"
-                type="password"
-                label="Confirm Password"
-                fullWidth
-              />
+              <Box display="flex" justifyContent="flex-end">
+                <Link href="#">Forgot Password?</Link>
+              </Box>
             </Grid>
             <Box display="flex" flexDirection="column">
               <FormControlLabel
-                control={<Checkbox name="terms" color="primary" />}
-                label="I agree with the Terms and Conditions"
+                control={<Checkbox name="rememberme" color="primary" />}
+                label="Remember me"
               />
             </Box>
           </Grid>
@@ -66,14 +55,14 @@ const SignupForm = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => alert("signup")}
+              onClick={() => alert("login")}
             >
-              Sign Up
+              Login
             </Button>
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="flex-start">
             <Typography>
-              Already a member? <Link href="./login">Log In</Link>
+              Not a member? <Link href="./signup">Sign Up</Link>
             </Typography>
           </Box>
         </form>
@@ -82,7 +71,7 @@ const SignupForm = () => {
   );
 };
 
-export const Signup = () => {
+export const Login = () => {
   return (
     <Container maxWidth="lg">
       <Box
