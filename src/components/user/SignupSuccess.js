@@ -1,6 +1,5 @@
 import React from "react";
 import "../../index.css";
-import { withRouter } from "react-router-dom";
 import {
   Grid,
   Box,
@@ -33,24 +32,16 @@ const formValid = ({ formErrors, ...rest }) => {
   return valid;
 };
 
-class Signup extends React.Component {
+class SignupSuccess extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: null,
-      lastName: null,
       email: null,
       password: null,
-      confirmPassword: null,
-      terms: null,
-      enabledTermsCheckBox: false,
+      enabledRememberMeCheckBox: false,
       formErrors: {
-        firstName: "",
-        lastName: "",
         email: "",
         password: "",
-        confirmPassword: "",
-        terms: "",
       },
     };
   }
@@ -61,14 +52,6 @@ class Signup extends React.Component {
     let formErrors = { ...this.state.formErrors };
 
     switch (name) {
-      case "firstName":
-        formErrors.firstName =
-          value.length < 3 ? "First name must be at least 3 charachters." : "";
-        break;
-      case "lastName":
-        formErrors.lastName =
-          value.length < 3 ? "Last name must be at least 3 charachters." : "";
-        break;
       case "email":
         formErrors.email = emailRegex.test(value)
           ? ""
@@ -77,17 +60,6 @@ class Signup extends React.Component {
       case "password":
         formErrors.password =
           value.length < 8 ? "Password must be at least 8 characters." : "";
-        formErrors.confirmPassword =
-          value != this.state.password ? "Passwords don't match." : "";
-        break;
-      case "confirmPassword":
-        if (
-          formErrors.password.value !== "undefined" &&
-          formErrors.confirmPassword.value !== "undefined"
-        ) {
-          formErrors.confirmPassword =
-            value != this.state.password ? "Passwords don't match." : "";
-        }
         break;
       default:
         break;
@@ -101,50 +73,39 @@ class Signup extends React.Component {
     const { name, value } = e.target;
     let formErrors = { ...this.state.formErrors };
 
-    if (formValid(this.state) && this.state.enabledTermsCheckBox) {
+    if (formValid(this.state)) {
       console.log(`
         --SUBMITTING--
-        First Name: ${this.state.firstName}
-        Last Name: ${this.state.lastName}
         Email: ${this.state.email}
         Password: ${this.state.password}
-        Confirm Password: ${this.state.confirmPassword}
       `);
-      this.props.history.push("/signupsuccess");
+      localStorage.setItem("rememberMe", this.state.enabledRememberMeCheckBox);
+      localStorage.setItem(
+        "email",
+        this.state.enabledRememberMeCheckBox ? this.state.email : ""
+      );
+      localStorage.setItem(
+        "password",
+        this.state.enabledRememberMeCheckBox ? this.state.password : ""
+      );
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-      if (this.state.firstName === null) {
-        formErrors.firstName = "First name is required.";
-      }
-      if (this.state.lastName === null) {
-        formErrors.lastName = "Last name is required.";
-      }
       if (this.state.email === null) {
         formErrors.email = "Email address is required.";
       }
       if (this.state.password === null) {
         formErrors.password = "Password is required.";
       }
-      if (this.state.confirmPassword === null) {
-        formErrors.confirmPassword = "Please confirm password.";
-      }
-      if (!this.state.enabledTermsCheckBox)
-        formErrors.terms = "Please agree to the Terms and Conditions.";
     }
     this.setState({ formErrors, [name]: value }, () => console.log(this.state));
   };
 
-  handleTermsClick = (e) => {
-    let { enabledTermsCheckBox } = this.state;
-    let formErrors = { ...this.state.formErrors };
-    const { name, value } = e.target;
+  handleRememberMeClick = () => {
+    let { enabledRememberMeCheckBox } = this.state;
 
     this.setState({
-      enabledTermsCheckBox: !enabledTermsCheckBox,
+      enabledRememberMeCheckBox: !enabledRememberMeCheckBox,
     });
-
-    if (!this.state.enabledTermsCheckBox) formErrors.terms = "";
-    this.setState({ formErrors, [name]: value }, () => console.log(this.state));
   };
 
   render() {
@@ -159,38 +120,15 @@ class Signup extends React.Component {
           alignItems="center"
           p="2rem"
         >
+          <Typography color="primary" variant="h5">
+            Signup successful! Please login.
+          </Typography>
           <Typography variant="h2">Simvstr</Typography>
           <Typography varaint="body2">
-            Welcome back, please login to your account.
+            Welcome, please login to your account.
           </Typography>
           <form>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  name="firstName"
-                  label="First Name"
-                  noValidate
-                  className={formErrors.firstName.length > 0 ? "error" : null}
-                  onBlur={this.handleBlur}
-                  fullWidth
-                />
-                {formErrors.firstName.length > 0 && (
-                  <Box className="errorMessage">{formErrors.firstName}</Box>
-                )}
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="lastName"
-                  label="Last Name"
-                  noValidate
-                  className={formErrors.lastName.length > 0 ? "error" : null}
-                  onBlur={this.handleBlur}
-                  fullWidth
-                />
-                {formErrors.lastName.length > 0 && (
-                  <Box className="errorMessage">{formErrors.lastName}</Box>
-                )}
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="email"
@@ -217,54 +155,32 @@ class Signup extends React.Component {
                 {formErrors.password.length > 0 && (
                   <Box className="errorMessage">{formErrors.password}</Box>
                 )}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="confirmPassword"
-                  type="password"
-                  label="Confirm Password"
-                  noValidate
-                  className={
-                    formErrors.confirmPassword.length > 0 ? "error" : null
-                  }
-                  onBlur={this.handleBlur}
-                  fullWidth
-                />
-                {formErrors.confirmPassword.length > 0 && (
-                  <Box className="errorMessage">
-                    {formErrors.confirmPassword}
-                  </Box>
-                )}
+                <Box display="flex" justifyContent="flex-end">
+                  <Link href="./forgotpassword">Forgot Password?</Link>
+                </Box>
               </Grid>
               <Box display="flex" flexDirection="column">
                 <FormControlLabel
-                  control={<Checkbox name="terms" color="primary" />}
-                  label="I agree with the Terms and Conditions"
-                  onChange={this.handleTermsClick}
+                  control={<Checkbox name="rememberMe" color="primary" />}
+                  label="Remember me"
+                  onChange={this.handleRememberMeClick}
                 />
               </Box>
-              {<Box className="errorMessage">{formErrors.terms}</Box>}
             </Grid>
             <Box display="flex" justifyContent="center">
               <Button
-                className="btn"
                 variant="contained"
                 color="primary"
                 onClick={this.handleSubmit}
               >
-                Sign Up
+                Login
               </Button>
             </Box>
-            <Box display="flex" flexDirection="row" justifyContent="flex-start">
-              <Typography
-                style={{
-                  position: "relative",
-                  bottom: "-18px",
-                }}
-              >
-                Already a member? <Link href="./login">Log In</Link>
-              </Typography>
-            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="flex-start"
+            ></Box>
           </form>
         </Box>
       </MainWrapper>
@@ -272,4 +188,4 @@ class Signup extends React.Component {
   }
 }
 
-export default withRouter(Signup);
+export default SignupSuccess;
