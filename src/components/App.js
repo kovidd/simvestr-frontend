@@ -12,6 +12,8 @@ import {
 import Signup from "./user/Signup";
 import Login from "./user/Login";
 import SignupSuccess from "./user/SignupSuccess";
+import ForgotPassword from "./user/ForgotPassword";
+import ResetPassword from "./user/ResetPassword";
 
 const Main = () => {
   return (
@@ -25,6 +27,12 @@ const Main = () => {
         </Route>
         <Route path="/signupsuccess">
           <SignupSuccess />
+        </Route>
+        <Route path="/forgotpassword">
+          <ForgotPassword />
+        </Route>
+        <Route path="/resetpassword">
+          <ResetPassword />
         </Route>
         <Route path="*">
           <Redirect to={{ pathname: "/login" }} />

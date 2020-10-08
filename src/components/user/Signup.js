@@ -9,7 +9,7 @@ import {
   Checkbox,
   TextField,
   Button,
-  Container,
+  Link,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 
@@ -247,6 +247,7 @@ class Signup extends React.Component {
             </Grid>
             <Box display="flex" justifyContent="center">
               <Button
+                className="btn"
                 variant="contained"
                 color="primary"
                 onClick={this.handleSubmit}
@@ -255,7 +256,12 @@ class Signup extends React.Component {
               </Button>
             </Box>
             <Box display="flex" flexDirection="row" justifyContent="flex-start">
-              <Typography>
+              <Typography
+                style={{
+                  position: "relative",
+                  bottom: "-18px",
+                }}
+              >
                 Already a member? <Link href="./login">Log In</Link>
               </Typography>
             </Box>

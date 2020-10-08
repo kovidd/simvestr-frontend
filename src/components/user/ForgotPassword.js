@@ -1,15 +1,6 @@
 import React from "react";
 import "../../index.css";
-import {
-  Grid,
-  Box,
-  Typography,
-  FormControlLabel,
-  Checkbox,
-  TextField,
-  Button,
-  Link,
-} from "@material-ui/core";
+import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 
 const emailRegex = RegExp(
@@ -32,16 +23,13 @@ const formValid = ({ formErrors, ...rest }) => {
   return valid;
 };
 
-class SignupSuccess extends React.Component {
+class ForgotPassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: null,
-      password: null,
-      enabledRememberMeCheckBox: false,
       formErrors: {
         email: "",
-        password: "",
       },
     };
   }
@@ -51,19 +39,9 @@ class SignupSuccess extends React.Component {
     const { name, value } = e.target;
     let formErrors = { ...this.state.formErrors };
 
-    switch (name) {
-      case "email":
-        formErrors.email = emailRegex.test(value)
-          ? ""
-          : "Email address is invalid.";
-        break;
-      case "password":
-        formErrors.password =
-          value.length < 8 ? "Password must be at least 8 characters." : "";
-        break;
-      default:
-        break;
-    }
+    formErrors.email = emailRegex.test(value)
+      ? ""
+      : "Email address is invalid.";
 
     this.setState({ formErrors, [name]: value }, () => console.log(this.state));
   };
@@ -76,36 +54,14 @@ class SignupSuccess extends React.Component {
     if (formValid(this.state)) {
       console.log(`
         --SUBMITTING--
-        Email: ${this.state.email}
-        Password: ${this.state.password}
-      `);
-      localStorage.setItem("rememberMe", this.state.enabledRememberMeCheckBox);
-      localStorage.setItem(
-        "email",
-        this.state.enabledRememberMeCheckBox ? this.state.email : ""
-      );
-      localStorage.setItem(
-        "password",
-        this.state.enabledRememberMeCheckBox ? this.state.password : ""
-      );
+        Email: ${this.state.email}`);
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
       if (this.state.email === null) {
         formErrors.email = "Email address is required.";
       }
-      if (this.state.password === null) {
-        formErrors.password = "Password is required.";
-      }
     }
     this.setState({ formErrors, [name]: value }, () => console.log(this.state));
-  };
-
-  handleRememberMeClick = () => {
-    let { enabledRememberMeCheckBox } = this.state;
-
-    this.setState({
-      enabledRememberMeCheckBox: !enabledRememberMeCheckBox,
-    });
   };
 
   render() {
@@ -120,12 +76,9 @@ class SignupSuccess extends React.Component {
           alignItems="center"
           p="2rem"
         >
-          <Typography color="primary" variant="h5">
-            Signup successful! Please login.
-          </Typography>
           <Typography variant="h2">Simvstr</Typography>
-          <Typography varaint="body2">
-            Welcome, please login to your account.
+          <Typography varaint="body2" align="center">
+            Enter your email address and we will send through a reset link.
           </Typography>
           <form>
             <Grid container spacing={2}>
@@ -142,45 +95,17 @@ class SignupSuccess extends React.Component {
                   <Box className="errorMessage">{formErrors.email}</Box>
                 )}
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="password"
-                  type="password"
-                  label="Password"
-                  noValidate
-                  className={formErrors.password.length > 0 ? "error" : null}
-                  onBlur={this.handleBlur}
-                  fullWidth
-                />
-                {formErrors.password.length > 0 && (
-                  <Box className="errorMessage">{formErrors.password}</Box>
-                )}
-                <Box display="flex" justifyContent="flex-end">
-                  <Link href="./forgotpassword">Forgot Password?</Link>
-                </Box>
-              </Grid>
-              <Box display="flex" flexDirection="column">
-                <FormControlLabel
-                  control={<Checkbox name="rememberMe" color="primary" />}
-                  label="Remember me"
-                  onChange={this.handleRememberMeClick}
-                />
-              </Box>
             </Grid>
             <Box display="flex" justifyContent="center">
               <Button
+                className="btn"
                 variant="contained"
                 color="primary"
                 onClick={this.handleSubmit}
               >
-                Login
+                Send Request
               </Button>
             </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-start"
-            ></Box>
           </form>
         </Box>
       </MainWrapper>
@@ -188,4 +113,4 @@ class SignupSuccess extends React.Component {
   }
 }
 
-export default SignupSuccess;
+export default ForgotPassword;

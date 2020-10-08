@@ -26,7 +26,7 @@ const formValid = ({ formErrors, ...rest }) => {
 
   // validate the form was filled out
   Object.values(rest).forEach((val) => {
-    val === null && (valid = false);
+    val === "" && (valid = false);
   });
 
   return valid;
@@ -102,10 +102,10 @@ class Login extends React.Component {
       );
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-      if (this.state.email === null) {
+      if (this.state.email === "") {
         formErrors.email = "Email address is required.";
       }
-      if (this.state.password === null) {
+      if (this.state.password === "") {
         formErrors.password = "Password is required.";
       }
     }
@@ -176,7 +176,7 @@ class Login extends React.Component {
                   <Box className="errorMessage">{formErrors.password}</Box>
                 )}
                 <Box display="flex" justifyContent="flex-end">
-                  <Link href="#">Forgot Password?</Link>
+                  <Link href="./forgotpassword">Forgot Password?</Link>
                 </Box>
               </Grid>
               <Box display="flex" flexDirection="column">

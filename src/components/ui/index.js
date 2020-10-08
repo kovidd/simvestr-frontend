@@ -28,9 +28,16 @@ export const MainWrapper = ({ children }) => {
     >
       <Terminal>
         <StyledPaper square elevation={10}>
-          {!["/", "/signup", "/login", "/signupsuccess"].includes(
-            location.pathname
-          ) && <BreadCrumbsNav location={location} />}
+          {![
+            "/",
+            "/signup",
+            "/login",
+            "/signupsuccess",
+            "/forgotpassword",
+            "/resetpassword",
+          ].includes(location.pathname) && (
+            <BreadCrumbsNav location={location} />
+          )}
           {children}
         </StyledPaper>
       </Terminal>
