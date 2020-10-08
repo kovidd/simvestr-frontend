@@ -11,6 +11,7 @@ import {
 import { Signup } from "./user/Signup";
 import { Login } from "./user/Login";
 import { Homepage } from "./home/Homepage";
+import { StockList } from "./stocks/StockList";
 
 const Main = () => {
   return (
@@ -21,6 +22,9 @@ const Main = () => {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/stocks">
+          <StockList />
         </Route>
         <Route exact path="/">
           <Homepage />
