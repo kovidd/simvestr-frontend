@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import {
   Grid,
   Box,
@@ -12,57 +11,43 @@ import {
   Container,
   Link,
 } from "@material-ui/core";
+import { MainWrapper } from "../ui";
 
 const SignupForm = () => {
   return (
-    <Paper elevation={10}>
-      <Box
-        display="flex"
-        height="100%"
-        flexDirection="column"
-        alignItems="center"
-        p="2rem"
-      >
-        <Typography variant="h2">Simvstr</Typography>
-        <Typography varaint="body2">
-          Welcome, please create your account.
-        </Typography>
-        <form>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField name="firstName" label="First Name" fullWidth />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField name="lastName" label="Last Name" fullWidth />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField name="email" type="email" label="Email" fullWidth />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="password"
-                type="password"
-                label="Password"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="confirmPassword"
-                type="password"
-                label="Confirm Password"
-                fullWidth
-              />
-            </Grid>
-            <Box display="flex" flexDirection="column">
-              <FormControlLabel
-                control={<Checkbox name="terms" color="primary" />}
-                label="I agree with the Terms and Conditions"
-              />
-            </Box>
-          </Grid>
-
-          <Box display="flex" justifyContent="center">
+    <form>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <TextField name="firstName" label="First Name" fullWidth />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField name="lastName" label="Last Name" fullWidth />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField name="email" type="email" label="Email" fullWidth />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            name="password"
+            type="password"
+            label="Password"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            name="confirmPassword"
+            type="password"
+            label="Confirm Password"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent="flex-end">
+            <FormControlLabel
+              control={<Checkbox name="terms" color="primary" />}
+              label="I agree with the Terms and Conditions"
+            />
             <Button
               variant="contained"
               color="primary"
@@ -71,38 +56,33 @@ const SignupForm = () => {
               Sign Up
             </Button>
           </Box>
-          <Box display="flex" flexDirection="row" justifyContent="flex-start">
-            <Typography>
-              Already a member? <Link href="./login">Log In</Link>
-            </Typography>
-          </Box>
-        </form>
+        </Grid>
+      </Grid>
+      <Box display="flex" flexDirection="row" justifyContent="flex-start">
+        <Typography>
+          Already a member? <Link href="./login">Log In</Link>
+        </Typography>
       </Box>
-    </Paper>
+    </form>
   );
 };
 
 export const Signup = () => {
   return (
-    <Container maxWidth="lg">
+    <MainWrapper>
       <Box
-        height="100vh"
         display="flex"
-        flex="1"
-        flexDirection="row-reverse"
-        bgcolor="blac"
+        height="100%"
+        flexDirection="column"
+        alignItems="center"
+        p="2rem"
       >
-        <Box
-          display="flex"
-          flex="1"
-          mx="7rem"
-          justifyContent="center"
-          flexDirection="column"
-        >
-          <SignupForm />
-        </Box>
-        <Box flex="1"></Box>
+        <Typography variant="h2">Simvstr</Typography>
+        <Typography variant="body2">
+          Welcome, please create your account.
+        </Typography>
+        <SignupForm />
       </Box>
-    </Container>
+    </MainWrapper>
   );
 };
