@@ -26,37 +26,24 @@ const formValid = ({ formErrors, ...rest }) => {
 
   // validate the form was filled out
   Object.values(rest).forEach((val) => {
-    val === "" && (valid = false);
+    val === null && (valid = false);
   });
 
   return valid;
 };
 
-class Login extends React.Component {
+class SignupSuccess extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
+      email: null,
+      password: null,
       enabledRememberMeCheckBox: false,
       formErrors: {
         email: "",
         password: "",
       },
     };
-  }
-
-  componentDidMount() {
-    const enabledRememberMeCheckBox =
-      localStorage.getItem("rememberMe") === "true";
-    const email = enabledRememberMeCheckBox
-      ? localStorage.getItem("email")
-      : "";
-    const password = enabledRememberMeCheckBox
-      ? localStorage.getItem("password")
-      : "";
-
-    this.setState({ email, password, enabledRememberMeCheckBox });
   }
 
   handleBlur = (e) => {
@@ -90,7 +77,8 @@ class Login extends React.Component {
       console.log(`
         --SUBMITTING--
         Email: ${this.state.email}
-        Password: ${this.state.password}`);
+        Password: ${this.state.password}
+      `);
       localStorage.setItem("rememberMe", this.state.enabledRememberMeCheckBox);
       localStorage.setItem(
         "email",
@@ -102,10 +90,10 @@ class Login extends React.Component {
       );
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-      if (this.state.email === "") {
+      if (this.state.email === null) {
         formErrors.email = "Email address is required.";
       }
-      if (this.state.password === "") {
+      if (this.state.password === null) {
         formErrors.password = "Password is required.";
       }
     }
@@ -120,13 +108,6 @@ class Login extends React.Component {
     });
   };
 
-  handleChange = (event) => {
-    const input = event.target;
-    const value = input.value;
-
-    this.setState({ [input.name]: value });
-  };
-
   render() {
     const { formErrors } = this.state;
 
@@ -139,9 +120,12 @@ class Login extends React.Component {
           alignItems="center"
           p="2rem"
         >
+          <Typography color="primary" variant="h5">
+            Signup successful! Please login.
+          </Typography>
           <Typography variant="h2">Simvstr</Typography>
           <Typography varaint="body2">
-            Welcome back, please login to your account.
+            Welcome, please login to your account.
           </Typography>
           <form>
             <Grid container spacing={2}>
@@ -150,9 +134,7 @@ class Login extends React.Component {
                   name="email"
                   label="Email"
                   noValidate
-                  value={this.state.email}
                   className={formErrors.email.length > 0 ? "error" : null}
-                  onChange={this.handleChange}
                   onBlur={this.handleBlur}
                   fullWidth
                 />
@@ -167,8 +149,6 @@ class Login extends React.Component {
                   label="Password"
                   noValidate
                   className={formErrors.password.length > 0 ? "error" : null}
-                  value={this.state.password}
-                  onChange={this.handleChange}
                   onBlur={this.handleBlur}
                   fullWidth
                 />
@@ -183,7 +163,6 @@ class Login extends React.Component {
                 <FormControlLabel
                   control={<Checkbox name="rememberMe" color="primary" />}
                   label="Remember me"
-                  checked={this.state.enabledRememberMeCheckBox}
                   onChange={this.handleRememberMeClick}
                 />
               </Box>
@@ -197,11 +176,11 @@ class Login extends React.Component {
                 Login
               </Button>
             </Box>
-            <Box display="flex" flexDirection="row" justifyContent="flex-start">
-              <Typography>
-                Not a member? <Link href="./signup">Sign Up</Link>
-              </Typography>
-            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="flex-start"
+            ></Box>
           </form>
         </Box>
       </MainWrapper>
@@ -209,4 +188,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default SignupSuccess;

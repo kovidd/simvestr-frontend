@@ -1,6 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "@material-ui/core";
 import { theme } from "./theme";
+
 import {
   BrowserRouter as Router,
   Redirect,
@@ -8,8 +9,11 @@ import {
   Switch,
 } from "react-router-dom";
 
-import { Signup } from "./user/Signup";
-import { Login } from "./user/Login";
+import Signup from "./user/Signup";
+import Login from "./user/Login";
+import SignupSuccess from "./user/SignupSuccess";
+import ForgotPassword from "./user/ForgotPassword";
+import ResetPassword from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
 
@@ -22,6 +26,15 @@ const Main = () => {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/signupsuccess">
+          <SignupSuccess />
+        </Route>
+        <Route path="/forgotpassword">
+          <ForgotPassword />
+        </Route>
+        <Route path="/resetpassword">
+          <ResetPassword />
         </Route>
         <Route path="/stocks">
           <StockList />
