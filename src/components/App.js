@@ -9,11 +9,11 @@ import {
   Switch,
 } from "react-router-dom";
 
-import Signup from "./user/Signup";
-import Login from "./user/Login";
-import SignupSuccess from "./user/SignupSuccess";
-import ForgotPassword from "./user/ForgotPassword";
-import ResetPassword from "./user/ResetPassword";
+import { Signup } from "./user/Signup";
+import { Login } from "./user/Login";
+import { SignupSuccess } from "./user/SignupSuccess";
+import { ForgotPassword } from "./user/ForgotPassword";
+import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
 
