@@ -11,6 +11,9 @@ import {
   Link,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
+import { GETRequest } from "../../services/user";
+
+const url = "http://localhost:5000";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -21,12 +24,14 @@ const LoginForm = () => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const [message, setMessage] = useState("");
+
   useEffect((e) => {
     const rememberMe = localStorage.getItem("rememberMe");
     if (rememberMe === "true") {
-      const username = localStorage.getItem("username");
+      const username = localStorage.getItem("remember_username");
       setUsername(username);
-      const password = localStorage.getItem("password");
+      const password = localStorage.getItem("remember_password");
       setPassword(password);
       setEnabledRememberMeCheckBox(rememberMe);
     }
@@ -72,6 +77,7 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    e.persist();
 
     setUsername(username);
     setPassword(password);
@@ -86,17 +92,37 @@ const LoginForm = () => {
       );
       localStorage.setItem("rememberMe", enabledRememberMeCheckBox);
       localStorage.setItem(
-        "username",
+        "remember_username",
         enabledRememberMeCheckBox ? username : ""
       );
       localStorage.setItem(
-        "password",
+        "remember_password",
         enabledRememberMeCheckBox ? password : ""
       );
+
+      GETRequest(
+        url + "/api/v1/token/?username=" + username + "&password=" + password
+      ).then((data) => {
+        if (data.error) {
+          if (data.status === 442) {
+            setMessage("Incorrect Password. Please try again.");
+            localStorage.setItem("token", "");
+          } else if (data.status === 449) {
+            setMessage("User does not exist. Please try again.");
+            localStorage.setItem("token", "");
+          }
+        } else if (!data.error) {
+          console.log(data);
+          setMessage("Successful login.");
+          localStorage.setItem("token", data.data.token);
+          localStorage.setItem("loggedUser", username);
+          window.location.replace("/");
+        }
+      });
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
       if (!username) {
-        setUsernameError("username is required.");
+        setUsernameError("Username is required.");
       }
       if (!password) {
         setPasswordError("Password is required.");
@@ -111,6 +137,20 @@ const LoginForm = () => {
 
   return (
     <form>
+      <Box
+        display="flex"
+        justifyContent="center"
+        color="#007f7f"
+        fontSize="h5.fontSize"
+      >
+        {message}
+      </Box>
+      <Typography variant="h2" align="center">
+        Simvstr
+      </Typography>
+      <Typography varaint="body2" align="center">
+        Welcome back, please login to your account.
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -177,10 +217,6 @@ export const Login = () => {
         alignItems="center"
         p="2rem"
       >
-        <Typography variant="h2">Simvstr</Typography>
-        <Typography varaint="body2">
-          Welcome back, please login to your account.
-        </Typography>{" "}
         <LoginForm />
       </Box>
     </MainWrapper>

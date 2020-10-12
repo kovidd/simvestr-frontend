@@ -12,6 +12,9 @@ import {
   Link,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
+import { POSTRequest } from "../../services/user";
+
+const url = "http://localhost:5000";
 
 const SignupForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -28,6 +31,8 @@ const SignupForm = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [termsError, setTermsError] = useState("");
+
+  const [message, setMessage] = useState("");
 
   const history = useHistory();
 
@@ -70,14 +75,14 @@ const SignupForm = () => {
         value.length < 8
           ? setPasswordError("Password must be at least 8 characters.")
           : setPasswordError("");
-        value != confirmPassword
+        value !== confirmPassword
           ? setConfirmPasswordError("Passwords don't match.")
           : setConfirmPasswordError("");
         break;
       case "confirmPassword":
         setConfirmPassword(confirmPassword);
         setPassword(password);
-        value != password
+        value !== password
           ? setConfirmPasswordError("Passwords don't match.")
           : setConfirmPasswordError("");
         break;
@@ -152,7 +157,30 @@ const SignupForm = () => {
       Email: ${email} 
       Password: ${password}`
       );
-      history.push("/signupsuccess");
+
+      POSTRequest(
+        url +
+          "/api/v1/signup/?username=" +
+          username +
+          "&email_id=" +
+          email +
+          "&password=" +
+          password +
+          "&first_name=" +
+          firstName +
+          "&last_name=" +
+          lastName
+      ).then((data) => {
+        if (data.error) {
+          if (data.status === 444) {
+            setMessage("Username already exists. Please try again.");
+          } else if (data.status === 445)
+            setMessage("Email address already exists. Please try again.");
+        } else {
+          setMessage("New user created.");
+          history.push("/signupsuccess");
+        }
+      });
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
       if (!firstName) {
@@ -190,6 +218,20 @@ const SignupForm = () => {
 
   return (
     <form>
+      <Box
+        display="flex"
+        justifyContent="center"
+        color="#007f7f"
+        fontSize="h5.fontSize"
+      >
+        {message}
+      </Box>
+      <Typography variant="h2" align="center">
+        Simvstr
+      </Typography>
+      <Typography varaint="body2" align="center">
+        Welcome back, please login to your account.
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <TextField
@@ -323,10 +365,6 @@ export const Signup = () => {
         alignItems="center"
         p="2rem"
       >
-        <Typography variant="h2">Simvstr</Typography>
-        <Typography varaint="body2">
-          Welcome back, please login to your account.
-        </Typography>
         <SignupForm />
       </Box>
     </MainWrapper>

@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import "../../index.css";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
 import { MainWrapper } from "../ui";
+import { GETRequest } from "../../services/user";
+
+const url = "http://localhost:5000";
 
 const ForgotPasswordForm = () => {
   const [username, setUsername] = useState("");
   const [usernameError, setUsernameError] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleBlur = (e) => {
     e.preventDefault();
@@ -46,6 +50,18 @@ const ForgotPasswordForm = () => {
       console.log(`
       --SUBMITTING--
       Username: ${username}`);
+
+      GETRequest(url + "/api/v1/forgotuser/?username=" + username).then(
+        (data) => {
+          if (data.error) {
+            if (data.status === 449) {
+              setMessage("User does not exist. Please try again.");
+            }
+          } else {
+            setMessage("An email has been sent to you.");
+          }
+        }
+      );
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
       if (!username) {
@@ -56,6 +72,21 @@ const ForgotPasswordForm = () => {
 
   return (
     <form>
+      <Box
+        display="flex"
+        justifyContent="center"
+        color="#007f7f"
+        fontSize="h5.fontSize"
+      >
+        {message}
+      </Box>
+      <Typography variant="h2" align="center">
+        Simvstr
+      </Typography>
+      <Typography varaint="body2" align="center">
+        Enter your username and we will send through an email with a one-time
+        password (OTP).
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -96,10 +127,6 @@ export const ForgotPassword = () => {
         alignItems="center"
         p="2rem"
       >
-        <Typography variant="h2">Simvstr</Typography>
-        <Typography varaint="body2" align="center">
-          Enter your username and we will send through a reset link.
-        </Typography>
         <ForgotPasswordForm />
       </Box>
     </MainWrapper>

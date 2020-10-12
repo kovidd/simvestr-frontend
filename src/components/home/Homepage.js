@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import styled from "styled-components";
 import {
   Box,
@@ -8,7 +8,7 @@ import {
   ListItem,
   ListItemText,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { MainWrapper } from "../ui";
 
 const StyledListItemText = styled(ListItemText)`
@@ -45,7 +45,16 @@ const initialTerminal = {
 };
 
 export const Homepage = () => {
-  const user = "tim-brunette";
+  const token = localStorage.getItem("token");
+  const [loading, setLoading] = useState(true);
+
+  useLayoutEffect(() => {
+    if ((token === "") | (token === "undefined")) {
+      setLoading(false);
+    }
+  }, [token]);
+
+  const user = localStorage.getItem("loggedUser");
   const history = useHistory();
   const [terminal, setTerminal] = useState([initialTerminal]);
 
@@ -64,101 +73,119 @@ export const Homepage = () => {
     setTerminal(newTerminal);
   };
 
-  return (
-    <MainWrapper>
-      <Box display="flex" justifyContent="space-between">
-        <Typography variant="h4">Simvestr v1.0</Typography>
-        <Button variant="outlined" size="small" color="primary">
-          Logout
-        </Button>
-      </Box>
-      <List>
-        <ListItem disableGutters>
-          <ListItemText>
-            {`Welcome ${user}, select an option below to get started...`}{" "}
-          </ListItemText>
-        </ListItem>
-        <StyledListItem
-          button
-          disableGutters
-          onClick={() => history.push("/stocks")}
-        >
-          <StyledListItemText>{`Search Stocks`}</StyledListItemText>
-        </StyledListItem>
-        <StyledListItem button disableGutters>
-          <StyledListItemText>{`Dashboard`}</StyledListItemText>
-        </StyledListItem>
-        <StyledListItem button disableGutters>
-          <StyledListItemText>{`Watchlist`}</StyledListItemText>
-        </StyledListItem>
-        <StyledListItem button disableGutters>
-          <StyledListItemText>{`Leaderboard`}</StyledListItemText>
-        </StyledListItem>
-        <StyledListItem button disableGutters>
-          <StyledListItemText>{`Settings`}</StyledListItemText>
-        </StyledListItem>
-        <ListItem disableGutters>
-          <form
-            style={{ display: "flex" }}
-            onSubmit={(e) => e.preventDefault()}
+  const handleLogout = (e) => {
+    e.preventDefault();
+    e.persist();
+
+    localStorage.setItem("token", "");
+    localStorage.setItem("loggedUser", "");
+    history.push("/login");
+  };
+
+  if (!loading) {
+    return <Redirect to="/login" />;
+  } else {
+    return (
+      <MainWrapper>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h4">Simvestr v1.0</Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={handleLogout}
           >
-            <div>
-              {terminal.map(({ search, result, isNew }, index) => (
-                <>
-                  <ListItemText>
-                    <Box
-                      display="inline"
-                      mr="0.5rem"
-                    >{`simvestr_v1.0 - ${user}$`}</Box>
-                    {isNew ? (
-                      <Search
-                        autoFocus
-                        value={search}
-                        name="search"
-                        type="text"
-                        onChange={(e) => {
-                          updateTerminalAtIndex(index, {
-                            search: e.target.value,
-                            result,
-                            isNew,
-                          });
-                        }}
-                        onBlur={(e) => {
-                          e.preventDefault();
-                          const target = e.currentTarget;
-                          setTimeout(() => target.focus(), 5);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            if (search === "clear") {
-                              setTerminal([initialTerminal]);
-                            } else {
-                              updateTerminalAtIndexAndPushNew(index, {
-                                search,
-                                result: "awesome!",
-                                isNew: false,
-                              });
-                            }
-                          }
-                        }}
-                      ></Search>
-                    ) : (
-                      <Typography
+            Logout
+          </Button>
+        </Box>
+        <List>
+          <ListItem disableGutters>
+            <ListItemText>
+              {`Welcome ${user}, select an option below to get started...`}{" "}
+            </ListItemText>
+          </ListItem>
+          <StyledListItem
+            button
+            disableGutters
+            onClick={() => history.push("/stocks")}
+          >
+            <StyledListItemText>{`Search Stocks`}</StyledListItemText>
+          </StyledListItem>
+          <StyledListItem button disableGutters>
+            <StyledListItemText>{`Dashboard`}</StyledListItemText>
+          </StyledListItem>
+          <StyledListItem button disableGutters>
+            <StyledListItemText>{`Watchlist`}</StyledListItemText>
+          </StyledListItem>
+          <StyledListItem button disableGutters>
+            <StyledListItemText>{`Leaderboard`}</StyledListItemText>
+          </StyledListItem>
+          <StyledListItem button disableGutters>
+            <StyledListItemText>{`Settings`}</StyledListItemText>
+          </StyledListItem>
+          <ListItem disableGutters>
+            <form
+              style={{ display: "flex" }}
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <div>
+                {terminal.map(({ search, result, isNew }, index) => (
+                  <>
+                    <ListItemText>
+                      <Box
                         display="inline"
-                        variant="body1"
-                        color="primary"
-                      >
-                        {`${search}`}
-                      </Typography>
-                    )}
-                  </ListItemText>
-                  {result && <ListItemText>{result}</ListItemText>}
-                </>
-              ))}
-            </div>
-          </form>
-        </ListItem>
-      </List>
-    </MainWrapper>
-  );
+                        mr="0.5rem"
+                      >{`simvestr_v1.0 - ${user}$`}</Box>
+                      {isNew ? (
+                        <Search
+                          autoFocus
+                          value={search}
+                          name="search"
+                          type="text"
+                          onChange={(e) => {
+                            updateTerminalAtIndex(index, {
+                              search: e.target.value,
+                              result,
+                              isNew,
+                            });
+                          }}
+                          onBlur={(e) => {
+                            e.preventDefault();
+                            const target = e.currentTarget;
+                            setTimeout(() => target.focus(), 5);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              if (search === "clear") {
+                                setTerminal([initialTerminal]);
+                              } else {
+                                updateTerminalAtIndexAndPushNew(index, {
+                                  search,
+                                  result: "awesome!",
+                                  isNew: false,
+                                });
+                              }
+                            }
+                          }}
+                        ></Search>
+                      ) : (
+                        <Typography
+                          display="inline"
+                          variant="body1"
+                          color="primary"
+                        >
+                          {`${search}`}
+                        </Typography>
+                      )}
+                    </ListItemText>
+                    {result && <ListItemText>{result}</ListItemText>}
+                  </>
+                ))}
+              </div>
+            </form>
+          </ListItem>
+        </List>
+      </MainWrapper>
+    );
+  }
 };
