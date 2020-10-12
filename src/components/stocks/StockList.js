@@ -3,9 +3,12 @@ import { Box, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { MainWrapper } from "../ui";
 import { GETRequest } from "../../services/api";
+import axios from "axios";
 
 const stocks = [
-  { symbol: "APPL", name: "AppleInc" },
+  { symbol: "AAPL", name: "AppleInc" },
+  { symbol: "MSFT", name: "Microsoft" },
+  { symbol: "F", name: "Ford" },
   {
     symbol: "C",
     name: "Citigroup Inc",
@@ -15,27 +18,17 @@ const stocks = [
   { symbol: "XOM", name: "Exxon Mobil Corp." },
 ];
 
-const getStockDetails = (stock) => {
-  if (stock === "APPL") {
-    return {
-      symbol: "APPL",
-      name: "Apple Inc.",
-      quote: {
-        c: "100",
-      },
-    };
-  } else {
-    return null;
-  }
-};
-
 export const StockList = () => {
   const [search, setSearch] = useState("");
   const [stockDetails, setStockDetails] = useState(null);
+  const url ='http://127.0.0.1:5000/api/v1/stocks/finnhub/'+search;
   useEffect(() => {
     if (search) {
-      const stockDetails = getStockDetails(search);
-      setStockDetails(stockDetails);
+      //const stockDetails = getStockDetails(search);
+      axios.get(url).then(function(response){
+        const stockDetails = {current:response.data.c,previous:response.data.pc,logo:response.data.logo, quote:"100",exchange: response.data.exchange,symbol: response.data.ticker,name: response.data.name,industry: response.data.finnhubIndustry};
+        setStockDetails(stockDetails);})
+
     }
   }, [search]);
 
@@ -61,14 +54,18 @@ export const StockList = () => {
       {search && stockDetails && (
         <Box>
           <Typography variant="body1">{`Showing search results for ${search}:`}</Typography>
-          <Typography variant="body1">Symbol: {stockDetails.symbol}</Typography>
           <Typography variant="body1">Name: {stockDetails.name}</Typography>
-          <Typography variant="body1">
-            Current Quote Price: {stockDetails.quote.c} USD/unit
-          </Typography>
+          <Typography variant="body1">Industry: {stockDetails.industry}</Typography>
+          <Typography variant="body1">Exchange: {stockDetails.exchange}</Typography>
+          <Typography variant="body1">Current Quote Price :  {stockDetails.current} </Typography>
+          <Typography variant="body1">Previous Close Price: {stockDetails.previous} </Typography>
           <Typography variant="body1"></Typography>
+          <Typography variant="body1"><img style={{height: "60px", marginTop:"20px"}} src={stockDetails.logo}/></Typography>
         </Box>
-      )}
+        
+      )
+      
+}
     </MainWrapper>
   );
 };
