@@ -133,8 +133,10 @@ const SignupSuccessForm = () => {
       >
         {message}
       </Box>
-      <Typography variant="h2">Simvstr</Typography>
-      <Typography varaint="body2">
+      <Typography variant="h2" align="center">
+        Simvstr{" "}
+      </Typography>
+      <Typography varaint="body2" align="center">
         Welcome, please login to your account.
       </Typography>
       <Grid container spacing={2}>

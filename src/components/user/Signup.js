@@ -48,19 +48,19 @@ const SignupForm = () => {
       case "firstName":
         setFirstName(firstName);
         value.length < 3
-          ? setFirstNameError("First name must be at least 3 charachters.")
+          ? setFirstNameError("First name must be at least 3 characters.")
           : setFirstNameError("");
         break;
       case "lastName":
         setLastName(lastName);
         value.length < 3
-          ? setLastNameError("Last name must be at least 3 charachters.")
+          ? setLastNameError("Last name must be at least 3 characters.")
           : setLastNameError("");
         break;
       case "username":
         setUsername(username);
         value.length < 8
-          ? setUsernameError("Username must be at least 8 charachters.")
+          ? setUsernameError("Username must be at least 8 characters.")
           : setUsernameError("");
         break;
       case "email":
@@ -230,7 +230,7 @@ const SignupForm = () => {
         Simvstr
       </Typography>
       <Typography varaint="body2" align="center">
-        Welcome back, please login to your account.
+        Welcome, please sign up your account.
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -348,7 +348,7 @@ const SignupForm = () => {
             bottom: "-18px",
           }}
         >
-          Already a memeber? <Link href="./login">Log In</Link>
+          Already a member? <Link href="./login">Log In</Link>
         </Typography>
       </Box>
     </form>
