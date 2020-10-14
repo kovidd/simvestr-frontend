@@ -12,7 +12,7 @@ import {
   Link,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
-import { POSTRequest } from "../../services/user";
+import { POSTRequest } from "../../services/api";
 
 const url = "http://localhost:5000";
 

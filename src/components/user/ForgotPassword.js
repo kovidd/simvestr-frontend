@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../index.css";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
 import { MainWrapper } from "../ui";
-import { GETRequest } from "../../services/user";
+import { GETRequest } from "../../services/api";
 
 const url = "http://localhost:5000";
 
