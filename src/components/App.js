@@ -11,6 +11,7 @@ import {
 
 import { Signup } from "./user/Signup";
 import { Login } from "./user/Login";
+import { TermsAndConditions } from "./user/TermsAndConditions";
 import { SignupSuccess } from "./user/SignupSuccess";
 import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
@@ -36,6 +37,11 @@ const Main = () => {
         <Route path="/resetpassword">
           <ResetPassword />
         </Route>
+
+        <Route path="/termsandconditions">
+          <TermsAndConditions />
+        </Route>
+
         <Route path="/stocks">
           <StockList />
         </Route>

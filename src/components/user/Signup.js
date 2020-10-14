@@ -216,6 +216,16 @@ const SignupForm = () => {
     }
   };
 
+  const termsLabel = (
+    <span>
+      By signing up you agree to our&nbsp; 
+      <a href="./termsandconditions">
+        terms and conditions
+      </a>
+    </span>
+
+  )
+
   return (
     <form>
       <Box
@@ -319,13 +329,13 @@ const SignupForm = () => {
             <Box className="errorMessage">{confirmPasswordError}</Box>
           )}
         </Grid>
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" color="#44B">
           <FormControlLabel
             control={<Checkbox name="terms" color="primary" />}
-            label="I agree with the Terms and Conditions"
+            label={termsLabel}
             checked={enabledTermsCheckBox}
-            onClick={handleTermsClick}
-          />
+            onClick={handleTermsClick}>
+          </FormControlLabel>
           {termsError.length > 0 && (
             <Box className="errorMessage">{termsError}</Box>
           )}
