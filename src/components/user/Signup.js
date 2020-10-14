@@ -223,7 +223,6 @@ const SignupForm = () => {
         terms and conditions
       </a>
     </span>
-
   )
 
   return (
@@ -329,7 +328,7 @@ const SignupForm = () => {
             <Box className="errorMessage">{confirmPasswordError}</Box>
           )}
         </Grid>
-        <Box display="flex" flexDirection="column" color="#44B">
+        <Box display="flex" flexDirection="column">
           <FormControlLabel
             control={<Checkbox name="terms" color="primary" />}
             label={termsLabel}

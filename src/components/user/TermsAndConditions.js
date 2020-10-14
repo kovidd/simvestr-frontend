@@ -14,7 +14,7 @@ const TermsAndCondition = () => {
         Simvstr
       </Typography>
       <h2> Terms and Conditions </h2>
-      <h3 align="center">GENERAL</h3>
+      <h3>GENERAL</h3>
       <p>The content and information of the pages of this website. And functionality of Simvestr is subject to change without notice. Your use of any product, service, information or materials on this website is entirely at your own risk, for which the site owner shall not be liable.</p>
       <h3> USE OF THE SERVICE</h3> 
       <p>It shall be your own responsibility to ensure that any products, services or information available through this site meet your specific requirements and make sense to use. Otherwise you need to avoid this.</p>
@@ -23,7 +23,7 @@ const TermsAndCondition = () => {
       <p>The information, software, products and descriptions of services published on this website may include inaccuracies or typographical errors, and the owner specifically disclaims any liability for such inaccuracies or errors. You agree that owner, Its affiliates and any of their respective employees or agents will not be liable for incidental or indirect damages.</p>
       <p>The owner cannot and does not guarantee continuous, uninterrupted or secure access to Simvestr. The owner may terminate your access to the website without cause or notice.</p>
    
-      <Box display="flex" flexDirection="row" justifyContent="flex-start" align="center">
+      <Box align="left">
         <Typography>
           <Link href="./signup">Back to Sign Up Page</Link>
         </Typography>
@@ -36,9 +36,7 @@ export const TermsAndConditions = () => {
   return (
     <MainWrapper>
       <Box
-        display="flex"
         height="100%"
-        flexDirection="column"
         alignItems="center"
         p="2rem"
         paddingTop="0"
