@@ -12,7 +12,7 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
-import { MainWrapper, FormErrorMessage } from "../ui";
+import { MainWrapper, FormErrorMessage, LinkRouter } from "../ui";
 import { signup } from "../../services/user";
 
 const SignupForm = () => {
@@ -42,13 +42,10 @@ const SignupForm = () => {
 
   const termsLabel = (
     <span>
-      By signing up you agree to our&nbsp; 
-      <a href="./termsandconditions">
-        terms and conditions
-      </a>
+      I agree with the{" "}
+      <LinkRouter to="./terms-and-conditions">Terms and Conditions</LinkRouter>
     </span>
-
-  )
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -164,7 +161,7 @@ const SignupForm = () => {
                     "You must agree with the Terms and Conditions to sign up.",
                 })}
                 control={<Checkbox name="terms" color="primary" />}
-                label="I agree with the Terms and Conditions"
+                label={termsLabel}
               />
               <FormErrorMessage errors={errors} name="terms" />
             </Box>

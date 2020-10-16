@@ -46,6 +46,9 @@ const Main = () => {
           <Route exact path="/">
             <Homepage />
           </Route>
+          <Route exact path="/terms-and-conditions">
+            <TermsAndConditions />
+          </Route>
           <Route path="*">
             <Redirect to={{ pathname: "/login" }} />
           </Route>
