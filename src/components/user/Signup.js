@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import * as EmailValidator from "email-validator";
 import {
   Grid,
   Box,
@@ -18,7 +17,9 @@ import { signup } from "../../services/user";
 
 const SignupForm = () => {
   const history = useHistory();
-  const { register, handleSubmit, errors, getValues } = useForm();
+  const { register, handleSubmit, errors, getValues } = useForm({
+    mode: "onBlur",
+  });
   const [message, setMessage] = useState("");
 
   const onSubmit = async (data) => {
@@ -58,7 +59,17 @@ const SignupForm = () => {
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <TextField
-            inputRef={register({ required: "First name required." })}
+            inputRef={register({
+              required: "First name is required.",
+              minLength: {
+                value: 3,
+                message: "First name must be at least 3 characters.",
+              },
+              maxLength: {
+                value: 20,
+                message: "First name must not exceed 20 characters.",
+              },
+            })}
             name="firstName"
             label="First Name"
             className={errors?.firstName ? "error" : null}
@@ -68,7 +79,17 @@ const SignupForm = () => {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            inputRef={register({ required: "Last name required." })}
+            inputRef={register({
+              required: "Last name is required.",
+              minLength: {
+                value: 3,
+                message: "Last name must be at least 3 characters.",
+              },
+              maxLength: {
+                value: 20,
+                message: "Last name must not exceed 20 characters.",
+              },
+            })}
             name="lastName"
             label="Last Name"
             className={errors?.lastName ? "error" : null}
@@ -79,13 +100,14 @@ const SignupForm = () => {
         <Grid item xs={12}>
           <TextField
             inputRef={register({
-              required: "Email required.",
-              validate: (value) =>
-                EmailValidator.validate(value) || "Email address is invalid.",
+              required: "Email address is required.",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Email address is invalid.",
+              },
             })}
             name="email"
             label="Email"
-            type="email"
             className={errors?.email ? "error" : null}
             fullWidth
           />
@@ -94,7 +116,7 @@ const SignupForm = () => {
         <Grid item xs={12}>
           <TextField
             inputRef={register({
-              required: "Password required.",
+              required: "Password is required.",
               minLength: {
                 value: 8,
                 message: "Password must be at least 8 characters.",
@@ -111,6 +133,7 @@ const SignupForm = () => {
         <Grid item xs={12}>
           <TextField
             inputRef={register({
+              required: "Please confirm password.",
               validate: (value) =>
                 getValues("password") === value || "Passwords don't match.",
             })}
@@ -123,12 +146,7 @@ const SignupForm = () => {
           <FormErrorMessage errors={errors} name="confirmPassword" />
         </Grid>
         <Grid item xs={12}>
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="flex-end"
-          >
+          <Box display="flex" flexDirection="row" justifyContent="flex-start">
             <Box>
               <FormControlLabel
                 inputRef={register({
@@ -140,6 +158,8 @@ const SignupForm = () => {
               />
               <FormErrorMessage errors={errors} name="terms" />
             </Box>
+          </Box>
+          <Box display="flex" justifyContent="center">
             <Button type="submit" variant="contained" color="primary">
               Signup
             </Button>
