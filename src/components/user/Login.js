@@ -11,7 +11,7 @@ import {
   Link,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
-import { GETRequest } from "../../services/user";
+import { GETRequest } from "../../services/api";
 
 const url = "http://localhost:5000";
 

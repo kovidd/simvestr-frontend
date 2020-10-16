@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Box, Paper, Breadcrumbs, Link, Typography } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
+import { ErrorMessage } from "@hookform/error-message";
 
 const Terminal = styled.div`
   border: 14px solid rgba(0, 127, 127, 1);
@@ -76,3 +77,17 @@ export const BreadCrumbsNav = ({ location }) => {
     </Breadcrumbs>
   );
 };
+
+export const ErrorWrapper = styled.div`
+  color: rgba(0, 127, 127, 0.8);
+  font-size: 0.8rem;
+  position: relative;
+`;
+
+export const FormErrorMessage = ({ errors, name }) => (
+  <ErrorMessage
+    errors={errors}
+    name={name}
+    render={({ message }) => <ErrorWrapper>{message}</ErrorWrapper>}
+  />
+);

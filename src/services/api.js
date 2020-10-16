@@ -1,8 +1,13 @@
+import React from "react";
+import { API } from "./uri";
 // This code holds the boiler plate for the APIs
 // The reason we use this is so that we don't have to rewrite these calls
 // everytime we want to hit another endpoint
 
-export const getApiToken = () => "apiToken";
+export const ApiTokenContext = React.createContext({
+  apiToken: "",
+  setApiToken: () => {},
+});
 
 const hasJSONResponse = (res) => {
   const contentType = res.headers.get("content-type");
@@ -27,7 +32,7 @@ export async function POSTRequest(
   try {
     let config = {
       method: "post",
-      credentials: "include",
+      ...(apiToken && { credentials: "include" }),
       headers: {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
@@ -38,7 +43,7 @@ export async function POSTRequest(
       }),
     };
 
-    const res = await fetch(path, config);
+    const res = await fetch(`${API}${path}`, config);
     if (res.ok || acceptStatus.includes(res.status)) {
       if (hasJSONResponse(res)) {
         const data = await res.json();
@@ -79,7 +84,7 @@ export async function PUTRequest(path, apiToken, payload, options) {
       body: JSON.stringify(payload),
     };
 
-    const res = await fetch(path, config);
+    const res = await fetch(`${API}${path}`, config);
     if (res.ok) {
       return { error: false, data: payload };
     } else {
@@ -113,7 +118,7 @@ export async function GETRequest(path, apiToken, options, acceptStatus) {
       },
     };
 
-    const res = await fetch(path, config);
+    const res = await fetch(`${API}${path}`, config);
     if (res.ok || acceptStatus.includes(res.status)) {
       if (hasJSONResponse(res)) {
         const data = await res.json();
@@ -152,7 +157,7 @@ export async function DELETERequest(path, apiToken, options) {
       },
     };
 
-    const res = await fetch(path, config);
+    const res = await fetch(`${API}${path}`, config);
     if (res.ok) {
       return { error: false };
     } else {
