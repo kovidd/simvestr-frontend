@@ -40,6 +40,16 @@ const SignupForm = () => {
     }
   };
 
+  const termsLabel = (
+    <span>
+      By signing up you agree to our&nbsp; 
+      <a href="./termsandconditions">
+        terms and conditions
+      </a>
+    </span>
+
+  )
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
