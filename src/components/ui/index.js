@@ -36,6 +36,7 @@ export const MainWrapper = ({ children }) => {
             "/signupsuccess",
             "/forgotpassword",
             "/resetpassword",
+            "/terms-and-conditions",
           ].includes(location.pathname) && (
             <BreadCrumbsNav location={location} />
           )}
