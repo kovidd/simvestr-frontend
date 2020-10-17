@@ -23,15 +23,8 @@ const hasJSONResponse = (res) => {
  * @param {string} apiToken - the apiToken to validate the request
  * @param {object} payload - the payload body of the request
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
- * @param {number[]} acceptStatus - any other status returned from the result, which we want to classify same as res.ok
  */
-export async function POSTRequest(
-  path,
-  apiToken,
-  payload,
-  options,
-  acceptStatus
-) {
+export async function POSTRequest(path, apiToken, payload, options) {
   try {
     let config = {
       method: "post",
@@ -47,7 +40,7 @@ export async function POSTRequest(
     };
 
     const res = await fetch(`${API}${path}`, config);
-    if (res.ok || acceptStatus.includes(res.status)) {
+    if (res.ok) {
       if (hasJSONResponse(res)) {
         const data = await res.json();
         return { error: false, data, status: res.status };
@@ -108,9 +101,8 @@ export async function PUTRequest(path, apiToken, payload, options) {
  * @param {string} path - the extension path to the REST API endpoint
  * @param {string} apiToken - the apiToken to validate the request
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
- * @param {number[]} acceptStatus - any other status returned from the result, which we want to classify same as res.ok
  */
-export async function GETRequest(path, apiToken, options, acceptStatus) {
+export async function GETRequest(path, apiToken, options) {
   try {
     let config = {
       ...(apiToken && { credentials: "include" }),
@@ -122,7 +114,7 @@ export async function GETRequest(path, apiToken, options, acceptStatus) {
     };
 
     const res = await fetch(`${API}${path}`, config);
-    if (res.ok || acceptStatus.includes(res.status)) {
+    if (res.ok) {
       if (hasJSONResponse(res)) {
         const data = await res.json();
         return { error: false, data };
