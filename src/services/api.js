@@ -4,9 +4,12 @@ import { API } from "./uri";
 // The reason we use this is so that we don't have to rewrite these calls
 // everytime we want to hit another endpoint
 
-export const ApiTokenContext = React.createContext({
-  apiToken: "",
-  setApiToken: () => {},
+export const AuthContext = React.createContext({
+  auth: {
+    apiToken: "",
+    isAuthenticated: false,
+  },
+  setAuth: () => {},
 });
 
 const hasJSONResponse = (res) => {

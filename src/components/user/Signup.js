@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage, LinkRouter } from "../ui";
 import { signup } from "../../services/user";
+import { AuthContext } from "../../services/api";
 
 const SignupForm = () => {
   const history = useHistory();
@@ -29,12 +30,10 @@ const SignupForm = () => {
       password: data.password,
       first_name: data.firstName,
       last_name: data.lastName,
-      username: "testuser123",
     };
     const res = await signup(body);
     if (!res.error) {
-      setMessage("New user created.");
-      history.push("/signupsuccess");
+      history.push("/login");
     } else {
       setMessage(res.message);
     }
@@ -189,6 +188,11 @@ const SignupForm = () => {
 };
 
 export const Signup = () => {
+  const history = useHistory();
+  const { auth } = useContext(AuthContext);
+  if (auth.isAuthenticated) {
+    history.replace("/");
+  }
   return (
     <MainWrapper>
       <Box
