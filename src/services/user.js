@@ -6,9 +6,8 @@ export function signup(payload) {
 }
 
 export function login(payload) {
-  const path =
-    "/token?username=" + payload.email_id + "&password=" + payload.password;
-  return GETRequest(path);
+  const path = "/token";
+  return POSTRequest(path, null, payload);
 }
 
 export function forgotPassword(payload) {
