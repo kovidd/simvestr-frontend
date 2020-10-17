@@ -1,4 +1,14 @@
+import React from "react";
 import { POSTRequest, GETRequest, PUTRequest } from "./api";
+
+export const UserContext = React.createContext({
+  user: {
+    firstName: "",
+    lastName: "",
+    email: "",
+  },
+  setUser: () => {},
+});
 
 export function signup(payload) {
   const path = "/signup";

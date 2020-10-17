@@ -1,28 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../index.css";
 import { useForm } from "react-hook-form";
 import {
   Grid,
   Box,
   Typography,
-  FormControlLabel,
-  Checkbox,
   TextField,
   Button,
   Link,
 } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
 import { login } from "../../services/user";
+import { AuthContext } from "../../services/api";
+import { useHistory } from "react-router-dom";
 
 const LoginForm = () => {
-  const { register, handleSubmit, errors, getValues } = useForm({
+  const history = useHistory();
+
+  const { register, handleSubmit, errors } = useForm({
     mode: "onBlur",
     defaultValues: {
-      email: localStorage.getItem("email"),
-      password: localStorage.getItem("password"),
-      rememberMe: localStorage.getItem("rememberMe") === "true",
+      email: "",
+      password: "",
     },
   });
+  const { auth, setAuth } = useContext(AuthContext);
 
   const [message, setMessage] = useState("");
 
@@ -34,13 +36,11 @@ const LoginForm = () => {
     };
     const res = await login(body);
     if (!res.error) {
-      localStorage.setItem("rememberMe", getValues("rememberMe"));
-      localStorage.setItem("email", getValues("rememberMe") ? data.email : "");
-      localStorage.setItem(
-        "password",
-        getValues("rememberMe") ? data.password : ""
-      );
-      setMessage("Login Successful.");
+      setAuth({
+        isAuthenticated: true,
+        apiToken: res.data.token,
+      });
+      history.push("/");
     } else {
       setMessage(res.message);
     }
@@ -97,7 +97,7 @@ const LoginForm = () => {
           <FormErrorMessage errors={errors} name="password" />
         </Grid>
         <Grid item xs={12}>
-          <Box display="flex" flexDirection="row" justifyContent="flex-start">
+          {/* <Box display="flex" flexDirection="row" justifyContent="flex-start">
             <Box>
               <FormControlLabel
                 control={
@@ -113,7 +113,7 @@ const LoginForm = () => {
                 label="Remember me"
               />
             </Box>
-          </Box>
+          </Box> */}
           <Box display="flex" justifyContent="center">
             <Button type="submit" variant="contained" color="primary">
               Login
@@ -131,6 +131,12 @@ const LoginForm = () => {
 };
 
 export const Login = () => {
+  // const history = useHistory();
+  // const { auth } = useContext(AuthContext);
+  // console.log(auth);
+  // if (auth.isAuthenticated) {
+  //   history.replace("/");
+  // }
   return (
     <MainWrapper>
       <Box
