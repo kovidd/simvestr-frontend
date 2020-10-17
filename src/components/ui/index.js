@@ -46,7 +46,7 @@ export const MainWrapper = ({ children }) => {
   );
 };
 
-const LinkRouter = (props) => <Link {...props} component={RouterLink} />;
+export const LinkRouter = (props) => <Link {...props} component={RouterLink} />;
 
 const breadcrumbNameMap = {
   "/stocks": "stocks",

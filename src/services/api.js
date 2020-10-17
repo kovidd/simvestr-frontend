@@ -110,11 +110,11 @@ export async function PUTRequest(path, apiToken, payload, options) {
 export async function GETRequest(path, apiToken, options, acceptStatus) {
   try {
     let config = {
-      credentials: "include",
+      ...(apiToken && { credentials: "include" }),
       headers: {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
-        apiToken,
+        ...(apiToken && { apiToken }),
       },
     };
 
