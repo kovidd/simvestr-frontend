@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { MainWrapper } from "../ui";
-import { GETRequest } from "../../services/api";
-import { Redirect } from "react-router-dom";
+import { stockDetails } from "../../services/stock";
 
 const stocks = [
-  { symbol: "APPL", name: "AppleInc" },
+  { symbol: "AAPL", name: "AppleInc" },
+  { symbol: "MSFT", name: "Microsoft" },
+  { symbol: "F", name: "Ford" },
   {
     symbol: "C",
     name: "Citigroup Inc",
@@ -16,28 +17,30 @@ const stocks = [
   { symbol: "XOM", name: "Exxon Mobil Corp." },
 ];
 
-const getStockDetails = (stock) => {
-  if (stock === "APPL") {
-    return {
-      symbol: "APPL",
-      name: "Apple Inc.",
-      quote: {
-        c: "100",
-      },
-    };
-  } else {
-    return null;
-  }
-};
-
 export const StockList = () => {
   const [search, setSearch] = useState("");
-  const [stockDetails, setStockDetails] = useState(null);
+  const [details, setDetails] = useState(null);
+
   useEffect(() => {
-    if (search) {
-      const stockDetails = getStockDetails(search);
-      setStockDetails(stockDetails);
+    async function getStockDetails(stockSymbol) {
+      if (search) {
+        const res = await stockDetails(stockSymbol);
+        if (!res.error) {
+          setDetails({
+            current: res.data.c,
+            previous: res.data.pc,
+            logo: res.data.logo,
+            exchange: res.data.exchange,
+            symbol: res.data.ticker,
+            name: res.data.name,
+            industry: res.data.finnhubIndustry,
+          });
+        } else {
+          console.log("error getting the stock details");
+        }
+      }
     }
+    getStockDetails(search);
   }, [search]);
 
   return (
@@ -59,15 +62,26 @@ export const StockList = () => {
           />
         )}
       />
-      {search && stockDetails && (
+      {search && details && (
         <Box>
           <Typography variant="body1">{`Showing search results for ${search}:`}</Typography>
-          <Typography variant="body1">Symbol: {stockDetails.symbol}</Typography>
-          <Typography variant="body1">Name: {stockDetails.name}</Typography>
+          <Typography variant="body1">Name: {details.name}</Typography>
+          <Typography variant="body1">Industry: {details.industry}</Typography>
+          <Typography variant="body1">Exchange: {details.exchange}</Typography>
           <Typography variant="body1">
-            Current Quote Price: {stockDetails.quote.c} USD/unit
+            Current Quote Price : {details.current}{" "}
+          </Typography>
+          <Typography variant="body1">
+            Previous Close Price: {details.previous}{" "}
           </Typography>
           <Typography variant="body1"></Typography>
+          <Typography variant="body1">
+            <img
+              alt="Stock Logo"
+              style={{ height: "60px", marginTop: "20px" }}
+              src={details.logo}
+            />
+          </Typography>
         </Box>
       )}
     </MainWrapper>
