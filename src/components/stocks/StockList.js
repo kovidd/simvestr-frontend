@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { MainWrapper } from "../ui";
-import { GETRequest } from "../../services/api";
-import axios from "axios";
+import { stockDetails } from "../../services/stock";
 
 const stocks = [
   { symbol: "AAPL", name: "AppleInc" },
@@ -20,16 +19,28 @@ const stocks = [
 
 export const StockList = () => {
   const [search, setSearch] = useState("");
-  const [stockDetails, setStockDetails] = useState(null);
-  const url ='http://127.0.0.1:5000/api/v1/stocks/finnhub/'+search;
-  useEffect(() => {
-    if (search) {
-      //const stockDetails = getStockDetails(search);
-      axios.get(url).then(function(response){
-        const stockDetails = {current:response.data.c,previous:response.data.pc,logo:response.data.logo, quote:"100",exchange: response.data.exchange,symbol: response.data.ticker,name: response.data.name,industry: response.data.finnhubIndustry};
-        setStockDetails(stockDetails);})
+  const [details, setDetails] = useState(null);
 
+  useEffect(() => {
+    async function getStockDetails(stockSymbol) {
+      if (search) {
+        const res = await stockDetails(stockSymbol);
+        if (!res.error) {
+          setDetails({
+            current: res.data.c,
+            previous: res.data.pc,
+            logo: res.data.logo,
+            exchange: res.data.exchange,
+            symbol: res.data.ticker,
+            name: res.data.name,
+            industry: res.data.finnhubIndustry,
+          });
+        } else {
+          console.log("error getting the stock details");
+        }
+      }
     }
+    getStockDetails(search);
   }, [search]);
 
   return (
@@ -51,21 +62,28 @@ export const StockList = () => {
           />
         )}
       />
-      {search && stockDetails && (
+      {search && details && (
         <Box>
           <Typography variant="body1">{`Showing search results for ${search}:`}</Typography>
-          <Typography variant="body1">Name: {stockDetails.name}</Typography>
-          <Typography variant="body1">Industry: {stockDetails.industry}</Typography>
-          <Typography variant="body1">Exchange: {stockDetails.exchange}</Typography>
-          <Typography variant="body1">Current Quote Price :  {stockDetails.current} </Typography>
-          <Typography variant="body1">Previous Close Price: {stockDetails.previous} </Typography>
+          <Typography variant="body1">Name: {details.name}</Typography>
+          <Typography variant="body1">Industry: {details.industry}</Typography>
+          <Typography variant="body1">Exchange: {details.exchange}</Typography>
+          <Typography variant="body1">
+            Current Quote Price : {details.current}{" "}
+          </Typography>
+          <Typography variant="body1">
+            Previous Close Price: {details.previous}{" "}
+          </Typography>
           <Typography variant="body1"></Typography>
-          <Typography variant="body1"><img style={{height: "60px", marginTop:"20px"}} src={stockDetails.logo}/></Typography>
+          <Typography variant="body1">
+            <img
+              alt="Stock Logo"
+              style={{ height: "60px", marginTop: "20px" }}
+              src={details.logo}
+            />
+          </Typography>
         </Box>
-        
-      )
-      
-}
+      )}
     </MainWrapper>
   );
 };

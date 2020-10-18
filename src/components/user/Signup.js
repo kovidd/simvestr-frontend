@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../index.css";
 import { useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import {
   Grid,
   Box,
@@ -11,294 +12,167 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
-import { MainWrapper } from "../ui";
+import { MainWrapper, FormErrorMessage, LinkRouter } from "../ui";
+import { signup } from "../../services/user";
+import { AuthContext } from "../../services/api";
 
 const SignupForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [enabledTermsCheckBox, setEnabledTermsCheckBox] = useState(false);
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [usernameError, setUsernameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [termsError, setTermsError] = useState("");
-
   const history = useHistory();
+  const { register, handleSubmit, errors, getValues } = useForm({
+    mode: "onBlur",
+  });
+  const [message, setMessage] = useState("");
 
-  const emailRegex = RegExp(
-    /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i
+  const onSubmit = async (data) => {
+    // submit the signup
+    const body = {
+      email_id: data.email,
+      password: data.password,
+      first_name: data.firstName,
+      last_name: data.lastName,
+    };
+    const res = await signup(body);
+    if (!res.error) {
+      history.push("/login");
+    } else {
+      setMessage(res.message);
+    }
+  };
+
+  const termsLabel = (
+    <span>
+      I agree with the{" "}
+      <LinkRouter to="./terms-and-conditions">Terms and Conditions</LinkRouter>
+    </span>
   );
 
-  const handleBlur = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-
-    switch (name) {
-      case "firstName":
-        setFirstName(firstName);
-        value.length < 3
-          ? setFirstNameError("First name must be at least 3 charachters.")
-          : setFirstNameError("");
-        break;
-      case "lastName":
-        setLastName(lastName);
-        value.length < 3
-          ? setLastNameError("Last name must be at least 3 charachters.")
-          : setLastNameError("");
-        break;
-      case "username":
-        setUsername(username);
-        value.length < 8
-          ? setUsernameError("Username must be at least 8 charachters.")
-          : setUsernameError("");
-        break;
-      case "email":
-        setEmail(email);
-        emailRegex.test(value)
-          ? setEmailError("")
-          : setEmailError("Email address is invalid.");
-        break;
-      case "password":
-        setPassword(password);
-        setConfirmPassword(confirmPassword);
-        value.length < 8
-          ? setPasswordError("Password must be at least 8 characters.")
-          : setPasswordError("");
-        value != confirmPassword
-          ? setConfirmPasswordError("Passwords don't match.")
-          : setConfirmPasswordError("");
-        break;
-      case "confirmPassword":
-        setConfirmPassword(confirmPassword);
-        setPassword(password);
-        value != password
-          ? setConfirmPasswordError("Passwords don't match.")
-          : setConfirmPasswordError("");
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-
-    switch (name) {
-      case "firstName":
-        setFirstName(value);
-        break;
-      case "lastName":
-        setLastName(value);
-        break;
-      case "username":
-        setUsername(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
-      case "confirmPassword":
-        setConfirmPassword(value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setFirstName(firstName);
-    setLastName(lastName);
-    setUsername(username);
-    setEmail(email);
-    setPassword(password);
-    setConfirmPassword(confirmPassword);
-    setEnabledTermsCheckBox(enabledTermsCheckBox);
-    setFirstNameError(firstNameError);
-    setLastNameError(lastNameError);
-    setUsernameError(usernameError);
-    setEmailError(emailError);
-    setPasswordError(passwordError);
-    setConfirmPasswordError(confirmPasswordError);
-    setTermsError(termsError);
-
-    if (
-      firstName &&
-      lastName &&
-      username &&
-      email &&
-      password &&
-      confirmPassword &&
-      enabledTermsCheckBox &&
-      !firstNameError &&
-      !lastNameError &&
-      !usernameError &&
-      !emailError &&
-      !passwordError &&
-      !confirmPasswordError
-    ) {
-      console.log(
-        `--SUBMITTING-- 
-      Email: ${email} 
-      Password: ${password}`
-      );
-      history.push("/signupsuccess");
-    } else {
-      console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-      if (!firstName) {
-        setFirstNameError("First name is required.");
-      }
-      if (!lastName) {
-        setLastNameError("Last name is required.");
-      }
-      if (!username) {
-        setUsernameError("Username is required.");
-      }
-      if (!email) {
-        setEmailError("Email address is required.");
-      }
-      if (!password) {
-        setPasswordError("Password is required.");
-      }
-      if (!confirmPassword) {
-        setConfirmPasswordError("Please confirm password.");
-      }
-      if (!enabledTermsCheckBox) {
-        setTermsError("Please agree to the Terms and Conditions.");
-      }
-    }
-  };
-
-  const handleTermsClick = (e) => {
-    e.persist();
-    setEnabledTermsCheckBox(!enabledTermsCheckBox);
-
-    if (!enabledTermsCheckBox) {
-      setTermsError("");
-    }
-  };
-
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        color="#007f7f"
+        fontSize="h5.fontSize"
+      >
+        {message}
+      </Box>
+      <Typography variant="h2" align="center">
+        Simvstr
+      </Typography>
+      <Typography varaint="body2" align="center">
+        Welcome, please sign up your account.
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <TextField
+            inputRef={register({
+              required: "First name is required.",
+              minLength: {
+                value: 3,
+                message: "First name must be at least 3 characters.",
+              },
+              maxLength: {
+                value: 20,
+                message: "First name must not exceed 20 characters.",
+              },
+            })}
             name="firstName"
             label="First Name"
-            value={firstName}
-            className={firstNameError.length > 0 ? "error" : null}
-            onChange={(e) => handleChange(e, "firstName")}
-            onBlur={(e) => handleBlur(e, "firstName")}
+            className={errors?.firstName ? "error" : null}
             fullWidth
           />
-          {firstNameError.length > 0 && (
-            <Box className="errorMessage">{firstNameError}</Box>
-          )}
+          <FormErrorMessage errors={errors} name="firstName" />
         </Grid>
         <Grid item xs={6}>
           <TextField
+            inputRef={register({
+              required: "Last name is required.",
+              minLength: {
+                value: 3,
+                message: "Last name must be at least 3 characters.",
+              },
+              maxLength: {
+                value: 20,
+                message: "Last name must not exceed 20 characters.",
+              },
+            })}
             name="lastName"
             label="Last Name"
-            value={lastName}
-            className={lastNameError.length > 0 ? "error" : null}
-            onChange={(e) => handleChange(e, "lastName")}
-            onBlur={(e) => handleBlur(e, "lastName")}
+            className={errors?.lastName ? "error" : null}
             fullWidth
           />
-          {lastNameError.length > 0 && (
-            <Box className="errorMessage">{lastNameError}</Box>
-          )}
+          <FormErrorMessage errors={errors} name="lastName" />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            name="username"
-            label="Username"
-            value={username}
-            className={usernameError.length > 0 ? "error" : null}
-            onChange={(e) => handleChange(e, "username")}
-            onBlur={(e) => handleBlur(e, "username")}
-            fullWidth
-          />
-          {usernameError.length > 0 && (
-            <Box className="errorMessage">{usernameError}</Box>
-          )}
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
+            inputRef={register({
+              required: "Email address is required.",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Email address is invalid.",
+              },
+            })}
             name="email"
             label="Email"
-            value={email}
-            className={emailError.length > 0 ? "error" : null}
-            onChange={(e) => handleChange(e, "email")}
-            onBlur={(e) => handleBlur(e, "email")}
+            className={errors?.email ? "error" : null}
             fullWidth
           />
-          {emailError.length > 0 && (
-            <Box className="errorMessage">{emailError}</Box>
-          )}
+          <FormErrorMessage errors={errors} name="email" />
         </Grid>
         <Grid item xs={12}>
           <TextField
+            inputRef={register({
+              required: "Password is required.",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters.",
+              },
+            })}
             name="password"
             type="password"
             label="Password"
-            value={password}
-            className={passwordError.length > 0 ? "error" : null}
-            onChange={(e) => handleChange(e, "password")}
-            onBlur={(e) => handleBlur(e, "password")}
+            className={errors?.password ? "error" : null}
             fullWidth
           />
-          {passwordError.length > 0 && (
-            <Box className="errorMessage">{passwordError}</Box>
-          )}
+          <FormErrorMessage errors={errors} name="password" />
         </Grid>
         <Grid item xs={12}>
           <TextField
+            inputRef={register({
+              required: "Please confirm password.",
+              validate: (value) =>
+                getValues("password") === value || "Passwords don't match.",
+            })}
             name="confirmPassword"
             type="password"
             label="Confirm Password"
-            value={confirmPassword}
-            className={confirmPasswordError.length > 0 ? "error" : null}
-            onChange={(e) => handleChange(e, "confirmPassword")}
-            onBlur={(e) => handleBlur(e, "confirmPassword")}
+            className={errors?.confirmPassword ? "error" : null}
             fullWidth
           />
-          {confirmPasswordError.length > 0 && (
-            <Box className="errorMessage">{confirmPasswordError}</Box>
-          )}
+          <FormErrorMessage errors={errors} name="confirmPassword" />
         </Grid>
-        <Box display="flex" flexDirection="column">
-          <FormControlLabel
-            control={<Checkbox name="terms" color="primary" />}
-            label="I agree with the Terms and Conditions"
-            checked={enabledTermsCheckBox}
-            onClick={handleTermsClick}
-          />
-          {termsError.length > 0 && (
-            <Box className="errorMessage">{termsError}</Box>
-          )}
-        </Box>
+        <Grid item xs={12}>
+          <Box display="flex" flexDirection="row" justifyContent="flex-start">
+            <Box>
+              <FormControlLabel
+                inputRef={register({
+                  required:
+                    "You must agree with the Terms and Conditions to sign up.",
+                })}
+                control={<Checkbox name="terms" color="primary" />}
+                label={termsLabel}
+              />
+              <FormErrorMessage errors={errors} name="terms" />
+            </Box>
+          </Box>
+          <Box display="flex" justifyContent="center">
+            <Button type="submit" variant="contained" color="primary">
+              Signup
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
-      <Box display="flex" justifyContent="center">
-        <Button
-          variant="contained"
-          color="primary"
-          className="btn"
-          onClick={handleSubmit}
-        >
-          Signup
-        </Button>
-      </Box>
+
       <Box display="flex" flexDirection="row" justifyContent="flex-start">
         <Typography
           style={{
@@ -306,7 +180,7 @@ const SignupForm = () => {
             bottom: "-18px",
           }}
         >
-          Already a memeber? <Link href="./login">Log In</Link>
+          Already a member? <Link href="./login">Log In</Link>
         </Typography>
       </Box>
     </form>
@@ -314,6 +188,11 @@ const SignupForm = () => {
 };
 
 export const Signup = () => {
+  const history = useHistory();
+  const { auth } = useContext(AuthContext);
+  if (auth.isAuthenticated) {
+    history.replace("/");
+  }
   return (
     <MainWrapper>
       <Box
@@ -323,10 +202,6 @@ export const Signup = () => {
         alignItems="center"
         p="2rem"
       >
-        <Typography variant="h2">Simvstr</Typography>
-        <Typography varaint="body2">
-          Welcome back, please login to your account.
-        </Typography>
         <SignupForm />
       </Box>
     </MainWrapper>

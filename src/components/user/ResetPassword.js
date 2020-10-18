@@ -1,135 +1,129 @@
 import React, { useState } from "react";
 import "../../index.css";
-import {
-  Grid,
-  Box,
-  Typography,
-  FormControlLabel,
-  Checkbox,
-  TextField,
-  Button,
-  Link,
-} from "@material-ui/core";
-import { MainWrapper } from "../ui";
+import { useForm } from "react-hook-form";
+import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
+import { MainWrapper, FormErrorMessage } from "../ui";
+import { resetPassword } from "../../services/user";
 
 const ResetPasswordForm = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const { register, handleSubmit, errors, getValues } = useForm({
+    mode: "onBlur",
+  });
 
-  const handleBlur = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
+  const [message, setMessage] = useState("");
 
-    switch (name) {
-      case "password":
-        setPassword(password);
-        setConfirmPassword(confirmPassword);
-        value.length < 8
-          ? setPasswordError("Password must be at least 8 characters.")
-          : setPasswordError("");
-        value != confirmPassword
-          ? setConfirmPasswordError("Passwords don't match.")
-          : setConfirmPasswordError("");
-        break;
-      case "confirmPassword":
-        setConfirmPassword(confirmPassword);
-        setPassword(password);
-        value != password
-          ? setConfirmPasswordError("Passwords don't match.")
-          : setConfirmPasswordError("");
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-
-    switch (name) {
-      case "password":
-        setPassword(value);
-        break;
-      case "confirmPassword":
-        setConfirmPassword(value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setPassword(password);
-    setConfirmPassword(confirmPassword);
-    setPasswordError(passwordError);
-    setConfirmPasswordError(confirmPasswordError);
-
-    if (
-      password &&
-      confirmPassword &&
-      !passwordError &&
-      !confirmPasswordError
-    ) {
-      console.log(
-        `--SUBMITTING-- 
-      Password: ${password}`
-      );
+  const onSubmit = async (data) => {
+    // submit the reset password form
+    const body = {
+      email_id: data.email,
+      password: data.password,
+      OTP: data.otp,
+    };
+    const res = await resetPassword(body);
+    if (!res.error) {
+      setMessage("Password reset successful.");
     } else {
-      console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-      if (!password) {
-        setPasswordError("Password is required.");
-      }
-      if (!confirmPassword) {
-        setConfirmPasswordError("Please confirm password.");
-      }
+      setMessage(res.message);
     }
   };
 
   return (
-    <form>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <TextField
-            name="password"
-            type="password"
-            label="Password"
-            value={password}
-            className={passwordError.length > 0 ? "error" : null}
-            onChange={(e) => handleChange(e, "password")}
-            onBlur={(e) => handleBlur(e, "password")}
-            fullWidth
-          />
-          {passwordError.length > 0 && (
-            <Box className="errorMessage">{passwordError}</Box>
-          )}
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            name="confirmPassword"
-            type="password"
-            label="Confirm Password"
-            value={confirmPassword}
-            className={confirmPasswordError.length > 0 ? "error" : null}
-            onChange={(e) => handleChange(e, "confirmPassword")}
-            onBlur={(e) => handleBlur(e, "confirmPassword")}
-            fullWidth
-          />
-          {confirmPasswordError.length > 0 && (
-            <Box className="errorMessage">{confirmPasswordError}</Box>
-          )}
-        </Grid>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        color="#007f7f"
+        fontSize="h5.fontSize"
+      >
+        {message}
+      </Box>
+      <Typography variant="h2" align="center">
+        Simvstr
+      </Typography>
+      <Typography varaint="body2" align="center">
+        Here you can reset your password.
+      </Typography>
+      <Typography varaint="body2" align="center">
+        Enter OTP and new password to reset.
+      </Typography>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register({
+            required: "Email address is required.",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Email address is invalid.",
+            },
+          })}
+          name="email"
+          label="Email"
+          className={errors?.email ? "error" : null}
+          fullWidth
+        />
+        <FormErrorMessage errors={errors} name="email" />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register({
+            required: "OTP is required.",
+            minLength: {
+              value: 4,
+              message: "OTP must be a 4 digits number.",
+            },
+            maxLength: {
+              value: 4,
+              message: "OTP must be a 4 digits number.",
+            },
+            pattern: {
+              value: /\d{4}/,
+              message: "OTP must be a 4 digits number.",
+            },
+          })}
+          name="otp"
+          label="OTP"
+          className={errors?.otp ? "error" : null}
+          fullWidth
+        />
+        <FormErrorMessage errors={errors} name="otp" />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register({
+            required: "Password is required.",
+            minLength: {
+              value: 8,
+              message: "Password must be at least 8 characters.",
+            },
+          })}
+          name="password"
+          type="password"
+          label="Password"
+          className={errors?.password ? "error" : null}
+          fullWidth
+        />
+        <FormErrorMessage errors={errors} name="password" />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          inputRef={register({
+            required: "Please confirm password.",
+            validate: (value) =>
+              getValues("password") === value || "Passwords don't match.",
+          })}
+          name="confirmPassword"
+          type="password"
+          label="Confirm Password"
+          className={errors?.confirmPassword ? "error" : null}
+          fullWidth
+        />
+        <FormErrorMessage errors={errors} name="confirmPassword" />
       </Grid>
       <Box display="flex" justifyContent="center">
         <Button
+          type="submit"
           variant="contained"
           color="primary"
-          className="btn"
-          onClick={handleSubmit}
+          style={{ bottom: "-15px" }}
         >
           Reset Password
         </Button>
@@ -148,11 +142,6 @@ export const ResetPassword = () => {
         alignItems="center"
         p="2rem"
       >
-        <Typography variant="h2">Simvstr</Typography>
-        <Typography varaint="body2">
-          Here you can reset your password.
-        </Typography>
-        <Typography varaint="body2">Enter new password to reset.</Typography>
         <ResetPasswordForm />
       </Box>
     </MainWrapper>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import {
   Box,
@@ -10,6 +10,8 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
+import { AuthContext } from "../../services/api";
+import { UserContext } from "../../services/user";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -45,8 +47,9 @@ const initialTerminal = {
 };
 
 export const Homepage = () => {
-  const user = "tim-brunette";
   const history = useHistory();
+  const { setAuth } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
   const [terminal, setTerminal] = useState([initialTerminal]);
 
   const updateTerminalAtIndex = (index, newValue) => {
@@ -64,18 +67,33 @@ export const Homepage = () => {
     setTerminal(newTerminal);
   };
 
+  const handleLogout = (e) => {
+    e.preventDefault();
+    e.persist();
+    setAuth({
+      isAuthenticated: false,
+      apiToken: null,
+    });
+    history.push("/login");
+  };
+
   return (
     <MainWrapper>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h4">Simvestr v1.0</Typography>
-        <Button variant="outlined" size="small" color="primary">
+        <Button
+          variant="outlined"
+          size="small"
+          color="primary"
+          onClick={handleLogout}
+        >
           Logout
         </Button>
       </Box>
       <List>
         <ListItem disableGutters>
           <ListItemText>
-            {`Welcome ${user}, select an option below to get started...`}{" "}
+            {`Welcome ${user.firstName}, select an option below to get started...`}{" "}
           </ListItemText>
         </ListItem>
         <StyledListItem
@@ -109,7 +127,7 @@ export const Homepage = () => {
                     <Box
                       display="inline"
                       mr="0.5rem"
-                    >{`simvestr_v1.0 - ${user}$`}</Box>
+                    >{`simvestr_v1.0 - ${user.firstName}$`}</Box>
                     {isNew ? (
                       <Search
                         autoFocus
