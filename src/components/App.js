@@ -18,6 +18,9 @@ import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
 import { AuthContext } from "../services/api";
 import { UserContext } from "../services/user";
+import { AccountSettings } from "./settings/AccountSettings";
+import { PersonalDetails } from "./settings/PersonalDetails";
+import { Password } from "./settings/Password";
 import { UnauthenticatedRoute, AuthenticatedRoute } from "./Routes";
 
 const Main = () => {
@@ -51,6 +54,21 @@ const Main = () => {
             />
             <AuthenticatedRoute path="/stocks" component={StockList} />
             <AuthenticatedRoute exact path="/" component={Homepage} />
+            <AuthenticatedRoute
+              exact
+              path="/settings"
+              component={AccountSettings}
+            />
+            <AuthenticatedRoute
+              exact
+              path="/settings/personaldetails"
+              component={PersonalDetails}
+            />
+            <AuthenticatedRoute
+              exact
+              path="/settings/password"
+              component={Password}
+            />
             <Redirect to={{ pathname: fallbackUri }} />
           </Switch>
         </Router>
