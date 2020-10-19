@@ -16,6 +16,7 @@ import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
+import { WatchList } from "./watchlist/WatchList";
 import { AuthContext } from "../services/api";
 import { UserContext } from "../services/user";
 import { UnauthenticatedRoute, AuthenticatedRoute } from "./Routes";
@@ -50,6 +51,7 @@ const Main = () => {
               component={ResetPassword}
             />
             <AuthenticatedRoute path="/stocks" component={StockList} />
+            <AuthenticatedRoute path="/watchlist" component={WatchList} />
             <AuthenticatedRoute exact path="/" component={Homepage} />
             <Redirect to={{ pathname: fallbackUri }} />
           </Switch>
