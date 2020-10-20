@@ -29,3 +29,8 @@ export function resetPassword(payload) {
   const path = "/forgotuser/";
   return PUTRequest(path, null, payload);
 }
+
+export function changeName(payload) {
+  const path = "/changedetails/changenames/";
+  return PUTRequest(path, null, payload);
+}

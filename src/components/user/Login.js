@@ -38,7 +38,7 @@ const LoginForm = () => {
     if (!res.error) {
       setAuth({
         isAuthenticated: true,
-        apiToken: res.data.token,
+        //  apiToken: res.data.token,
       });
       history.push("/");
     } else {

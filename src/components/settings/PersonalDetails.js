@@ -1,23 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
+import { changeName, UserContext } from "../../services/user";
 
 const PersonalDetailsForm = () => {
   const history = useHistory();
+  const { user } = useContext(UserContext);
+
   const { register, handleSubmit, errors } = useForm({
     mode: "onBlur",
     defaultValues: {
-      firstName: "", //get first name from api
-      lastName: "", // get last name from api
+      firstName: user.firstName,
+      lastName: user.lastName,
     },
   });
 
   const [message, setMessage] = useState("");
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+    // submit the change personal details
+    const body = {
+      email_id: user.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
+    };
+    const res = await changeName(body);
+    if (!res.error) {
+      setMessage(res.message);
+    } else {
+      setMessage(res.message);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
