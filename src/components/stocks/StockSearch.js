@@ -4,17 +4,10 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { stockDetails } from "../../services/stock";
 
+// For now use this until the BE is set up
 const stocks = [
-  { symbol: "AAPL", name: "AppleInc" },
-  { symbol: "MSFT", name: "Microsoft" },
-  { symbol: "F", name: "Ford" },
-  {
-    symbol: "C",
-    name: "Citigroup Inc",
-  },
-  { symbol: "GM", name: "General Motors" },
-  { symbol: "PG", name: "Procter & Gamle" },
-  { symbol: "XOM", name: "Exxon Mobil Corp." },
+  { symbol: "AAPL", displaySymbol: "AAPL", name: "AppleInc" },
+  { symbol: "GM", displaySymbol: "GM", name: "General Motors" },
 ];
 
 export const StockSearch = ({ setDetails }) => {
@@ -37,7 +30,7 @@ export const StockSearch = ({ setDetails }) => {
             marketCapitalization: parseInt(res.data.marketCapitalization),
           });
         } else {
-          console.log("error getting the stock details");
+          console.error("error getting the stock details");
         }
       }
     }
