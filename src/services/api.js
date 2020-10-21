@@ -78,7 +78,7 @@ export async function POSTRequest(path, apiToken, payload, options) {
 export async function PUTRequest(path, apiToken, payload, options) {
   try {
     let config = {
-      method: "post",
+      method: "put",
       ...(apiToken && { credentials: "include" }),
       headers: {
         "Content-Type": "application/json",

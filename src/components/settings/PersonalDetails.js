@@ -23,15 +23,15 @@ const PersonalDetailsForm = () => {
   const onSubmit = async (data) => {
     // submit the change personal details
     const body = {
-      email_id: user.email,
+      email_id: "j.merashli@gmail.com",
       first_name: data.firstName,
       last_name: data.lastName,
     };
     const res = await changeName(body);
     if (!res.error) {
-      setMessage(res.message);
+      setMessage("Personal details updated.");
     } else {
-      setMessage(res.message);
+      setMessage("Failed to update personal details.");
     }
   };
 

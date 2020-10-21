@@ -10,7 +10,7 @@ import {
   Link,
 } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
-import { login } from "../../services/user";
+import { login, userDetails } from "../../services/user";
 import { AuthContext } from "../../services/api";
 import { useHistory } from "react-router-dom";
 
@@ -40,6 +40,8 @@ const LoginForm = () => {
         isAuthenticated: true,
         //  apiToken: res.data.token,
       });
+      //   const resp = await userDetails();
+      //   console.log(resp);
       history.push("/");
     } else {
       setMessage(res.message);
