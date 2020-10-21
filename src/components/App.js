@@ -51,7 +51,7 @@ const Main = () => {
               path="/resetpassword"
               component={ResetPassword}
             />
-            <Route path="/stocks" component={StockList} />
+            <AuthenticatedRoute path="/stocks" component={StockList} />
             <AuthenticatedRoute exact path="/" component={Homepage} />
             <Redirect to={{ pathname: fallbackUri }} />
           </Switch>
