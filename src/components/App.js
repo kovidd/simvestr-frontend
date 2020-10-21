@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "styled-components";
+import { NoSsr } from "@material-ui/core";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 
 import {
@@ -61,9 +63,13 @@ const Main = () => {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Main />
-    </ThemeProvider>
+    <NoSsr>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <Main />
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </NoSsr>
   );
 }
 
