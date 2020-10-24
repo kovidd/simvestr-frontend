@@ -41,11 +41,19 @@ export async function POSTRequest(path, apiToken, payload, options) {
 
     const res = await fetch(`${API}${path}`, config);
     if (res.ok) {
-      if (hasJSONResponse(res)) {
-        const data = await res.json();
-        return { error: false, data, status: res.status };
-      } else {
-        return { error: false };
+      if (res.url !== `${API}/token`) {
+        if (hasJSONResponse(res)) {
+          const data = await res.json();
+          return { error: false, data, status: res.status };
+        } else {
+          return { error: false };
+        }
+      } else if (res.url === `${API}/token`) {
+        if (hasJSONResponse(res)) {
+          return { error: false };
+        } else {
+          return { error: false };
+        }
       }
     } else {
       const { message } = await res.json();
@@ -71,13 +79,15 @@ export async function PUTRequest(path, apiToken, payload, options) {
   try {
     let config = {
       method: "put",
-      credentials: "include",
+      ...(apiToken && { credentials: "include" }),
       headers: {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
-        apiToken,
+        ...(apiToken && { apiToken }),
       },
-      body: JSON.stringify(payload),
+      ...(payload && {
+        body: !options || options.stringify ? JSON.stringify(payload) : payload,
+      }),
     };
 
     const res = await fetch(`${API}${path}`, config);

@@ -26,6 +26,16 @@ export function forgotPassword(payload) {
 }
 
 export function resetPassword(payload) {
-  const path = "/forgotuser/";
+  const path = "/forgotuser";
+  return PUTRequest(path, null, payload);
+}
+
+export function userDetails() {
+  const path = "/verifytoken";
+  return GETRequest(path);
+}
+
+export function changeName(payload) {
+  const path = "/changedetails/changenames";
   return PUTRequest(path, null, payload);
 }

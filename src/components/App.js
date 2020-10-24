@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "styled-components";
+import { NoSsr } from "@material-ui/core";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 
 import {
@@ -19,6 +21,9 @@ import { StockList } from "./stocks/StockList";
 import { WatchList } from "./watchlist/WatchList";
 import { AuthContext } from "../services/api";
 import { UserContext } from "../services/user";
+import { AccountSettings } from "./settings/AccountSettings";
+import { PersonalDetails } from "./settings/PersonalDetails";
+import { Password } from "./settings/Password";
 import { UnauthenticatedRoute, AuthenticatedRoute } from "./Routes";
 
 const Main = () => {
@@ -53,6 +58,21 @@ const Main = () => {
             <AuthenticatedRoute path="/stocks" component={StockList} />
             <Route path="/watchlist" component={WatchList} />
             <AuthenticatedRoute exact path="/" component={Homepage} />
+            <AuthenticatedRoute
+              exact
+              path="/settings"
+              component={AccountSettings}
+            />
+            <AuthenticatedRoute
+              exact
+              path="/settings/personaldetails"
+              component={PersonalDetails}
+            />
+            <AuthenticatedRoute
+              exact
+              path="/settings/password"
+              component={Password}
+            />
             <Redirect to={{ pathname: fallbackUri }} />
           </Switch>
         </Router>
@@ -63,9 +83,13 @@ const Main = () => {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Main />
-    </ThemeProvider>
+    <NoSsr>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <Main />
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </NoSsr>
   );
 }
 

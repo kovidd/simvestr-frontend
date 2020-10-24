@@ -53,6 +53,9 @@ const breadcrumbNameMap = {
   "/stocks": "stocks",
   "/": "home",
   "/watchlist": "watchlist",
+  "/settings": "settings",
+  "/settings/personaldetails": "personal details",
+  "/settings/password": "password",
 };
 
 export const BreadCrumbsNav = ({ location }) => {
