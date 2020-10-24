@@ -12,6 +12,7 @@ import {
   MenuItem,
   InputAdornment,
 } from "@material-ui/core";
+import { marketOrder } from "../../services/stock";
 
 const amountTypes = {
   quantity: "quantity",
@@ -23,7 +24,7 @@ const tradeTypes = {
   sell: "sell",
 };
 
-export const StockTrade = ({ quotePrice }) => {
+export const StockTrade = ({ symbol, quotePrice }) => {
   // TODO: get data from BE
   const availableUnits = 2042;
   const [tradeType, setTradeType] = useState(tradeTypes.buy);
@@ -44,6 +45,21 @@ export const StockTrade = ({ quotePrice }) => {
       : amountType === amountTypes.quantity
       ? amount
       : amount / quotePrice;
+
+  const handleTrade = async () => {
+    const payload = {
+      symbol,
+      quote: quotePrice,
+      trade_type: tradeType,
+      quantity: amount,
+    };
+    const res = await marketOrder(payload);
+    if (!res.error) {
+      alert("success!");
+    } else {
+      alert("error making order");
+    }
+  };
 
   const estimatedValue = (totalUnits * quotePrice).toFixed(2);
   return (
@@ -127,7 +143,7 @@ export const StockTrade = ({ quotePrice }) => {
       <Box mt="1rem" color={tradeType === tradeTypes.buy ? "green" : "red"}>
         <Button
           variant="outlined"
-          onClick={() => alert(tradeType)}
+          onClick={handleTrade}
           fullWidth
           color="inherit"
         >

@@ -55,7 +55,10 @@ export const StockList = () => {
             <Box my="1rem">
               <Paper variant="outlined">
                 <Box p="1rem">
-                  <StockTrade quotePrice={details.quote.c} />
+                  <StockTrade
+                    symbol={details.symbol}
+                    quotePrice={details.quote.c}
+                  />
                 </Box>
               </Paper>
             </Box>

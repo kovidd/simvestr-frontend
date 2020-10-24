@@ -24,9 +24,9 @@ export const StockSearch = ({ setDetails }) => {
             ),
             logo: res.data.logo,
             exchange: res.data.exchange.split(" ")[0],
-            symbol: res.data.ticker,
+            symbol: res.data.symbol,
             name: res.data.name,
-            industry: res.data.finnhubIndustry,
+            industry: res.data.industry,
             marketCapitalization: parseInt(res.data.marketCapitalization),
           });
         } else {

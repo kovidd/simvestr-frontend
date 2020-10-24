@@ -28,7 +28,7 @@ export async function POSTRequest(path, apiToken, payload, options) {
   try {
     let config = {
       method: "post",
-      ...(apiToken && { credentials: "include" }),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
