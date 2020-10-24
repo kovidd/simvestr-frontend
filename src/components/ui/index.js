@@ -52,6 +52,9 @@ export const LinkRouter = (props) => <Link {...props} component={RouterLink} />;
 const breadcrumbNameMap = {
   "/stocks": "stocks",
   "/": "home",
+  "/settings": "settings",
+  "/settings/personaldetails": "personal details",
+  "/settings/password": "password",
 };
 
 export const BreadCrumbsNav = ({ location }) => {
