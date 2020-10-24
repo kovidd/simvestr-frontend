@@ -18,6 +18,7 @@ import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
+import { WatchList } from "./watchlist/WatchList";
 import { AuthContext } from "../services/api";
 import { UserContext } from "../services/user";
 import { AccountSettings } from "./settings/AccountSettings";
@@ -55,6 +56,7 @@ const Main = () => {
               component={ResetPassword}
             />
             <AuthenticatedRoute path="/stocks" component={StockList} />
+            <Route path="/watchlist" component={WatchList} />
             <AuthenticatedRoute exact path="/" component={Homepage} />
             <AuthenticatedRoute
               exact

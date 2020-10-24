@@ -12,7 +12,7 @@ const Terminal = styled.div`
 `;
 
 const StyledPaper = styled(Paper)`
-  width: 40vw;
+  min-width: 40vw;
   padding: 1rem;
   min-height: 40vh;
 `;
@@ -52,6 +52,7 @@ export const LinkRouter = (props) => <Link {...props} component={RouterLink} />;
 const breadcrumbNameMap = {
   "/stocks": "stocks",
   "/": "home",
+  "/watchlist": "watchlist",
   "/settings": "settings",
   "/settings/personaldetails": "personal details",
   "/settings/password": "password",

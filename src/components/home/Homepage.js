@@ -106,7 +106,11 @@ export const Homepage = () => {
         <StyledListItem button disableGutters>
           <StyledListItemText>{`Dashboard`}</StyledListItemText>
         </StyledListItem>
-        <StyledListItem button disableGutters>
+        <StyledListItem
+          button
+          disableGutters
+          onClick={() => history.push("/watchlist")}
+        >
           <StyledListItemText>{`Watchlist`}</StyledListItemText>
         </StyledListItem>
         <StyledListItem button disableGutters>
