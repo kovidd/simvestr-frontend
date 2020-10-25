@@ -44,14 +44,14 @@ export const StockTrade = ({ symbol, quotePrice }) => {
   const availableBalance = currentPorfolio.balance;
 
   const [tradeType, setTradeType] = useState(tradeTypes.buy);
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState("");
   const [amountType, setAmountType] = useState(amountTypes.quantity);
 
   useEffect(() => {
     if (amountType === amountTypes.value) {
-      setAmount((prev) => (prev !== null ? prev * quotePrice : prev));
+      setAmount((prev) => (prev !== "" ? prev * quotePrice : prev));
     } else {
-      setAmount((prev) => (prev !== null ? prev / quotePrice : prev));
+      setAmount((prev) => (prev !== "" ? prev / quotePrice : prev));
     }
   }, [amountType, quotePrice]);
 
@@ -128,25 +128,26 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           name="amount"
-          // label="Amount"
           style={{ flex: 1 }}
           InputProps={
-            tradeType === tradeTypes.sell && {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Button
-                    variant="text"
-                    size="small"
-                    onClick={() => {
-                      setAmountType(amountTypes.quantity);
-                      setAmount(availableUnits);
-                    }}
-                  >
-                    MAX
-                  </Button>
-                </InputAdornment>
-              ),
-            }
+            tradeType === tradeTypes.sell
+              ? {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        variant="text"
+                        size="small"
+                        onClick={() => {
+                          setAmountType(amountTypes.quantity);
+                          setAmount(availableUnits);
+                        }}
+                      >
+                        MAX
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }
+              : null
           }
         />
       </Box>

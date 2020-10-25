@@ -32,15 +32,6 @@ import { StockTrade } from "./StockTrade";
 // };
 
 export const StockList = () => {
-  const currentPorfolio = {
-    balance: 10000,
-    stocksOwned: [
-      {
-        symbol: "AAPL",
-        balance: 100,
-      },
-    ],
-  };
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   return (
@@ -68,7 +59,6 @@ export const StockList = () => {
                 <Paper variant="outlined">
                   <Box p="1rem">
                     <StockTrade
-                      currentPorfolio={currentPorfolio}
                       symbol={details.symbol}
                       quotePrice={details.quote.c}
                     />
