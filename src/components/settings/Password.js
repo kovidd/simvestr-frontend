@@ -1,23 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
+import { changePassword, UserContext } from "../../services/user";
 
 const PasswordForm = () => {
   const history = useHistory();
+  const { user } = useContext(UserContext);
+
   const { register, handleSubmit, errors, getValues } = useForm({
     mode: "onBlur",
     defaultValues: {
-      password: "", //get password from api
-      confirmpassword: "", // get password from api
+      password: "",
+      confirmpassword: "",
     },
   });
 
   const [message, setMessage] = useState("");
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+    // submit the change password
+    const body = {
+      email_id: user.email,
+      password: data.password,
+    };
+    const res = await changePassword(body);
+    if (!res.error) {
+      setMessage("Password changed.");
+    } else {
+      setMessage("Failed to change password.");
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

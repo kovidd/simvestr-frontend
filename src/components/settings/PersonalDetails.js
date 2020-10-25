@@ -4,11 +4,11 @@ import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
-import { changeName, UserContext } from "../../services/user";
+import { changeName, UserContext, userDetails } from "../../services/user";
 
 const PersonalDetailsForm = () => {
   const history = useHistory();
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const { register, handleSubmit, errors } = useForm({
     mode: "onBlur",
@@ -23,13 +23,21 @@ const PersonalDetailsForm = () => {
   const onSubmit = async (data) => {
     // submit the change personal details
     const body = {
-      email_id: "j.merashli@gmail.com",
+      email_id: user.email,
       first_name: data.firstName,
       last_name: data.lastName,
     };
     const res = await changeName(body);
     if (!res.error) {
       setMessage("Personal details updated.");
+      const res = await userDetails();
+      if (!res.error) {
+        setUser({
+          firstName: res.data.first_name,
+          lastName: res.data.last_name,
+          email: res.data.email_id,
+        });
+      }
     } else {
       setMessage("Failed to update personal details.");
     }
