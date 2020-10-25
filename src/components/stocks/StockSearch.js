@@ -10,12 +10,13 @@ const stocks = [
   { symbol: "GM", displaySymbol: "GM", name: "General Motors" },
 ];
 
-export const StockSearch = ({ setDetails }) => {
+export const StockSearch = ({ setDetails, setIsLoading }) => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     async function getStockDetails(stockSymbol) {
       if (search) {
+        setIsLoading(true);
         const res = await stockDetails(stockSymbol);
         if (!res.error) {
           setDetails({
@@ -32,10 +33,11 @@ export const StockSearch = ({ setDetails }) => {
         } else {
           console.error("error getting the stock details");
         }
+        setIsLoading(false);
       }
     }
     getStockDetails(search);
-  }, [search, setDetails]);
+  }, [search, setDetails, setIsLoading]);
 
   return (
     <Autocomplete

@@ -35,7 +35,6 @@ const Main = () => {
     firstName: "admin",
   });
   const fallbackUri = auth.isAuthenticated ? "/" : "/login";
-  console.log(auth);
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       <UserContext.Provider value={{ user, setUser }}>

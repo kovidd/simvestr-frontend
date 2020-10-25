@@ -25,8 +25,24 @@ const tradeTypes = {
 };
 
 export const StockTrade = ({ symbol, quotePrice }) => {
-  // TODO: get data from BE
-  const availableUnits = 2042;
+  // TODO: GET FROM API
+  const currentPorfolio = {
+    balance: 10000,
+    stocks: [
+      {
+        symbol: "AAPL",
+        balance: 100,
+      },
+    ],
+  };
+
+  const stockOwned = currentPorfolio.stocks.find(
+    (stock) => stock.symbol === symbol
+  );
+
+  const availableUnits = stockOwned?.balance || 0;
+  const availableBalance = currentPorfolio.balance;
+
   const [tradeType, setTradeType] = useState(tradeTypes.buy);
   const [amount, setAmount] = useState(null);
   const [amountType, setAmountType] = useState(amountTypes.quantity);
@@ -51,7 +67,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
       symbol,
       quote: quotePrice,
       trade_type: tradeType,
-      quantity: amount,
+      quantity: parseInt(amount),
     };
     const res = await marketOrder(payload);
     if (!res.error) {
@@ -62,6 +78,10 @@ export const StockTrade = ({ symbol, quotePrice }) => {
   };
 
   const estimatedValue = (totalUnits * quotePrice).toFixed(2);
+  const excessAmount =
+    tradeType === tradeTypes.buy
+      ? estimatedValue > availableBalance
+      : totalUnits > availableUnits;
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -85,11 +105,12 @@ export const StockTrade = ({ symbol, quotePrice }) => {
             />
           </RadioGroup>
         </FormControl>
-        {tradeType === tradeTypes.sell && (
-          <Typography variant="body1">
-            Available: {availableUnits} Units
-          </Typography>
-        )}
+        <Typography variant="body1">
+          Available:{" "}
+          {tradeType === tradeTypes.sell
+            ? `${availableUnits} Units`
+            : `$${currentPorfolio.balance}`}
+        </Typography>
       </Box>
       <Box display="flex" alignItems="baseline">
         <FormControl style={{ marginRight: "0.5rem" }}>
@@ -135,7 +156,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
             Total Units: {totalUnits}
           </Typography>
         )}
-        <Typography variant="body1">
+        <Typography variant="body1" color={excessAmount ? "error" : "initial"}>
           Estimated Value: ${estimatedValue}
         </Typography>
         <Typography variant="body1">Brokerage Fee: $0.00</Typography>
@@ -146,6 +167,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           onClick={handleTrade}
           fullWidth
           color="inherit"
+          disabled={excessAmount}
         >
           {tradeType.toUpperCase()}
         </Button>

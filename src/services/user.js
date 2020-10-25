@@ -12,12 +12,12 @@ export const UserContext = React.createContext({
 
 export function signup(payload) {
   const path = "/signup";
-  return POSTRequest(path, null, payload);
+  return POSTRequest(path, payload);
 }
 
 export function login(payload) {
   const path = "/token";
-  return POSTRequest(path, null, payload);
+  return POSTRequest(path, payload);
 }
 
 export function forgotPassword(payload) {
@@ -27,7 +27,7 @@ export function forgotPassword(payload) {
 
 export function resetPassword(payload) {
   const path = "/forgotuser";
-  return PUTRequest(path, null, payload);
+  return PUTRequest(path, payload);
 }
 
 export function userDetails() {
@@ -37,5 +37,5 @@ export function userDetails() {
 
 export function changeName(payload) {
   const path = "/changedetails/changenames";
-  return PUTRequest(path, null, payload);
+  return PUTRequest(path, payload);
 }

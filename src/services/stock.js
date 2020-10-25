@@ -25,5 +25,5 @@ export function stockList() {
  */
 export function marketOrder(payload) {
   const path = `/marketorder`;
-  return POSTRequest(path, null, payload);
+  return POSTRequest(path, payload);
 }
