@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   TableCell,
+  TableBody,
 } from "@material-ui/core";
 
 const StyledTableCell = styled(TableCell)`
@@ -75,18 +76,20 @@ export const StockDetails = ({ details }) => {
               </StyledTableCell>
             </TableRow>
           </TableHead>
-          {Object.entries(quoteText).map(([key, text]) => (
+          <TableBody>
+            {Object.entries(quoteText).map(([key, text]) => (
+              <TableRow key={key}>
+                <TableCell>{text}</TableCell>
+                <TableCell>{details.quote[key]}</TableCell>
+              </TableRow>
+            ))}
             <TableRow>
-              <TableCell>{text}</TableCell>
-              <TableCell>{details.quote[key]}</TableCell>
+              <TableCell>Market Cap (B)</TableCell>
+              <TableCell>
+                {details.marketCapitalization.toLocaleString()}
+              </TableCell>
             </TableRow>
-          ))}
-          <TableRow>
-            <TableCell>Market Cap (B)</TableCell>
-            <TableCell>
-              {details.marketCapitalization.toLocaleString()}
-            </TableCell>
-          </TableRow>
+          </TableBody>
         </Table>
       </TableContainer>
       <Box mt="1rem">

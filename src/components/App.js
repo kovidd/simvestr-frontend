@@ -35,7 +35,6 @@ const Main = () => {
     firstName: "admin",
   });
   const fallbackUri = auth.isAuthenticated ? "/" : "/login";
-  console.log(auth);
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       <UserContext.Provider value={{ user, setUser }}>
@@ -55,7 +54,7 @@ const Main = () => {
               path="/resetpassword"
               component={ResetPassword}
             />
-            <AuthenticatedRoute path="/stocks" component={StockList} />
+            <Route path="/stocks" component={StockList} />
             <Route path="/watchlist" component={WatchList} />
             <AuthenticatedRoute exact path="/" component={Homepage} />
             <AuthenticatedRoute

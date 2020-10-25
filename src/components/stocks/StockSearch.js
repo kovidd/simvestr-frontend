@@ -10,12 +10,13 @@ const stocks = [
   { symbol: "GM", displaySymbol: "GM", name: "General Motors" },
 ];
 
-export const StockSearch = ({ setDetails }) => {
+export const StockSearch = ({ setDetails, setIsLoading }) => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     async function getStockDetails(stockSymbol) {
       if (search) {
+        setIsLoading(true);
         const res = await stockDetails(stockSymbol);
         if (!res.error) {
           setDetails({
@@ -24,18 +25,19 @@ export const StockSearch = ({ setDetails }) => {
             ),
             logo: res.data.logo,
             exchange: res.data.exchange.split(" ")[0],
-            symbol: res.data.ticker,
+            symbol: res.data.symbol,
             name: res.data.name,
-            industry: res.data.finnhubIndustry,
+            industry: res.data.industry,
             marketCapitalization: parseInt(res.data.marketCapitalization),
           });
         } else {
           console.error("error getting the stock details");
         }
+        setIsLoading(false);
       }
     }
     getStockDetails(search);
-  }, [search, setDetails]);
+  }, [search, setDetails, setIsLoading]);
 
   return (
     <Autocomplete

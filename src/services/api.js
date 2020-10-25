@@ -20,19 +20,17 @@ const hasJSONResponse = (res) => {
 /**
  * POSTRequest - Sends a POST Request to the specified endpoint
  * @param {string} path - the extension path to the REST API endpoint
- * @param {string} apiToken - the apiToken to validate the request
  * @param {object} payload - the payload body of the request
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
  */
-export async function POSTRequest(path, apiToken, payload, options) {
+export async function POSTRequest(path, payload, options) {
   try {
     let config = {
       method: "post",
-      ...(apiToken && { credentials: "include" }),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
-        ...(apiToken && { apiToken }),
       },
       ...(payload && {
         body: !options || options.stringify ? JSON.stringify(payload) : payload,
@@ -71,19 +69,17 @@ export async function POSTRequest(path, apiToken, payload, options) {
 /**
  * PUTRequest - Sends a PUT Request to the specified endpoint
  * @param {string} path - the extension path to the REST API endpoint
- * @param {string} apiToken - the apiToken to validate the request
  * @param {object} payload - the payload body of the request
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
  */
-export async function PUTRequest(path, apiToken, payload, options) {
+export async function PUTRequest(path, payload, options) {
   try {
     let config = {
       method: "put",
-      ...(apiToken && { credentials: "include" }),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
-        ...(apiToken && { apiToken }),
       },
       ...(payload && {
         body: !options || options.stringify ? JSON.stringify(payload) : payload,
@@ -112,14 +108,13 @@ export async function PUTRequest(path, apiToken, payload, options) {
  * @param {string} apiToken - the apiToken to validate the request
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
  */
-export async function GETRequest(path, apiToken, options) {
+export async function GETRequest(path, options) {
   try {
     let config = {
-      ...(apiToken && { credentials: "include" }),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
-        ...(apiToken && { apiToken }),
       },
     };
 
@@ -147,10 +142,9 @@ export async function GETRequest(path, apiToken, options) {
 /**
  * DELETERequest - Sends a DELETE Request to the specified endpoint
  * @param {string} path - the extension path to the REST API endpoint
- * @param {string} apiToken - the apiToken to validate the request
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
  */
-export async function DELETERequest(path, apiToken, options) {
+export async function DELETERequest(path, options) {
   try {
     let config = {
       method: "delete",
@@ -158,7 +152,6 @@ export async function DELETERequest(path, apiToken, options) {
       headers: {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
-        apiToken,
       },
     };
 
