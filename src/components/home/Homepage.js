@@ -76,7 +76,7 @@ export const Homepage = () => {
     });
     history.push("/login");
   };
-
+  const user_id=4;
   return (
     <MainWrapper>
       <Box display="flex" justifyContent="space-between">
@@ -113,7 +113,11 @@ export const Homepage = () => {
         >
           <StyledListItemText>{`Watchlist`}</StyledListItemText>
         </StyledListItem>
-        <StyledListItem button disableGutters>
+        <StyledListItem 
+          button
+          disableGutters 
+          onClick={() => history.push("/leaderboard",{ user_id: user_id })}
+        >
           <StyledListItemText>{`Leaderboard`}</StyledListItemText>
         </StyledListItem>
         <StyledListItem
