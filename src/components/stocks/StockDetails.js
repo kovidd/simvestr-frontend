@@ -39,7 +39,7 @@ const quoteText = {
   pc: "Close Price",
 };
 
-export const StockDetails = ({ details }) => {
+export const StockDetails = ({ details, hasButton }) => {
   if (!details) return null;
   const change = details.quote.c - details.quote.pc;
   const changePrec = Math.abs((change / details.quote.pc) * 100);
@@ -92,11 +92,15 @@ export const StockDetails = ({ details }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box mt="1rem">
-        <Button variant="outlined" fullWidth>
-          Add To Watchlist
-        </Button>
-      </Box>
+      {hasButton ? (
+        <Box mt="1rem">
+          <Button variant="outlined" fullWidth>
+            Add To Watchlist
+          </Button>
+        </Box>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
