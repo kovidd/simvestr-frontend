@@ -10,7 +10,6 @@ import {
   TableRow,
   TableCell,
   CircularProgress,
-  Link,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { stockDetails } from "../../services/stock";

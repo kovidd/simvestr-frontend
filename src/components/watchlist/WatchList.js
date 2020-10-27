@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { WatchListSummary } from "./WatchListSummary";
 import { WatchListDetails } from "./WatchListDetails";
 
@@ -9,9 +9,13 @@ export const WatchList = () => {
     setRenderComponent(symbol);
   };
 
+  const handleBack = () => {
+    setRenderComponent("");
+  };
+
   return renderComponent === "" ? (
     <WatchListSummary handleDetails={handleDetails} />
   ) : (
-    <WatchListDetails symbol={renderComponent} />
+    <WatchListDetails symbol={renderComponent} handleBack={handleBack} />
   );
 };
