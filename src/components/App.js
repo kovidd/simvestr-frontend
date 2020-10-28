@@ -32,8 +32,11 @@ const Main = () => {
     isAuthenticated: false,
   });
   const [user, setUser] = useState({
-    firstName: "admin",
+    firstName: "",
+    lastName: "",
+    email: "",
   });
+
   const fallbackUri = auth.isAuthenticated ? "/" : "/login";
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
