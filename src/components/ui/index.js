@@ -28,7 +28,11 @@ export const MainWrapper = ({ children }) => {
       justifyContent="center"
     >
       <Terminal>
-        <StyledPaper square elevation={10}>
+        <StyledPaper
+          square
+          elevation={10}
+          style={{ maxHeight: "95vh", overflow: "auto" }}
+        >
           {![
             "/",
             "/signup",
