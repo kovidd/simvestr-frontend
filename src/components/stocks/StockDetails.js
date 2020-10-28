@@ -11,6 +11,7 @@ import {
   TableCell,
   TableBody,
 } from "@material-ui/core";
+import { addStock } from "../../services/watchlist";
 
 const StyledTableCell = styled(TableCell)`
   background-color: #eee;
@@ -43,6 +44,16 @@ export const StockDetails = ({ details, hasButton }) => {
   if (!details) return null;
   const change = details.quote.c - details.quote.pc;
   const changePrec = Math.abs((change / details.quote.pc) * 100);
+
+  const handleAdd = async () => {
+    const res = await addStock(details.symbol);
+    if (!res.error) {
+      console.log("added to watchlist");
+    } else {
+      console.log("error adding to watchlist");
+    }
+  };
+
   return (
     <>
       <Box display="flex" alignItems="center">
@@ -94,7 +105,7 @@ export const StockDetails = ({ details, hasButton }) => {
       </TableContainer>
       {hasButton ? (
         <Box mt="1rem">
-          <Button variant="outlined" fullWidth>
+          <Button variant="outlined" fullWidth onClick={handleAdd}>
             Add To Watchlist
           </Button>
         </Box>
