@@ -57,6 +57,7 @@ const breadcrumbNameMap = {
   "/stocks": "stocks",
   "/": "home",
   "/watchlist": "watchlist",
+  "/dashboard": "dashboard",
   "/settings": "settings",
   "/settings/personaldetails": "personal details",
   "/settings/password": "password",
