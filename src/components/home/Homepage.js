@@ -12,6 +12,11 @@ import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
 import { AuthContext } from "../../services/api";
 import { UserContext, userDetails } from "../../services/user";
+import {
+  PortfolioContext,
+  portfolioDetails,
+  getPortfolioDetails,
+} from "../../services/portfolio";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -50,6 +55,7 @@ export const Homepage = () => {
   const history = useHistory();
   const { setAuth } = useContext(AuthContext);
   const { user, setUser } = useContext(UserContext);
+  const { setPortfolio } = useContext(PortfolioContext);
   const [terminal, setTerminal] = useState([initialTerminal]);
 
   const updateTerminalAtIndex = (index, newValue) => {
@@ -89,7 +95,11 @@ export const Homepage = () => {
       }
     }
     getUserDetails();
-  }, []);
+  }, [setUser]);
+
+  useEffect(() => {
+    getPortfolioDetails(setPortfolio);
+  }, [setPortfolio]);
 
   return (
     <MainWrapper>
