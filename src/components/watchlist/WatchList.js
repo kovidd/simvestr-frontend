@@ -7,10 +7,7 @@ export const WatchList = () => {
 
   const handleDetails = (symbol) => {
     setSymbol(symbol);
-  };
-
-  const handleBack = () => {
-    setSymbol("");
+    history.push;
   };
 
   return symbol === "" ? (

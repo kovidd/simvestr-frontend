@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Paper, Box, CircularProgress } from "@material-ui/core";
-import { MainWrapper, LinkRouter } from "../ui";
+import { MainWrapper } from "../ui";
 import { stockDetails } from "../../services/stock";
 import { StockDetails } from "../stocks/StockDetails";
 import { StockTrade } from "../stocks/StockTrade";
+import { useParams } from "react-router-dom";
 
-export const WatchListDetails = ({ prop1, prop2 }) => {
+export const WatchListDetails = () => {
+  let { symbol } = useParams();
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,8 +36,8 @@ export const WatchListDetails = ({ prop1, prop2 }) => {
       }
       setIsLoading(false);
     }
-    getStockDetails(prop1);
-  }, [setIsLoading, prop1]);
+    getStockDetails(symbol);
+  }, [setIsLoading, symbol]);
 
   return (
     <MainWrapper>
@@ -46,17 +48,6 @@ export const WatchListDetails = ({ prop1, prop2 }) => {
       ) : (
         details && (
           <Grid container spacing={2}>
-            <Grid container item xs={12} justify="flex-end">
-              <LinkRouter
-                color="primary"
-                button
-                onClick={() => {
-                  prop2();
-                }}
-              >
-                Back to WatchList
-              </LinkRouter>
-            </Grid>
             <Grid item xs={6}>
               <Paper variant="outlined">
                 <Box p="1rem">

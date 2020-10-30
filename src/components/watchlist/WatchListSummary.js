@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import {
   Box,
@@ -29,7 +30,8 @@ const PriceTypography = styled(Typography)`
   }
 `;
 
-export const WatchListSummary = (props) => {
+export const WatchListSummary = () => {
+  const history = useHistory();
   const [watchedStocksDetails, setWatchedStocksDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -132,7 +134,9 @@ export const WatchListSummary = (props) => {
                           maxWidth: "40px",
                           maxHeight: "25px",
                         }}
-                        onClick={() => props.handleDetails(stock.symbol)}
+                        onClick={() =>
+                          history.push(`/watchlist/${stock.symbol}`)
+                        }
                       >
                         Details
                       </Button>
