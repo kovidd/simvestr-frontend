@@ -15,6 +15,9 @@ const StyledPaper = styled(Paper)`
   min-width: 40vw;
   padding: 1rem;
   min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;
 
 export const MainWrapper = ({ children }) => {

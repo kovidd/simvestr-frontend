@@ -39,3 +39,8 @@ export function changeName(payload) {
   const path = "/changedetails/changenames";
   return PUTRequest(path, payload);
 }
+
+export function changePassword(payload) {
+  const path = "/changedetails/changepwd";
+  return PUTRequest(path, payload);
+}
