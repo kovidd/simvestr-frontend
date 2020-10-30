@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { getWatchlist, removeStock } from "../../services/watchlist";
+import { WatchlistRemoveConfirmation } from "./WatchListConfirmation";
 
 const PriceWrapper = styled.div`
   display: flex;
@@ -31,6 +32,8 @@ const PriceTypography = styled(Typography)`
 export const WatchListSummary = (props) => {
   const [watchedStocksDetails, setWatchedStocksDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [stockRemove, setStockRemove] = useState("");
 
   useEffect(() => {
     async function getWatchListDetails() {
@@ -59,22 +62,29 @@ export const WatchListSummary = (props) => {
     setIsLoading(false);
   }, []);
 
-  const handleRemove = async (symbol) => {
-    const res = await removeStock(symbol);
+  const handleRemove = async () => {
+    const res = await removeStock(stockRemove);
     if (!res.error) {
       const del = watchedStocksDetails.filter(
-        (stock) => symbol !== stock.symbol
+        (stock) => stockRemove !== stock.symbol
       );
       console.log(del);
       setWatchedStocksDetails(del);
     } else {
-      console.log("error adding to watchlist");
+      console.log("error removing from watchlist");
     }
+    setOpen(false);
   };
 
   return (
     <>
       <MainWrapper>
+        <WatchlistRemoveConfirmation
+          open={open}
+          handleClose={() => setOpen(false)}
+          handleRemove={handleRemove}
+          stockSymbol={stockRemove}
+        />
         {isLoading ? (
           <Box display="flex" justifyContent="center">
             <CircularProgress />
@@ -135,7 +145,10 @@ export const WatchListSummary = (props) => {
                           maxWidth: "40px",
                           maxHeight: "25px",
                         }}
-                        onClick={() => handleRemove(stock.symbol)}
+                        onClick={() => {
+                          setStockRemove(stock.symbol);
+                          setOpen(true);
+                        }}
                       >
                         Remove
                       </Button>

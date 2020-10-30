@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   Box,
@@ -12,6 +12,7 @@ import {
   TableBody,
 } from "@material-ui/core";
 import { addStock } from "../../services/watchlist";
+import { WatchlistAddConfirmation } from "../watchlist/WatchListConfirmation";
 
 const StyledTableCell = styled(TableCell)`
   background-color: #eee;
@@ -41,6 +42,8 @@ const quoteText = {
 };
 
 export const StockDetails = ({ details, hasButton }) => {
+  const [open, setOpen] = useState(false);
+
   if (!details) return null;
   const change = details.quote.c - details.quote.pc;
   const changePrec = Math.abs((change / details.quote.pc) * 100);
@@ -56,6 +59,11 @@ export const StockDetails = ({ details, hasButton }) => {
 
   return (
     <>
+      <WatchlistAddConfirmation
+        open={open}
+        handleClose={() => setOpen(false)}
+        stockSymbol={details.symbol}
+      />
       <Box display="flex" alignItems="center">
         <img
           alt="Stock Logo"
@@ -105,7 +113,14 @@ export const StockDetails = ({ details, hasButton }) => {
       </TableContainer>
       {hasButton ? (
         <Box mt="1rem">
-          <Button variant="outlined" fullWidth onClick={handleAdd}>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={() => {
+              handleAdd();
+              setOpen(true);
+            }}
+          >
             Add To Watchlist
           </Button>
         </Box>
