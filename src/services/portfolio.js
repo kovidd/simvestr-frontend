@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { GETRequest } from "./api";
 
 export const PortfolioContext = React.createContext({
@@ -20,6 +20,10 @@ export function portfolioDetails() {
   return GETRequest(path);
 }
 
+/**
+ * Fetches the portfolio details and sets them
+ * @param {*} setPortfolio
+ */
 export async function getPortfolioDetails(setPortfolio) {
   const res = await portfolioDetails();
   if (!res.error) {
