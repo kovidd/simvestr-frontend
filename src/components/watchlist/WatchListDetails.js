@@ -5,7 +5,7 @@ import { stockDetails } from "../../services/stock";
 import { StockDetails } from "../stocks/StockDetails";
 import { StockTrade } from "../stocks/StockTrade";
 
-export const WatchListDetails = (props) => {
+export const WatchListDetails = ({ prop1, prop2 }) => {
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,8 +34,8 @@ export const WatchListDetails = (props) => {
       }
       setIsLoading(false);
     }
-    getStockDetails(props.symbol);
-  }, [setIsLoading, props.symbol]);
+    getStockDetails(prop1);
+  }, [setIsLoading, prop1]);
 
   return (
     <MainWrapper>
@@ -51,7 +51,7 @@ export const WatchListDetails = (props) => {
                 color="primary"
                 button
                 onClick={() => {
-                  props.handleBack();
+                  prop2();
                 }}
               >
                 Back to WatchList
@@ -60,7 +60,7 @@ export const WatchListDetails = (props) => {
             <Grid item xs={6}>
               <Paper variant="outlined">
                 <Box p="1rem">
-                  <StockDetails details={details} hasButton={false} />
+                  <StockDetails details={details} />
                 </Box>
               </Paper>
             </Grid>

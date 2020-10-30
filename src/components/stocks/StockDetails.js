@@ -41,7 +41,7 @@ const quoteText = {
   pc: "Close Price",
 };
 
-export const StockDetails = ({ details, hasButton }) => {
+export const StockDetails = ({ details, hasButton = false }) => {
   const [open, setOpen] = useState(false);
 
   if (!details) return null;
