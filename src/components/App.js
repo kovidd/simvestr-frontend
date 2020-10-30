@@ -13,7 +13,8 @@ import {
 
 import { Signup } from "./user/Signup";
 import { Login } from "./user/Login";
-import { TermsAndConditions } from "./user/TermsAndConditions";
+import { TermsAndConditionsSignup } from "./user/TermsAndConditionsSignup";
+import { TermsAndConditionsSettings } from "./settings/TermsAndConditionsSettings";
 import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
@@ -42,10 +43,7 @@ const Main = () => {
       <UserContext.Provider value={{ user, setUser }}>
         <Router>
           <Switch>
-            <Route
-              path="/terms-and-conditions"
-              component={TermsAndConditions}
-            />
+            <Route path="/terms-and-conditions-signup" component={TermsAndConditionsSignup} />
             <UnauthenticatedRoute path="/signup" component={Signup} />
             <UnauthenticatedRoute path="/login" component={Login} />
             <UnauthenticatedRoute
@@ -57,8 +55,8 @@ const Main = () => {
               component={ResetPassword}
             />
             <AuthenticatedRoute path="/stocks" component={StockList} />
-            <Route path="/watchlist" component={WatchList} />
-            <Route path="/leaderboard" component={LeaderBoard} />
+            <AuthenticatedRoute path="/watchlist" component={WatchList} />
+            <AuthenticatedRoute path="/leaderboard" component={LeaderBoard} />
             <AuthenticatedRoute exact path="/" component={Homepage} />
             <AuthenticatedRoute
               exact
@@ -74,6 +72,11 @@ const Main = () => {
               exact
               path="/settings/password"
               component={Password}
+            />
+            <AuthenticatedRoute
+              exact
+              path="/settings/terms-and-conditions-settings"
+              component={TermsAndConditionsSettings}
             />
             <Redirect to={{ pathname: fallbackUri }} />
           </Switch>

@@ -36,10 +36,10 @@ export const MainWrapper = ({ children }) => {
             "/signupsuccess",
             "/forgotpassword",
             "/resetpassword",
-            "/terms-and-conditions",
+            "/terms-and-conditions-signup",
           ].includes(location.pathname) && (
-            <BreadCrumbsNav location={location} />
-          )}
+              <BreadCrumbsNav location={location} />
+            )}
           {children}
         </StyledPaper>
       </Terminal>
@@ -53,9 +53,11 @@ const breadcrumbNameMap = {
   "/stocks": "stocks",
   "/": "home",
   "/watchlist": "watchlist",
+  "/leaderboard": "leader board",
   "/settings": "settings",
   "/settings/personaldetails": "personal details",
   "/settings/password": "password",
+  "/settings/terms-and-conditions-settings": "terms and conditions",
 };
 
 export const BreadCrumbsNav = ({ location }) => {
@@ -74,10 +76,10 @@ export const BreadCrumbsNav = ({ location }) => {
             {breadcrumbNameMap[to]}
           </Typography>
         ) : (
-          <LinkRouter color="inherit" to={to} key={to}>
-            {breadcrumbNameMap[to]}
-          </LinkRouter>
-        );
+            <LinkRouter color="inherit" to={to} key={to}>
+              {breadcrumbNameMap[to]}
+            </LinkRouter>
+          );
       })}
     </Breadcrumbs>
   );

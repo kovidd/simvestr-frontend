@@ -42,7 +42,7 @@ const SignupForm = () => {
   const termsLabel = (
     <span>
       I agree with the{" "}
-      <LinkRouter to="./terms-and-conditions">Terms and Conditions</LinkRouter>
+      <LinkRouter to="./terms-and-conditions-signup">Terms and Conditions</LinkRouter>
     </span>
   );
 
