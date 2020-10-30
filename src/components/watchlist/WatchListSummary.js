@@ -12,7 +12,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
-import { stockDetails } from "../../services/stock";
+import { getWatchlist, removeStock } from "../../services/watchlist";
 
 const PriceWrapper = styled.div`
   display: flex;
@@ -29,46 +29,47 @@ const PriceTypography = styled(Typography)`
 `;
 
 export const WatchListSummary = (props) => {
-  const [watchedStocks, setWatchedStocks] = useState([
-    "AAPL",
-    "MSFT",
-    "TSLA",
-    "GOOGL",
-  ]); // need to get from api
   const [watchedStocksDetails, setWatchedStocksDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getWatchListDetails() {
-      watchedStocks.forEach(async function (stock) {
-        const res = await stockDetails(stock);
-        if (!res.error) {
+      const res = await getWatchlist();
+      if (!res.error) {
+        Object.entries(res.data).map(async function ([k, v]) {
           setWatchedStocksDetails((oldWatchedStocksDetails) => [
             ...oldWatchedStocksDetails,
             {
-              symbol: res.data.symbol,
-              name: res.data.name,
-              c: res.data.quote.c,
-              pc: res.data.quote.pc,
-              change: res.data.quote.c - res.data.quote.pc,
+              symbol: res.data[k].symbol,
+              name: res.data[k].name,
+              c: res.data[k].quote.c,
+              pc: res.data[k].quote.pc,
+              change: res.data[k].quote.c - res.data[k].quote.pc,
               changePerc:
                 Math.abs(
-                  (res.data.quote.c - res.data.quote.pc) / res.data.quote.pc
+                  (res.data[k].quote.c - res.data[k].quote.pc) /
+                    res.data[k].quote.pc
                 ) * 100,
             },
           ]);
-        }
-      });
-      setIsLoading(false);
+        });
+      }
     }
+    setIsLoading(false);
     getWatchListDetails();
-  }, [watchedStocks]);
+  }, []);
 
   const handleRemove = async (symbol) => {
-    // need to remove from api
-    const del = watchedStocksDetails.filter((stock) => symbol !== stock.symbol);
-    console.log(del);
-    setWatchedStocksDetails(del);
+    const res = await removeStock(symbol);
+    if (!res.error) {
+      const del = watchedStocksDetails.filter(
+        (stock) => symbol !== stock.symbol
+      );
+      console.log(del);
+      setWatchedStocksDetails(del);
+    } else {
+      console.log("error adding to watchlist");
+    }
   };
 
   return (
