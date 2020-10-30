@@ -55,8 +55,8 @@ export const WatchListSummary = (props) => {
         });
       }
     }
-    setIsLoading(false);
     getWatchListDetails();
+    setIsLoading(false);
   }, []);
 
   const handleRemove = async (symbol) => {
