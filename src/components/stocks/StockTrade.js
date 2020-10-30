@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Select,
   Box,
@@ -13,6 +13,10 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import { marketOrder } from "../../services/stock";
+import {
+  PortfolioContext,
+  getPortfolioDetails,
+} from "../../services/portfolio";
 
 const amountTypes = {
   quantity: "quantity",
@@ -25,23 +29,12 @@ const tradeTypes = {
 };
 
 export const StockTrade = ({ symbol, quotePrice }) => {
-  // TODO: GET FROM API
-  const currentPorfolio = {
-    balance: 10000,
-    stocks: [
-      {
-        symbol: "AAPL",
-        balance: 100,
-      },
-    ],
-  };
+  const { portfolio, setPortfolio } = useContext(PortfolioContext);
 
-  const stockOwned = currentPorfolio.stocks.find(
-    (stock) => stock.symbol === symbol
-  );
+  const availableUnits =
+    symbol in portfolio.portfolio ? portfolio.portfolio[symbol].quantity : 0;
 
-  const availableUnits = stockOwned?.balance || 0;
-  const availableBalance = currentPorfolio.balance;
+  const availableBalance = portfolio.balance.toFixed(2);
 
   const [tradeType, setTradeType] = useState(tradeTypes.buy);
   const [amount, setAmount] = useState("");
@@ -71,9 +64,10 @@ export const StockTrade = ({ symbol, quotePrice }) => {
     };
     const res = await marketOrder(payload);
     if (!res.error) {
-      alert("success!");
+      setAmount("");
+      getPortfolioDetails(setPortfolio);
     } else {
-      alert("error making order");
+      console.error("Error executing the trade");
     }
   };
 
@@ -109,7 +103,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           Available:{" "}
           {tradeType === tradeTypes.sell
             ? `${availableUnits} Units`
-            : `$${currentPorfolio.balance}`}
+            : `$${availableBalance}`}
         </Typography>
       </Box>
       <Box display="flex" alignItems="baseline">
@@ -138,8 +132,12 @@ export const StockTrade = ({ symbol, quotePrice }) => {
                         variant="text"
                         size="small"
                         onClick={() => {
-                          setAmountType(amountTypes.quantity);
-                          setAmount(availableUnits);
+                          setAmount(
+                            amountType === amountTypes.quantity
+                              ? availableUnits
+                              : availableUnits * quotePrice
+                          );
+                          // setAmountType(amountTypes.quantity);
                         }}
                       >
                         MAX
