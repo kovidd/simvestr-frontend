@@ -61,7 +61,7 @@ export const AccountSettings = () => {
           >
             <StyledListItemText>{`Terms And Conditions`}</StyledListItemText>
           </StyledListItem>
-          <StyledListItem button disableGutters>
+          <StyledListItem button disableGutters onClick={() => history.push("/settings/faq")}>
             <StyledListItemText>{`FAQ`}</StyledListItemText>
           </StyledListItem>
           <ListItem disableGutters>

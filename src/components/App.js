@@ -15,6 +15,7 @@ import { Signup } from "./user/Signup";
 import { Login } from "./user/Login";
 import { TermsAndConditionsSignup } from "./user/TermsAndConditionsSignup";
 import { TermsAndConditionsSettings } from "./settings/TermsAndConditionsSettings";
+import { FAQ } from "./settings/FAQ";
 import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
@@ -77,6 +78,11 @@ const Main = () => {
               exact
               path="/settings/terms-and-conditions-settings"
               component={TermsAndConditionsSettings}
+            />
+            <AuthenticatedRoute
+              exact
+              path="/settings/faq"
+              component={FAQ}
             />
             <Redirect to={{ pathname: fallbackUri }} />
           </Switch>
