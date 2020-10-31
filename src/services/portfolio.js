@@ -6,7 +6,7 @@ import { GETRequest } from "./api";
  * @return {Promise<string[]>} position of the user in the leaderboard
  */
 export function leaderboardPosition(userID) {
-  const path = `/viewportfolio/position/${userID}`;
+  const path = `/leaderboard/position/${userID}`;
   return GETRequest(path);
 }
 
@@ -16,6 +16,6 @@ export function leaderboardPosition(userID) {
  * @return {Promise<string[{id: integer, name: string, user: string, value: integer}]>} 
  */
 export function leaderboardLeaders(leader_count) {
-    const path = `/viewportfolio/top/${leader_count}`;
-    return GETRequest(path);
-  }
+  const path = `/leaderboard/top/${leader_count}`;
+  return GETRequest(path);
+}
