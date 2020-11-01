@@ -20,6 +20,15 @@ export function stockList() {
 }
 
 /**
+ * Searches for stocks which match the name
+ * @param {string} name
+ */
+export function searchStockByName(name) {
+  const path = `/search/${name}`;
+  return GETRequest(path);
+}
+
+/**
  * Places a market order (buy or sell) for the specified stock
  * @param {{ symbol: string; quote: number; trade_type: "buy" | "sell"; quantity: number}} payload The payload for placing a market order
  */
