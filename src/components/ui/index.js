@@ -31,7 +31,11 @@ export const MainWrapper = ({ children }) => {
       justifyContent="center"
     >
       <Terminal>
-        <StyledPaper square elevation={10}>
+        <StyledPaper
+          square
+          elevation={10}
+          style={{ maxHeight: "95vh", overflow: "auto" }}
+        >
           {![
             "/",
             "/signup",
@@ -72,9 +76,13 @@ export const BreadCrumbsNav = ({ location }) => {
         const last = index === pathnames.length - 1;
         const to = `/${pathnames.slice(0, index + 1).join("/")}`;
 
-        return last ? (
+        return last && !to.includes("/watchlist/") ? (
           <Typography color="textPrimary" key={to}>
             {breadcrumbNameMap[to]}
+          </Typography>
+        ) : last && to.includes("/watchlist/") ? (
+          <Typography color="textPrimary" key={to}>
+            {to.slice(to.length - 4)}
           </Typography>
         ) : (
           <LinkRouter color="inherit" to={to} key={to}>

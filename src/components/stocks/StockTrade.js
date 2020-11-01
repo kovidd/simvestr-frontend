@@ -101,12 +101,12 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           >
             <FormControlLabel
               value={tradeTypes.buy}
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="Buy"
             />
             <FormControlLabel
               value={tradeTypes.sell}
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="Sell"
               disabled={availableUnits === 0}
             />

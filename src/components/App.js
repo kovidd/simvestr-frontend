@@ -18,7 +18,8 @@ import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
-import { WatchList } from "./watchlist/WatchList";
+import { WatchListSummary } from "./watchlist/WatchListSummary";
+import { WatchListDetails } from "./watchlist/WatchListDetails";
 import { AuthContext } from "../services/api";
 import { UserContext } from "../services/user";
 import { PortfolioContext } from "../services/portfolio";
@@ -65,8 +66,18 @@ const Main = () => {
                 path="/resetpassword"
                 component={ResetPassword}
               />
-              <Route path="/stocks" component={StockList} />
-              <Route path="/watchlist" component={WatchList} />
+              <AuthenticatedRoute path="/stocks" component={StockList} />
+              <AuthenticatedRoute path="/stocks" component={StockList} />
+              <AuthenticatedRoute
+                exact
+                path="/watchlist"
+                component={WatchListSummary}
+              />
+              <AuthenticatedRoute
+                exact
+                path="/watchlist/:symbol"
+                component={WatchListDetails}
+              />{" "}
               <AuthenticatedRoute exact path="/" component={Homepage} />
               <AuthenticatedRoute
                 exact

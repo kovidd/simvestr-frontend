@@ -9,6 +9,7 @@ import { StockTrade } from "./StockTrade";
 export const StockList = () => {
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
   return (
     <MainWrapper>
       <StockSearch setDetails={setDetails} setIsLoading={setIsLoading} />
@@ -27,7 +28,7 @@ export const StockList = () => {
             <Grid item xs={6}>
               <Paper variant="outlined">
                 <Box p="1rem">
-                  <StockDetails details={details} />
+                  <StockDetails details={details} hasButton={true} />
                 </Box>
               </Paper>
             </Grid>
