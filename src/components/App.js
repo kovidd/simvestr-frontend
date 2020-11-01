@@ -18,6 +18,7 @@ import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
+import { LeaderBoard } from "./leaderboard/LeaderBoard";
 import { WatchListSummary } from "./watchlist/WatchListSummary";
 import { WatchListDetails } from "./watchlist/WatchListDetails";
 import { AuthContext } from "../services/api";
@@ -77,7 +78,8 @@ const Main = () => {
                 exact
                 path="/watchlist/:symbol"
                 component={WatchListDetails}
-              />{" "}
+              />
+              <AuthenticatedRoute path="/leaderboard" component={LeaderBoard} />
               <AuthenticatedRoute exact path="/" component={Homepage} />
               <AuthenticatedRoute
                 exact

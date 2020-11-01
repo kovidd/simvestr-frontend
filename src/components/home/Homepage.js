@@ -14,7 +14,6 @@ import { AuthContext } from "../../services/api";
 import { UserContext, userDetails } from "../../services/user";
 import {
   PortfolioContext,
-  portfolioDetails,
   getPortfolioDetails,
 } from "../../services/portfolio";
 
@@ -137,7 +136,11 @@ export const Homepage = () => {
         >
           <StyledListItemText>{`Watchlist`}</StyledListItemText>
         </StyledListItem>
-        <StyledListItem button disableGutters>
+        <StyledListItem
+          button
+          disableGutters
+          onClick={() => history.push("/leaderboard")}
+        >
           <StyledListItemText>{`Leaderboard`}</StyledListItemText>
         </StyledListItem>
         <StyledListItem

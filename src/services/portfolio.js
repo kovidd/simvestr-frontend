@@ -20,7 +20,7 @@ export function portfolioDetails() {
   return GETRequest(path);
 }
 
-/**
+/*
  * Fetches the portfolio details and sets them
  * @param {*} setPortfolio
  */
