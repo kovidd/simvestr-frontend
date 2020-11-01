@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   Box,
@@ -9,7 +9,10 @@ import {
   TableHead,
   TableRow,
   TableCell,
+  TableBody,
 } from "@material-ui/core";
+import { addStock } from "../../services/watchlist";
+import { WatchlistAddConfirmation } from "../watchlist/WatchListConfirmation";
 
 const StyledTableCell = styled(TableCell)`
   background-color: #eee;
@@ -38,12 +41,29 @@ const quoteText = {
   pc: "Close Price",
 };
 
-export const StockDetails = ({ details }) => {
+export const StockDetails = ({ details, hasButton = false }) => {
+  const [open, setOpen] = useState(false);
+
   if (!details) return null;
   const change = details.quote.c - details.quote.pc;
   const changePrec = Math.abs((change / details.quote.pc) * 100);
+
+  const handleAdd = async () => {
+    const res = await addStock(details.symbol);
+    if (!res.error) {
+      console.log("added to watchlist");
+    } else {
+      console.log("error adding to watchlist");
+    }
+  };
+
   return (
     <>
+      <WatchlistAddConfirmation
+        open={open}
+        handleClose={() => setOpen(false)}
+        stockSymbol={details.symbol}
+      />
       <Box display="flex" alignItems="center">
         <img
           alt="Stock Logo"
@@ -75,25 +95,38 @@ export const StockDetails = ({ details }) => {
               </StyledTableCell>
             </TableRow>
           </TableHead>
-          {Object.entries(quoteText).map(([key, text]) => (
+          <TableBody>
+            {Object.entries(quoteText).map(([key, text]) => (
+              <TableRow key={key}>
+                <TableCell>{text}</TableCell>
+                <TableCell>{details.quote[key]}</TableCell>
+              </TableRow>
+            ))}
             <TableRow>
-              <TableCell>{text}</TableCell>
-              <TableCell>{details.quote[key]}</TableCell>
+              <TableCell>Market Cap (B)</TableCell>
+              <TableCell>
+                {details.marketCapitalization.toLocaleString()}
+              </TableCell>
             </TableRow>
-          ))}
-          <TableRow>
-            <TableCell>Market Cap (B)</TableCell>
-            <TableCell>
-              {details.marketCapitalization.toLocaleString()}
-            </TableCell>
-          </TableRow>
+          </TableBody>
         </Table>
       </TableContainer>
-      <Box mt="1rem">
-        <Button variant="outlined" fullWidth>
-          Add To Watchlist
-        </Button>
-      </Box>
+      {hasButton ? (
+        <Box mt="1rem">
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={() => {
+              handleAdd();
+              setOpen(true);
+            }}
+          >
+            Add To Watchlist
+          </Button>
+        </Box>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

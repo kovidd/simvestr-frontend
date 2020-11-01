@@ -1,21 +1,39 @@
+import React from "react";
 import { GETRequest } from "./api";
 
+export const PortfolioContext = React.createContext({
+  portfolio: {
+    name: "",
+    balance: 0,
+    totalValue: 0,
+    portfolio: {},
+  },
+  setPortfolio: () => {},
+});
+
 /**
- * Gets the position of user (userID)
- * @param {integer} userID The users id
- * @return {Promise<string[]>} position of the user in the leaderboard
+ * Gets the users portfolio details
+ * @return {Promise<{ data: {portfolio_name: string; balance: number; total_value: string; portfolio: object}}>} A list of all the stock tickers
  */
-export function leaderboardPosition(userID) {
-  const path = `/viewportfolio/position/${userID}`;
+export function portfolioDetails() {
+  const path = `/viewportfolio/user`;
   return GETRequest(path);
 }
 
-/**
- * Gets details of the top <leader_count> highest value portfolio
- * @param {integer} leader_count 
- * @return {Promise<string[{id: integer, name: string, user: string, value: integer}]>} 
+/*
+ * Fetches the portfolio details and sets them
+ * @param {*} setPortfolio
  */
-export function leaderboardLeaders(leader_count) {
-    const path = `/viewportfolio/top/${leader_count}`;
-    return GETRequest(path);
+export async function getPortfolioDetails(setPortfolio) {
+  const res = await portfolioDetails();
+  if (!res.error) {
+    setPortfolio({
+      name: res.data.portfolio_name,
+      balance: res.data.balance,
+      totalValue: res.data.total_value,
+      portfolio: res.data.portfolio,
+    });
+  } else {
+    console.error("Error getting the portfolio details");
   }
+}
