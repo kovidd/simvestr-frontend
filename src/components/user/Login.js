@@ -31,7 +31,7 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     // submit the login
     const body = {
-      email: data.email,
+      email: data.email.toLowerCase(),
       password: data.password,
     };
     const res = await login(body);

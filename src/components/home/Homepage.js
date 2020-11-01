@@ -185,6 +185,20 @@ export const Homepage = () => {
                           if (e.key === "Enter") {
                             if (search === "clear") {
                               setTerminal([initialTerminal]);
+                            } else if (
+                              search.toLowerCase() === "search stocks" ||
+                              search.toLowerCase() === "search" ||
+                              search.toLowerCase() === "stocks"
+                            ) {
+                              history.push("/stocks");
+                            } else if (search.toLowerCase() === "dashboard") {
+                              history.push("/");
+                            } else if (search.toLowerCase() === "watchlist") {
+                              history.push("/watchlist");
+                            } else if (search.toLowerCase() === "leaderboard") {
+                              history.push("/leaderboard");
+                            } else if (search.toLowerCase() === "settings") {
+                              history.push("/settings");
                             } else {
                               updateTerminalAtIndexAndPushNew(index, {
                                 search,
