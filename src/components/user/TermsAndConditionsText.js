@@ -1,0 +1,37 @@
+import React from "react";
+import "../../index.css";
+import {
+    Typography,
+} from "@material-ui/core";
+import styled from "styled-components";
+
+const StyledH3 = styled.h3` font-size:26px;`;
+const StyledH4 = styled.h4` font-size:22px;`;
+
+export const TermsAndConditionsText = () => {
+    return (
+        <>
+            <Typography variant="h2" align="center">
+                Simvestr
+        </Typography>
+            <StyledH3> Terms and Conditions</StyledH3>
+            <StyledH4>GENERAL</StyledH4>
+      The content and information of the pages of this website and functionality of Simvestr is subject to change without notice. <br />
+      Your use of any product, service, information or materials on this website is entirely at your own risk, for which the site <br />
+      owner shall not be liable.
+            <StyledH4> USE OF THE SERVICE</StyledH4>
+    It shall be your own responsibility to ensure that any products, services or information available through this site meet <br />
+      your specific requirements and make sense to use. Otherwise you need to avoid this.<br />
+     The trademarks, logos and techniques displayed on the Site are the property of Simvestr. All information and content located <br />
+      on the Site is protected by copyright. You are prohibited from copying, publishing and using any Content available on or through <br />
+      the Site for commercial or public purposes.<br />
+      Unauthorized use of the material or service may give rise to a claim for damages and/or be a criminal offense. This website <br />
+      may provide links to other websites. The owner has no discretion to alter, update, or control the content on a linked Site.<br />
+      The information, software, products and descriptions of services published on this website may include inaccuracies or <br />
+      typographical errors, and the owner specifically disclaims any liability for such inaccuracies or errors. You agree that owner, <br />
+      Its affiliates and any of their respective employees or agents will not be liable for incidental or indirect damages.<br />
+     The owner cannot and does not guarantee continuous, uninterrupted or secure access to Simvestr. The owner may terminate <br />
+      your access to the website without cause or notice.<br />
+        </>
+    );
+};
