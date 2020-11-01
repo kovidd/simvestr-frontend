@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import {
   Box,
@@ -11,7 +11,11 @@ import {
 import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
 import { AuthContext } from "../../services/api";
-import { UserContext } from "../../services/user";
+import { UserContext, userDetails } from "../../services/user";
+import {
+  PortfolioContext,
+  getPortfolioDetails,
+} from "../../services/portfolio";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -49,7 +53,8 @@ const initialTerminal = {
 export const Homepage = () => {
   const history = useHistory();
   const { setAuth } = useContext(AuthContext);
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  const { setPortfolio } = useContext(PortfolioContext);
   const [terminal, setTerminal] = useState([initialTerminal]);
 
   const updateTerminalAtIndex = (index, newValue) => {
@@ -76,7 +81,25 @@ export const Homepage = () => {
     });
     history.push("/login");
   };
-  const user_id=4;
+
+  useEffect(() => {
+    async function getUserDetails() {
+      const res = await userDetails();
+      if (!res.error) {
+        setUser({
+          firstName: res.data.first_name,
+          lastName: res.data.last_name,
+          email: res.data.email_id,
+        });
+      }
+    }
+    getUserDetails();
+  }, [setUser]);
+
+  useEffect(() => {
+    getPortfolioDetails(setPortfolio);
+  }, [setPortfolio]);
+
   return (
     <MainWrapper>
       <Box display="flex" justifyContent="space-between">
@@ -93,7 +116,7 @@ export const Homepage = () => {
       <List>
         <ListItem disableGutters>
           <ListItemText>
-            {`Welcome ${user.firstName}, select an option below to get started...`}{" "}
+            {`Welcome ${user.firstName} ${user.lastName}, select an option below to get started...`}{" "}
           </ListItemText>
         </ListItem>
         <StyledListItem
@@ -113,10 +136,10 @@ export const Homepage = () => {
         >
           <StyledListItemText>{`Watchlist`}</StyledListItemText>
         </StyledListItem>
-        <StyledListItem 
+        <StyledListItem
           button
-          disableGutters 
-          onClick={() => history.push("/leaderboard",{ user_id: user_id })}
+          disableGutters
+          onClick={() => history.push("/leaderboard")}
         >
           <StyledListItemText>{`Leaderboard`}</StyledListItemText>
         </StyledListItem>
