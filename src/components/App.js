@@ -65,7 +65,7 @@ const Main = () => {
                 path="/forgotpassword"
                 component={ForgotPassword}
               />
-              <AuthenticatedRoute
+              <UnauthenticatedRoute
                 path="/resetpassword"
                 component={ResetPassword}
               />

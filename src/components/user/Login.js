@@ -97,6 +97,9 @@ const LoginForm = () => {
             fullWidth
           />
           <FormErrorMessage errors={errors} name="password" />
+          <Box display="flex" justifyContent="flex-end">
+            <Link href="./forgotpassword">Forgot Password?</Link>
+          </Box>
         </Grid>
         <Grid item xs={12}>
           {/* <Box display="flex" flexDirection="row" justifyContent="flex-start">

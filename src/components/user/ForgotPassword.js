@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import "../../index.css";
 import { useForm } from "react-hook-form";
-import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
+import {
+  Grid,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Link,
+} from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
 import { forgotPassword } from "../../services/user";
 
@@ -20,6 +27,8 @@ const ForgotPasswordForm = () => {
     const res = await forgotPassword(body);
     if (!res.error) {
       setMessage("An email has been sent to you.");
+      var win = window.open("/resetpassword", "_blank");
+      win.focus();
     } else {
       setMessage(res.message);
     }
@@ -27,6 +36,9 @@ const ForgotPasswordForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Typography>
+        <Link href="./">Back to Login Page</Link>
+      </Typography>
       <Box
         display="flex"
         justifyContent="center"
