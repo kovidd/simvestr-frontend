@@ -8,35 +8,40 @@ const useStyles = makeStyles((theme) =>
     tablecell: {
       fontSize: "16pt",
       color: "black",
+      maxWidth: 200,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
-  })
-);
+  }));
 
 function Portfolio(props) {
   const classes = useStyles();
+  const bgColour = props.thisUser ? "#f3f3f3" : "white";
+
   return (
-    <TableRow>
+    <TableRow style={{ background: bgColour }} >
       <TableCell
         className={classes.tablecell}
-        style={{ width: 30 }}
+        width="10%"
         align="left"
       >
         {props.position}
       </TableCell>
       <TableCell
         className={classes.tablecell}
-        style={{ width: 250 }}
+        width="35%"
         align="left"
       >
         {props.user}
       </TableCell>
-      <TableCell className={classes.tablecell} align="left">
+      <TableCell className={classes.tablecell} width="30%" align="left">
         {props.name}
       </TableCell>
-      <TableCell className={classes.tablecell} align="right">
-        ${props.value}.00
+      <TableCell className={classes.tablecell} width="25%" align="right">
+        ${props.value.toFixed(2)}
       </TableCell>
-    </TableRow>
+    </TableRow >
   );
 }
 export default Portfolio;
