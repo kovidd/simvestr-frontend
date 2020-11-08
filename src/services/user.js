@@ -45,3 +45,8 @@ export function changePassword(payload) {
   const path = "/changedetails/changepwd";
   return PUTRequest(path, payload);
 }
+
+export function logout() {
+  const path = "/logout";
+  return GETRequest(path);
+}
