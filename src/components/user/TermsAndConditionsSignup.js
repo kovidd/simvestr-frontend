@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Link
-} from "@material-ui/core";
+import { Box, Typography, Link } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { TermsAndConditionsText } from "./TermsAndConditionsText";
 
@@ -16,12 +12,8 @@ export const TermsAndConditionsSignup = () => {
         p="2rem"
         paddingTop="0"
         fontSize="10"
-        align="center" >
-        <Box align="left">
-          <Typography>
-            <Link href="./signup">Back to Sign Up Page</Link>
-          </Typography>
-        </Box>
+        align="center"
+      >
         <TermsAndConditionsText />
       </Box>
     </MainWrapper>
