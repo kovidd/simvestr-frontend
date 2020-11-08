@@ -59,7 +59,7 @@ const SignupForm = () => {
         {message}
       </Box>
       <Typography variant="h2" align="center">
-        Simvstr
+        Simvestr
       </Typography>
       <Typography varaint="body2" align="center">
         Welcome, please sign up your account.

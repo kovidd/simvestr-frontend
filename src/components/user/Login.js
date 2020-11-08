@@ -59,7 +59,7 @@ const LoginForm = () => {
         {message}
       </Box>
       <Typography variant="h2" align="center">
-        Simvstr
+        Simvestr
       </Typography>
       <Typography varaint="body2" align="center">
         Welcome back, please login to your account.

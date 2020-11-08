@@ -48,7 +48,7 @@ const ResetPasswordForm = () => {
         {message}
       </Box>
       <Typography variant="h2" align="center">
-        Simvstr
+        Simvestr
       </Typography>
       <Typography varaint="body2" align="center">
         Here you can reset your password.

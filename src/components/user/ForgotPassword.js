@@ -48,7 +48,7 @@ const ForgotPasswordForm = () => {
         {message}
       </Box>
       <Typography variant="h2" align="center">
-        Simvstr
+        Simvestr
       </Typography>
       <Typography varaint="body2" align="center">
         Enter your email address and we will send through an email with a
