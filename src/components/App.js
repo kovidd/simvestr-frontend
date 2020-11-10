@@ -29,6 +29,7 @@ import { PortfolioContext } from "../services/portfolio";
 import { AccountSettings } from "./settings/AccountSettings";
 import { PersonalDetails } from "./settings/PersonalDetails";
 import { Password } from "./settings/Password";
+import { Export } from "./settings/Export";
 import { UnauthenticatedRoute, AuthenticatedRoute } from "./Routes";
 
 const Main = () => {
@@ -97,6 +98,11 @@ const Main = () => {
                 exact
                 path="/settings/password"
                 component={Password}
+              />
+              <AuthenticatedRoute
+                exact
+                path="/settings/export"
+                component={Export}
               />
               <AuthenticatedRoute
                 exact
