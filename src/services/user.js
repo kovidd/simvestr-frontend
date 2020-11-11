@@ -16,7 +16,7 @@ export function signup(payload) {
 }
 
 export function login(payload) {
-  const path = "/token";
+  const path = "/login";
   return POSTRequest(path, payload);
 }
 
@@ -32,7 +32,7 @@ export function resetPassword(payload) {
 }
 
 export function userDetails() {
-  const path = "/verifytoken";
+  const path = "/user/details";
   return GETRequest(path);
 }
 

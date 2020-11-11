@@ -26,7 +26,7 @@ const SignupForm = () => {
   const onSubmit = async (data) => {
     // submit the signup
     const body = {
-      email_id: data.email.toLowerCase(),
+      email: data.email.toLowerCase(),
       password: data.password,
       first_name: data.firstName,
       last_name: data.lastName,
