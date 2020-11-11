@@ -45,8 +45,8 @@ export const MainWrapper = ({ children }) => {
             "/resetpassword",
             "/terms-and-conditions-signup",
           ].includes(location.pathname) && (
-              <BreadCrumbsNav location={location} />
-            )}
+            <BreadCrumbsNav location={location} />
+          )}
           {children}
         </StyledPaper>
       </Terminal>
@@ -85,13 +85,13 @@ export const BreadCrumbsNav = ({ location }) => {
           </Typography>
         ) : last && to.includes("/watchlist/") ? (
           <Typography color="textPrimary" key={to}>
-            {to.slice(to.length - 4)}
+            {/[^/]*$/.exec(to)[0]}
           </Typography>
         ) : (
-            <LinkRouter color="inherit" to={to} key={to}>
-              {breadcrumbNameMap[to]}
-            </LinkRouter>
-          );
+          <LinkRouter color="inherit" to={to} key={to}>
+            {breadcrumbNameMap[to]}
+          </LinkRouter>
+        );
       })}
     </Breadcrumbs>
   );
