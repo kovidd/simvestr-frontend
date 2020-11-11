@@ -23,8 +23,8 @@ const StyledH3 = styled.h3`
 `;
 
 const Button = styled.button`
-  margin:10px 0;
-  width:20%;
+  margin: 10px 0;
+  width: 20%;
 `;
 
 export const LeaderBoard = () => {
@@ -48,7 +48,7 @@ export const LeaderBoard = () => {
       const res = await leaderboardAll();
       if (!res.error) {
         var leaders = res.data;
-        leaders.sort((a, b) => (a.value < b.value ? 1 : -1));
+        leaders.sort((a, b) => (a.position > b.position ? 1 : -1));
         setLeaders(leaders);
       } else {
         console.error("error getting the portfolio details");
@@ -62,9 +62,11 @@ export const LeaderBoard = () => {
   const scrollToPortfolio = () => {
     const ITEM_HEIGHT = 64;
     const NUM_OF_ITEMS = 7;
-    const amountToScroll = ITEM_HEIGHT * (positionText.slice(0, -2) - Math.floor(NUM_OF_ITEMS / 2) - 1);
+    const amountToScroll =
+      ITEM_HEIGHT *
+      (positionText.slice(0, -2) - Math.floor(NUM_OF_ITEMS / 2) - 1);
     portfolioLeadersRef.current.scrollTo(0, amountToScroll);
-  }
+  };
 
   return (
     <MainWrapper>
@@ -74,8 +76,11 @@ export const LeaderBoard = () => {
             Simvestr Leader Board
           </Typography>
           <StyledH3>You are currently in {positionText} position</StyledH3>
-          <div >
-            <TableContainer ref={portfolioLeadersRef} style={{ maxHeight: 448, border: "2px solid #e4e4e4" }}>
+          <div>
+            <TableContainer
+              ref={portfolioLeadersRef}
+              style={{ maxHeight: 448, border: "2px solid #e4e4e4" }}
+            >
               {leaders.map((item, index) => (
                 <Table aria-label="simple table">
                   <TableBody key={index}>
@@ -88,17 +93,19 @@ export const LeaderBoard = () => {
                     />
                   </TableBody>
                 </Table>
-
               ))}
             </TableContainer>
             <Button
               variant="outlined"
               onClick={() => {
                 scrollToPortfolio();
-              }}>My Portfolio</Button>
+              }}
+            >
+              My Portfolio
+            </Button>
           </div>
         </div>
       </Box>
-    </MainWrapper >
+    </MainWrapper>
   );
 };
