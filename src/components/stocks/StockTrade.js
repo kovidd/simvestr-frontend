@@ -33,8 +33,12 @@ export const StockTrade = ({ symbol, quotePrice }) => {
   const [open, setOpen] = useState(false);
   const { portfolio, setPortfolio } = useContext(PortfolioContext);
 
-  const availableUnits =
-    symbol in portfolio.portfolio ? portfolio.portfolio[symbol].quantity : 0;
+  var availableUnits = 0;
+  Object.entries(portfolio.portfolio).map(async function ([k, v]) {
+    if (symbol === portfolio.portfolio[k].stock) {
+      availableUnits = portfolio.portfolio[k].quantity;
+    }
+  });
 
   const availableBalance = portfolio.balance;
 

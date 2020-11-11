@@ -193,6 +193,7 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
           <Box width="9rem">
             <Tabs
               variant="fullWidth"
+              indicatorColor="primary"
               value={range}
               onChange={(_, newValue) => setRange(newValue)}
             >
