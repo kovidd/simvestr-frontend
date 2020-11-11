@@ -16,6 +16,7 @@ import {
   PortfolioContext,
   getPortfolioDetails,
 } from "../../services/portfolio";
+import { logout } from "../../services/user";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -72,14 +73,17 @@ export const Homepage = () => {
     setTerminal(newTerminal);
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
     e.persist();
-    setAuth({
-      isAuthenticated: false,
-      apiToken: null,
-    });
-    history.push("/login");
+    const res = await logout();
+    if (!res.error) {
+      setAuth({
+        isAuthenticated: false,
+        apiToken: null,
+      });
+      history.push("/login");
+    }
   };
 
   useEffect(() => {

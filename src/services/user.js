@@ -21,8 +21,9 @@ export function login(payload) {
 }
 
 export function forgotPassword(payload) {
-  const path = "/forgotuser/?username=" + payload.email_id;
-  return GETRequest(path);
+  let options = { headers: { "Content-Type": "application/text" } };
+  const path = `/forgotuser?email_id=${payload.email_id}`;
+  return GETRequest(path, options);
 }
 
 export function resetPassword(payload) {
@@ -43,4 +44,9 @@ export function changeName(payload) {
 export function changePassword(payload) {
   const path = "/changedetails/changepwd";
   return PUTRequest(path, payload);
+}
+
+export function logout() {
+  const path = "/logout";
+  return GETRequest(path);
 }

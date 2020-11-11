@@ -85,7 +85,7 @@ export const BreadCrumbsNav = ({ location }) => {
           </Typography>
         ) : last && to.includes("/watchlist/") ? (
           <Typography color="textPrimary" key={to}>
-            {to.slice(to.length - 4)}
+            {/[^/]*$/.exec(to)[0]}
           </Typography>
         ) : (
           <LinkRouter color="inherit" to={to} key={to}>
