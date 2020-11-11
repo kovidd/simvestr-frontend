@@ -91,6 +91,11 @@ export const StockTrade = ({ symbol, quotePrice }) => {
         tradeDetails={tradeDetails}
       />
       <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Typography variant="h6" display="inline">
+          Trade {symbol} shares
+        </Typography>
+      </Box>
+      <Box display="flex" alignItems="center" justifyContent="space-between">
         <FormControl component="fieldset">
           <RadioGroup
             row
