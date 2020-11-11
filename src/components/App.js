@@ -69,8 +69,7 @@ const Main = () => {
                 path="/resetpassword"
                 component={ResetPassword}
               />
-              <AuthenticatedRoute path="/stocks" component={StockList} />
-              <AuthenticatedRoute path="/stocks" component={StockList} />
+              <Route path="/stocks" component={StockList} />
               <AuthenticatedRoute
                 exact
                 path="/watchlist"

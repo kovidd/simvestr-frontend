@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Paper, Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { stockDetails } from "../../services/stock";
-import { StockDetails } from "../stocks/StockDetails";
-import { StockTrade } from "../stocks/StockTrade";
 import { useParams } from "react-router-dom";
+import { StockDetails } from "../stocks/StockDetails";
 
 export const WatchListDetails = () => {
   let { symbol } = useParams();
@@ -41,40 +40,15 @@ export const WatchListDetails = () => {
 
   return (
     <MainWrapper>
-      {isLoading ? (
-        <Box display="flex" justifyContent="center">
-          <CircularProgress />
-        </Box>
-      ) : (
-        details && (
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Paper variant="outlined">
-                <Box p="1rem">
-                  <StockDetails details={details} />
-                </Box>
-              </Paper>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper variant="outlined">
-                <Box minHeight="10rem">
-                  <div>Stock Chart (TODO)</div>
-                </Box>
-              </Paper>
-              <Box my="1rem">
-                <Paper variant="outlined">
-                  <Box p="1rem">
-                    <StockTrade
-                      symbol={details.symbol}
-                      quotePrice={details.quote.c}
-                    />
-                  </Box>
-                </Paper>
-              </Box>
-            </Grid>
-          </Grid>
-        )
-      )}
+      <Box width="50vw" mt="1rem">
+        {isLoading ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : (
+          details && <StockDetails details={details} disableWatchlist />
+        )}
+      </Box>
     </MainWrapper>
   );
 };
