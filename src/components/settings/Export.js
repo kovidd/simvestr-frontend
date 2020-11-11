@@ -22,9 +22,9 @@ export const Export = () => {
     async function callExportfolio() {
       const res = await exportPortfolio();
       if (!res.error) {
-        setAPIMessage(res.data);
+        setAPIMessage({ "message": res.data });
       } else {
-        setAPIMessage("error downloading portfolio");
+        setAPIMessage({ "message": "error downloading portfolio" });
       }
     }
     callExportfolio();
