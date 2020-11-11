@@ -1,12 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-} from "@material-ui/core";
+import { List, ListItem, ListItemText } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
 

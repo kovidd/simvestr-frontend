@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Grid, Button } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import styled from "styled-components";
@@ -26,6 +26,7 @@ export const Export = () => {
     async function callExportfolio() {
       const res = await exportPortfolio();
       if (!res.error) {
+        console.log(res);
         setAPIMessage({ message: res.data });
       } else {
         setAPIMessage({ message: "error downloading portfolio" });
