@@ -113,7 +113,6 @@ export async function GETRequest(path, options) {
     let config = {
       credentials: "include",
       headers: {
-        "Content-Type": "application/json",
         ...(options && { ...options.headers }),
       },
     };
