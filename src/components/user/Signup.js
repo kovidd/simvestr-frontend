@@ -26,7 +26,7 @@ const SignupForm = () => {
   const onSubmit = async (data) => {
     // submit the signup
     const body = {
-      email_id: data.email,
+      email_id: data.email.toLowerCase(),
       password: data.password,
       first_name: data.firstName,
       last_name: data.lastName,
@@ -42,7 +42,9 @@ const SignupForm = () => {
   const termsLabel = (
     <span>
       I agree with the{" "}
-      <LinkRouter to="./terms-and-conditions">Terms and Conditions</LinkRouter>
+      <LinkRouter to="./terms-and-conditions-signup" target="_blank">
+        Terms and Conditions
+      </LinkRouter>
     </span>
   );
 
@@ -57,7 +59,7 @@ const SignupForm = () => {
         {message}
       </Box>
       <Typography variant="h2" align="center">
-        Simvstr
+        Simvestr
       </Typography>
       <Typography varaint="body2" align="center">
         Welcome, please sign up your account.

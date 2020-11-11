@@ -15,6 +15,9 @@ const StyledPaper = styled(Paper)`
   min-width: 40vw;
   padding: 1rem;
   min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;
 
 export const MainWrapper = ({ children }) => {
@@ -40,7 +43,7 @@ export const MainWrapper = ({ children }) => {
             "/signupsuccess",
             "/forgotpassword",
             "/resetpassword",
-            "/terms-and-conditions",
+            "/terms-and-conditions-signup",
           ].includes(location.pathname) && (
             <BreadCrumbsNav location={location} />
           )}
@@ -58,9 +61,12 @@ const breadcrumbNameMap = {
   "/": "home",
   "/watchlist": "watchlist",
   "/dashboard": "dashboard",
+  "/leaderboard": "leader board",
   "/settings": "settings",
   "/settings/personaldetails": "personal details",
   "/settings/password": "password",
+  "/settings/terms-and-conditions-settings": "terms and conditions",
+  "/settings/faq": "FAQ",
 };
 
 export const BreadCrumbsNav = ({ location }) => {
@@ -74,9 +80,13 @@ export const BreadCrumbsNav = ({ location }) => {
         const last = index === pathnames.length - 1;
         const to = `/${pathnames.slice(0, index + 1).join("/")}`;
 
-        return last ? (
+        return last && !to.includes("/watchlist/") ? (
           <Typography color="textPrimary" key={to}>
             {breadcrumbNameMap[to]}
+          </Typography>
+        ) : last && to.includes("/watchlist/") ? (
+          <Typography color="textPrimary" key={to}>
+            {/[^/]*$/.exec(to)[0]}
           </Typography>
         ) : (
           <LinkRouter color="inherit" to={to} key={to}>

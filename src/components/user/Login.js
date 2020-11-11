@@ -31,7 +31,7 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     // submit the login
     const body = {
-      email: data.email,
+      email: data.email.toLowerCase(),
       password: data.password,
     };
     const res = await login(body);
@@ -59,7 +59,7 @@ const LoginForm = () => {
         {message}
       </Box>
       <Typography variant="h2" align="center">
-        Simvstr
+        Simvestr
       </Typography>
       <Typography varaint="body2" align="center">
         Welcome back, please login to your account.
@@ -97,6 +97,9 @@ const LoginForm = () => {
             fullWidth
           />
           <FormErrorMessage errors={errors} name="password" />
+          <Box display="flex" justifyContent="flex-end">
+            <Link href="./forgotpassword">Forgot Password?</Link>
+          </Box>
         </Grid>
         <Grid item xs={12}>
           {/* <Box display="flex" flexDirection="row" justifyContent="flex-start">

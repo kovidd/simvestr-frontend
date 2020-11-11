@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import {
   Box,
@@ -11,7 +11,12 @@ import {
 import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
 import { AuthContext } from "../../services/api";
-import { UserContext } from "../../services/user";
+import { UserContext, userDetails } from "../../services/user";
+import {
+  PortfolioContext,
+  getPortfolioDetails,
+} from "../../services/portfolio";
+import { logout } from "../../services/user";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -49,7 +54,8 @@ const initialTerminal = {
 export const Homepage = () => {
   const history = useHistory();
   const { setAuth } = useContext(AuthContext);
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  const { setPortfolio } = useContext(PortfolioContext);
   const [terminal, setTerminal] = useState([initialTerminal]);
 
   const updateTerminalAtIndex = (index, newValue) => {
@@ -67,15 +73,36 @@ export const Homepage = () => {
     setTerminal(newTerminal);
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
     e.persist();
-    setAuth({
-      isAuthenticated: false,
-      apiToken: null,
-    });
-    history.push("/login");
+    const res = await logout();
+    if (!res.error) {
+      setAuth({
+        isAuthenticated: false,
+        apiToken: null,
+      });
+      history.push("/login");
+    }
   };
+
+  useEffect(() => {
+    async function getUserDetails() {
+      const res = await userDetails();
+      if (!res.error) {
+        setUser({
+          firstName: res.data.first_name,
+          lastName: res.data.last_name,
+          email: res.data.email_id,
+        });
+      }
+    }
+    getUserDetails();
+  }, [setUser]);
+
+  useEffect(() => {
+    getPortfolioDetails(setPortfolio);
+  }, [setPortfolio]);
 
   return (
     <MainWrapper>
@@ -93,7 +120,7 @@ export const Homepage = () => {
       <List>
         <ListItem disableGutters>
           <ListItemText>
-            {`Welcome ${user.firstName}, select an option below to get started...`}{" "}
+            {`Welcome ${user.firstName} ${user.lastName}, select an option below to get started...`}{" "}
           </ListItemText>
         </ListItem>
         <StyledListItem
@@ -117,7 +144,11 @@ export const Homepage = () => {
         >
           <StyledListItemText>{`Watchlist`}</StyledListItemText>
         </StyledListItem>
-        <StyledListItem button disableGutters>
+        <StyledListItem
+          button
+          disableGutters
+          onClick={() => history.push("/leaderboard")}
+        >
           <StyledListItemText>{`Leaderboard`}</StyledListItemText>
         </StyledListItem>
         <StyledListItem
@@ -162,6 +193,20 @@ export const Homepage = () => {
                           if (e.key === "Enter") {
                             if (search === "clear") {
                               setTerminal([initialTerminal]);
+                            } else if (
+                              search.toLowerCase() === "search stocks" ||
+                              search.toLowerCase() === "search" ||
+                              search.toLowerCase() === "stocks"
+                            ) {
+                              history.push("/stocks");
+                            } else if (search.toLowerCase() === "dashboard") {
+                              history.push("/");
+                            } else if (search.toLowerCase() === "watchlist") {
+                              history.push("/watchlist");
+                            } else if (search.toLowerCase() === "leaderboard") {
+                              history.push("/leaderboard");
+                            } else if (search.toLowerCase() === "settings") {
+                              history.push("/settings");
                             } else {
                               updateTerminalAtIndexAndPushNew(index, {
                                 search,

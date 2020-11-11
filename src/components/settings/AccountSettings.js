@@ -57,6 +57,13 @@ export const AccountSettings = () => {
           <StyledListItem button disableGutters>
             <StyledListItemText>{`Portfolio`}</StyledListItemText>
           </StyledListItem>
+          <StyledListItem button disableGutters onClick={() => history.push("/settings/terms-and-conditions-settings")}
+          >
+            <StyledListItemText>{`Terms And Conditions`}</StyledListItemText>
+          </StyledListItem>
+          <StyledListItem button disableGutters onClick={() => history.push("/settings/faq")}>
+            <StyledListItemText>{`FAQ`}</StyledListItemText>
+          </StyledListItem>
           <ListItem disableGutters>
             <form
               style={{ display: "flex" }}

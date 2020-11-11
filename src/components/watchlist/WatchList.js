@@ -3,19 +3,15 @@ import { WatchListSummary } from "./WatchListSummary";
 import { WatchListDetails } from "./WatchListDetails";
 
 export const WatchList = () => {
-  const [renderComponent, setRenderComponent] = useState("");
+  const [symbol, setSymbol] = useState("");
 
   const handleDetails = (symbol) => {
-    setRenderComponent(symbol);
+    setSymbol(symbol);
   };
 
-  const handleBack = () => {
-    setRenderComponent("");
-  };
-
-  return renderComponent === "" ? (
+  return symbol === "" ? (
     <WatchListSummary handleDetails={handleDetails} />
   ) : (
-    <WatchListDetails symbol={renderComponent} handleBack={handleBack} />
+    <WatchListDetails />
   );
 };

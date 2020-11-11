@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Paper, Box, CircularProgress } from "@material-ui/core";
-import { MainWrapper, LinkRouter } from "../ui";
+import { Box, CircularProgress } from "@material-ui/core";
+import { MainWrapper } from "../ui";
 import { stockDetails } from "../../services/stock";
+import { useParams } from "react-router-dom";
 import { StockDetails } from "../stocks/StockDetails";
-import { StockTrade } from "../stocks/StockTrade";
 
-export const WatchListDetails = (props) => {
+export const WatchListDetails = () => {
+  let { symbol } = useParams();
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,56 +35,20 @@ export const WatchListDetails = (props) => {
       }
       setIsLoading(false);
     }
-    getStockDetails(props.symbol);
-  }, [setIsLoading, props.symbol]);
+    getStockDetails(symbol);
+  }, [setIsLoading, symbol]);
 
   return (
     <MainWrapper>
-      {isLoading ? (
-        <Box display="flex" justifyContent="center">
-          <CircularProgress />
-        </Box>
-      ) : (
-        details && (
-          <Grid container spacing={2}>
-            <Grid container item xs={12} justify="flex-end">
-              <LinkRouter
-                color="primary"
-                button
-                onClick={() => {
-                  props.handleBack();
-                }}
-              >
-                Back to WatchList
-              </LinkRouter>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper variant="outlined">
-                <Box p="1rem">
-                  <StockDetails details={details} hasButton={false} />
-                </Box>
-              </Paper>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper variant="outlined">
-                <Box minHeight="10rem">
-                  <div>Stock Chart (TODO)</div>
-                </Box>
-              </Paper>
-              <Box my="1rem">
-                <Paper variant="outlined">
-                  <Box p="1rem">
-                    <StockTrade
-                      symbol={details.symbol}
-                      quotePrice={details.quote.c}
-                    />
-                  </Box>
-                </Paper>
-              </Box>
-            </Grid>
-          </Grid>
-        )
-      )}
+      <Box width="50vw" mt="1rem">
+        {isLoading ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : (
+          details && <StockDetails details={details} disableWatchlist />
+        )}
+      </Box>
     </MainWrapper>
   );
 };
