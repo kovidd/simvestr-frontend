@@ -33,9 +33,9 @@ const PersonalDetailsForm = () => {
       const res = await userDetails();
       if (!res.error) {
         setUser({
-          firstName: res.data.fname,
-          lastName: res.data.lname,
-          email: res.data.email,
+          firstName: res.data.first_name,
+          lastName: res.data.last_name,
+          email: res.data.email_id,
         });
       }
     } else {

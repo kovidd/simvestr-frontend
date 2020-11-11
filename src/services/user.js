@@ -32,7 +32,7 @@ export function resetPassword(payload) {
 }
 
 export function userDetails() {
-  const path = "/user/details";
+  const path = "/user/info";
   return GETRequest(path);
 }
 
