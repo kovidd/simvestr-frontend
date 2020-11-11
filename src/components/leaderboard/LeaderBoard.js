@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import {
@@ -15,11 +15,16 @@ import { MainWrapper } from "../ui";
 import Portfolio from "./Portfolio";
 import {
   leaderboardPosition,
-  leaderboardLeaders,
+  leaderboardAll,
 } from "../../services/leaderboard";
 
 const StyledH3 = styled.h3`
   font-size: 26px;
+`;
+
+const Button = styled.button`
+  margin:10px 0;
+  width:20%;
 `;
 
 export const LeaderBoard = () => {
@@ -40,7 +45,7 @@ export const LeaderBoard = () => {
 
   useEffect(() => {
     async function getLeaders() {
-      const res = await leaderboardLeaders();
+      const res = await leaderboardAll();
       if (!res.error) {
         var leaders = res.data;
         leaders.sort((a, b) => (a.value < b.value ? 1 : -1));
@@ -50,7 +55,16 @@ export const LeaderBoard = () => {
       }
     }
     getLeaders();
-  }, [leaders]);
+  }, []);
+
+  const portfolioLeadersRef = React.createRef();
+
+  const scrollToPortfolio = () => {
+    const ITEM_HEIGHT = 64;
+    const NUM_OF_ITEMS = 7;
+    const amountToScroll = ITEM_HEIGHT * (positionText.slice(0, -2) - Math.floor(NUM_OF_ITEMS / 2) - 1);
+    portfolioLeadersRef.current.scrollTo(0, amountToScroll);
+  }
 
   return (
     <MainWrapper>
@@ -60,24 +74,31 @@ export const LeaderBoard = () => {
             Simvestr Leader Board
           </Typography>
           <StyledH3>You are currently in {positionText} position</StyledH3>
-          <div>
-            {leaders.map((item, index) => (
-              <TableContainer component={Paper}>
+          <div >
+            <TableContainer ref={portfolioLeadersRef} style={{ maxHeight: 448, border: "2px solid #e4e4e4" }}>
+              {leaders.map((item, index) => (
                 <Table aria-label="simple table">
-                  <TableBody key={item.id}>
+                  <TableBody key={index}>
                     <Portfolio
-                      position={index + 1}
+                      position={item.position}
                       user={item.user}
                       name={item.name}
                       value={item.value}
+                      thisUser={item.position == positionText.slice(0, -2)}
                     />
                   </TableBody>
                 </Table>
-              </TableContainer>
-            ))}
+
+              ))}
+            </TableContainer>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                scrollToPortfolio();
+              }}>My Portfolio</Button>
           </div>
         </div>
       </Box>
-    </MainWrapper>
+    </MainWrapper >
   );
 };
