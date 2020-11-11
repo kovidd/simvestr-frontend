@@ -22,7 +22,7 @@ const ForgotPasswordForm = () => {
   const onSubmit = async (data) => {
     // submit the forgot password request
     const body = {
-      email_id: data.email,
+      email: data.email,
     };
     const res = await forgotPassword(body);
     if (!res.error) {
