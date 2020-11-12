@@ -69,7 +69,7 @@ export const HistoricalTrades = () => {
   return (
     <>
       <MainWrapper>
-        <Box width="50vw">
+        <Box>
           {isLoading ? (
             <Box display="flex" justifyContent="center">
               <CircularProgress />

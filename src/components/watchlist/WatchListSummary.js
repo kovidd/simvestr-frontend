@@ -102,7 +102,7 @@ export const WatchListSummary = () => {
         stockSymbol={stockRemove}
       />
       <MainWrapper>
-        <Box width="70vw">
+        <Box>
           {isLoading ? (
             <Box display="flex" justifyContent="center">
               <CircularProgress />
