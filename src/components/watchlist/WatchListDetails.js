@@ -41,7 +41,7 @@ export const WatchListDetails = () => {
       setIsLoading(false);
     }
     getStockDetails(symbol);
-  }, [setIsLoading, symbol]);
+  }, [setIsLoading, setNotification, symbol]);
 
   return (
     <MainWrapper>

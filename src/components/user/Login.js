@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import "../../index.css";
 import { useForm } from "react-hook-form";
 import {
@@ -26,7 +26,7 @@ const LoginForm = () => {
       password: "",
     },
   });
-  const { auth, setAuth } = useContext(AuthContext);
+  const { setAuth } = useContext(AuthContext);
 
   const onSubmit = async (data) => {
     // submit the login

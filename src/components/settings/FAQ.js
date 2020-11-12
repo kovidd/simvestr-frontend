@@ -21,7 +21,7 @@ const StyledP = styled.p`
   padding: 0;
 `;
 
-const FAQ_Wrapper = styled.div`
+const FAQWrapper = styled.div`
   max-width: 800px;
   margin: 0 auto;
 `;
@@ -29,7 +29,7 @@ const FAQ_Wrapper = styled.div`
 export const FAQ = () => {
   return (
     <MainWrapper>
-      <FAQ_Wrapper>
+      <FAQWrapper>
         <Typography variant="h2" align="center">
           Simvestr
         </Typography>
@@ -96,7 +96,7 @@ export const FAQ = () => {
         portfolio detail in CSV format for further analysis in spreadsheet
         software or other simulation applications.
         <StyledP></StyledP>
-      </FAQ_Wrapper>
+      </FAQWrapper>
     </MainWrapper>
   );
 };

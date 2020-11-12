@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Box, Grid, Button } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import styled from "styled-components";

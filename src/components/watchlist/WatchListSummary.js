@@ -69,7 +69,7 @@ export const WatchListSummary = () => {
     }
     getWatchListDetails();
     setIsLoading(false);
-  }, []);
+  }, [setNotification]);
 
   const handleRemove = async () => {
     const res = await removeStock(stockRemove);

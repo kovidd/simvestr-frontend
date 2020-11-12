@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
 import * as dayjs from "dayjs";
 import styled from "styled-components";
 import {
   Box,
-  Button,
   Typography,
   Table,
   TableHead,
@@ -64,7 +62,7 @@ export const HistoricalTrades = () => {
     }
     getHistoricalTrades();
     setIsLoading(false);
-  }, []);
+  }, [setNotification]);
 
   return (
     <>

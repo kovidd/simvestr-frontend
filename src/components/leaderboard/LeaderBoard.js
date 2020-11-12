@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import styled from "styled-components";
 import {
   Table,
   TableBody,
   TableContainer,
-  Paper,
   Box,
   Typography,
   Button,
@@ -35,7 +33,7 @@ export const LeaderBoard = () => {
       }
     }
     getLeaderboardPosition();
-  }, []);
+  }, [setNotification]);
 
   useEffect(() => {
     async function getLeaders() {
@@ -52,7 +50,7 @@ export const LeaderBoard = () => {
       }
     }
     getLeaders();
-  }, []);
+  }, [setNotification]);
 
   const portfolioLeadersRef = React.createRef();
 
@@ -91,7 +89,7 @@ export const LeaderBoard = () => {
                       user={item.user}
                       name={item.name}
                       value={item.value}
-                      thisUser={item.position == positionText.slice(0, -2)}
+                      thisUser={item.position === positionText.slice(0, -2)}
                     />
                   </TableBody>
                 </Table>

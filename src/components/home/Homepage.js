@@ -110,7 +110,7 @@ export const Homepage = () => {
       }
     }
     getUserDetails();
-  }, [setUser]);
+  }, [setUser, setNotification]);
 
   useEffect(() => {
     getPortfolioDetails(setPortfolio);
