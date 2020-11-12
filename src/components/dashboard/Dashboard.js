@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import {
   Box,
@@ -13,77 +13,44 @@ import {
   TableCell,
   CircularProgress,
 } from "@material-ui/core";
-import { MainWrapper } from "../ui";
-import { stocksOwned, currentBalance } from "../../services/dashboard";
+import { MainWrapper, LinkRouter } from "../ui";
+import {
+  PortfolioContext,
+  getPortfolioDetails,
+} from "../../services/portfolio";
 import { stockDetails } from "../../services/stock";
+import {
+  changeArrow,
+  formatCurrency,
+  formatPerc,
+  getQuoteChangePerc,
+} from "../../helpers";
 
 const PriceTypography = styled(Typography)`
   && {
-    color: ${(props) => (props.change > 0 ? "green" : "red")};
+    color: ${(props) => (props.change >= 0 ? "green" : "red")};
+  }
+`;
+
+const PriceTableCell = styled(TableCell)`
+  && {
+    color: ${(props) => (props.change >= 0 ? "green" : "red")};
   }
 `;
 
 export const Dashboard = () => {
-  const [constituents, setConstituents] = useState([]);
-  const [portofolioName, setPortfolioName] = useState("");
+  const { portfolio, setPortfolio } = useContext(PortfolioContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [portfolioPosition, setPortfolioPosition] = useState(true);
 
   useEffect(() => {
-    async function getBalance() {
-      const res = await currentBalance();
-      if (!res.error) {
-        setPortfolioName(res.data.data.name);
-      }
-      setConstituents((oldConstituents) => [
-        ...oldConstituents,
-        { symbol: "Currency", value: res.data.data.balance },
-      ]);
-    }
+    getPortfolioDetails(setPortfolio).then(() => setIsLoading(false));
+  }, [setPortfolio]);
 
-    async function getStocksOwned() {
-      const res = await stocksOwned();
-      if (!res.error) {
-        Object.entries(res.data).map(async function ([k, v]) {
-          const res = await stockDetails(k);
-          if (!res.error) {
-            setConstituents((oldConstituents) => [
-              ...oldConstituents,
-              {
-                symbol: res.data.symbol,
-                name: res.data.name,
-                c: res.data.quote.c,
-                shares: v,
-                value: res.data.quote.c * v,
-              },
-            ]);
-          }
-        });
-      }
-    }
-
-    getBalance();
-    getStocksOwned();
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => {
-    setPortfolioPosition({
-      currentValue: constituents.reduce((v, stock) => v + stock.value, 0),
-      totalReturn:
-        constituents.reduce((v, stock) => v + stock.value, 0) - 100000,
-      totalReturnPerc:
-        Math.abs(
-          (constituents.reduce((v, stock) => v + stock.value, 0) - 100000) /
-            100000
-        ) * 100,
-    });
-  }, [constituents]);
-
-  console.log(portfolioPosition);
+  const netPortfolio = portfolio.balance + portfolio.totalValue;
+  const totalPortfolioReturn = portfolio.totalReturn;
+  const totalPortfolioReturnPerc = totalPortfolioReturn / 100000;
   return (
     <MainWrapper>
-      <Typography variant="h5">{portofolioName} </Typography>{" "}
       {isLoading ? (
         <Box display="flex" justifyContent="center">
           <CircularProgress />
@@ -91,30 +58,28 @@ export const Dashboard = () => {
       ) : (
         <Grid container spacing={2}>
           <Grid item xs={4}>
-            <Typography variant="b2">Portfolio Position </Typography>
+            <Typography variant="body2">Portfolio Position</Typography>
             <Paper variant="outlined">
-              <Box minHeight="15rem">
-                <Typography variant="h6">Total Value </Typography>
-                <Typography variant="h6">
-                  USD {portfolioPosition.currentValue}
+              <Box minHeight="15rem" p="1rem">
+                <Typography variant="body2">Net Portfolio</Typography>
+                <Typography variant="h4">
+                  {formatCurrency(netPortfolio)}
                 </Typography>
-                <Typography variant="h6">Day Return </Typography>
-                <Typography variant="h6">USD</Typography>
-                <Typography variant="h6">Total Return </Typography>
-                <Typography variant="h6">
-                  <PriceTypography variant="h6">{`${
-                    portfolioPosition.totalReturn > 0 ? "+" : ""
-                  } USD ${portfolioPosition.totalReturn.toFixed(
-                    2
-                  )} (${portfolioPosition.totalReturnPerc.toFixed(2)}%)${
-                    portfolioPosition.totalReturn > 0 ? "↑" : "↓"
-                  }`}</PriceTypography>
-                </Typography>
+                <PriceTypography
+                  variant="body1"
+                  change={totalPortfolioReturn}
+                >{`${totalPortfolioReturn >= 0 ? "+" : "-"}${formatCurrency(
+                  totalPortfolioReturn
+                )}  (${formatPerc(
+                  Math.abs(totalPortfolioReturnPerc)
+                )}) Total ${changeArrow(
+                  totalPortfolioReturn
+                )}`}</PriceTypography>
               </Box>
             </Paper>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="b2">Historical Performance </Typography>{" "}
+            <Typography variant="body2">Historical Performance </Typography>{" "}
             <Paper variant="outlined">
               <Box minHeight="15rem">
                 <div> </div>
@@ -122,50 +87,68 @@ export const Dashboard = () => {
             </Paper>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="b2">Portfolio Constituents </Typography>{" "}
+            <Typography variant="body2">Portfolio Constituents </Typography>{" "}
             <Paper variant="outlined">
               <Box minHeight="15em">
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center">Symbol</TableCell>
-                      <TableCell align="center">Company</TableCell>
-                      <TableCell align="center">Shares</TableCell>
-                      <TableCell align="center">Total Cost (USD)</TableCell>
-                      <TableCell align="center">Current Value (USD)</TableCell>
-                      <TableCell align="center">Return</TableCell>
-                      <TableCell align="center"> </TableCell>
+                      <TableCell>Symbol</TableCell>
+                      <TableCell align="right">Units</TableCell>
+                      <TableCell align="right">Price</TableCell>
+                      <TableCell align="right">Change %</TableCell>
+                      <TableCell align="right">Average Price</TableCell>
+                      <TableCell align="right">Current Value</TableCell>
+                      <TableCell align="right">Total Return</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {constituents.map((stock) => (
-                      <TableRow key={stock.symbol}>
-                        <TableCell component="th" scope="row">
-                          {stock.symbol}
-                        </TableCell>
-                        <TableCell align="center">{stock.name}</TableCell>
-                        <TableCell align="center">{stock.shares}</TableCell>
-                        <TableCell align="center">{stock.cost}</TableCell>
-                        <TableCell align="center">{stock.value}</TableCell>
-                        <TableCell align="center">{stock.return}</TableCell>
-                        {stock.symbol === "Currency" ? (
-                          <TableCell align="center">{}</TableCell>
-                        ) : (
-                          <TableCell align="center">
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              style={{
-                                maxWidth: "100px",
-                                maxHeight: "25px",
-                              }}
-                            >
-                              Buy / Sell
-                            </Button>
+                    <TableRow key="currency">
+                      <TableCell colSpan={5}>CASH</TableCell>
+                      <TableCell align="right">
+                        {formatCurrency(portfolio.balance)}
+                      </TableCell>
+                      <TableCell colSpan={1}></TableCell>
+                    </TableRow>
+                    {portfolio.portfolio.map((stock) => {
+                      const changePerc = getQuoteChangePerc(
+                        stock.current,
+                        stock.previous
+                      );
+                      const totalReturn = stock.return;
+                      const totalReturnPerc =
+                        (totalReturn / stock.buy.total) * 100;
+                      return (
+                        <TableRow key={stock.symbol}>
+                          <TableCell>
+                            <LinkRouter to={`stocks/${stock.symbol}`}>
+                              {stock.symbol}
+                            </LinkRouter>
                           </TableCell>
-                        )}
-                      </TableRow>
-                    ))}
+                          <TableCell align="right">{stock.quantity}</TableCell>
+                          <TableCell align="right">
+                            {formatCurrency(stock.current)}
+                          </TableCell>
+                          <PriceTableCell
+                            align="right"
+                            change={changePerc}
+                          >{`${formatPerc(Math.abs(changePerc))} ${changeArrow(
+                            changePerc
+                          )}`}</PriceTableCell>
+                          <TableCell align="right">
+                            {formatCurrency(stock.buy.weighted_average)}
+                          </TableCell>
+                          <TableCell align="right">
+                            {formatCurrency(stock.value)}
+                          </TableCell>
+                          <PriceTableCell align="right" change={totalReturn}>
+                            {`${formatCurrency(totalReturn)} (${formatPerc(
+                              Math.abs(totalReturnPerc)
+                            )}) ${changeArrow(totalReturn)}`}
+                          </PriceTableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </Box>

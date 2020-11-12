@@ -8,6 +8,12 @@ import { addStock } from "../../services/watchlist";
 import { stockCandles } from "../../services/stock";
 import { NotificationContext } from "../ui/Notification";
 import { WatchlistAddConfirmation } from "../watchlist/WatchListConfirmation";
+import {
+  changeArrow,
+  formatPerc,
+  getQuoteChange,
+  getQuoteChangePerc,
+} from "../../helpers";
 
 /**
  * Converts the candle data to the respective chart data
@@ -134,8 +140,8 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
   };
 
   if (!details) return null;
-  const change = details.quote.c - details.quote.pc;
-  const changePrec = Math.abs((change / details.quote.pc) * 100);
+  const change = getQuoteChange(details.quote.c, details.quote.pc);
+  const changePerc = getQuoteChangePerc(details.quote.c, details.quote.pc);
   return (
     <>
       {!disableWatchlist && (
@@ -191,9 +197,9 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
             </Typography>
             <PriceTypography variant="body1" change={change}>{`${
               change > 0 ? "+" : ""
-            }${change.toFixed(2)} (${changePrec.toFixed(2)}%)${
-              change > 0 ? "↑" : "↓"
-            }`}</PriceTypography>
+            }${change.toFixed(2)} (${formatPerc(
+              Math.abs(changePerc)
+            )})${changeArrow(changePerc)}`}</PriceTypography>
           </PriceWrapper>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">

@@ -2,12 +2,15 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { throttle } from "throttle-debounce";
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { stockDetails, searchStockByName } from "../../services/stock";
+import { searchStockByName } from "../../services/stock";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import { NotificationContext } from "../ui/Notification";
+import { useHistory, useParams } from "react-router-dom";
 
-export const StockSearch = ({ setDetails, setIsLoading }) => {
+export const StockSearch = () => {
+  const history = useHistory();
+  const { symbol } = useParams();
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
@@ -16,7 +19,7 @@ export const StockSearch = ({ setDetails, setIsLoading }) => {
   const getOptions = async (name) => {
     const res = await searchStockByName(name);
     if (!res.error) {
-      return res.data.map((item) => ({
+      return res.data?.map((item) => ({
         symbol: item.symbol,
         displaySymbol: item.display_symbol,
         name: item.name,
@@ -26,6 +29,15 @@ export const StockSearch = ({ setDetails, setIsLoading }) => {
       return null;
     }
   };
+
+  useEffect(() => {
+    if (symbol) {
+      setValue({
+        symbol,
+      });
+      setInputValue(symbol);
+    }
+  }, [symbol]);
 
   const handleSearch = useRef(
     throttle(500, async (active, value, inputValue) => {
@@ -51,51 +63,17 @@ export const StockSearch = ({ setDetails, setIsLoading }) => {
       return undefined;
     }
 
-    async function getStockDetails(stockSymbol) {
-      if (value) {
-        setIsLoading(true);
-        const res = await stockDetails(stockSymbol);
-        if (!res.error) {
-          setDetails({
-            quote: Object.fromEntries(
-              Object.entries(res.data.quote).map(([k, v]) => [k, parseFloat(v)])
-            ),
-            logo: res.data.logo,
-            exchange: res.data.exchange.split(" ")[0],
-            symbol: res.data.symbol,
-            name: res.data.name,
-            industry: res.data.industry,
-            marketCapitalization: parseInt(res.data.marketCapitalization),
-          });
-        } else {
-          setDetails(null);
-          setNotification({
-            open: true,
-            message: `Error getting stock details for ${stockSymbol}.`,
-          });
-        }
-        setIsLoading(false);
-      }
-    }
-
     // gets the search results (dropdown) using a throttle
     handleSearch.current(active, value, inputValue);
 
     if (value && value.symbol === inputValue) {
-      getStockDetails(value.symbol);
+      history.push(`/stocks/${value.symbol}`);
     }
 
     return () => {
       active = false;
     };
-  }, [
-    value,
-    inputValue,
-    handleSearch,
-    setDetails,
-    setIsLoading,
-    setNotification,
-  ]);
+  }, [value, inputValue, handleSearch, setNotification, history, symbol]);
 
   return (
     <Autocomplete

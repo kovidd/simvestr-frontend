@@ -82,11 +82,12 @@ export const BreadCrumbsNav = ({ location }) => {
         const last = index === pathnames.length - 1;
         const to = `/${pathnames.slice(0, index + 1).join("/")}`;
 
-        return last && !to.includes("/watchlist/") ? (
+        return last &&
+          !(to.includes("/watchlist/") || to.includes("/stocks/")) ? (
           <Typography color="textPrimary" key={to}>
             {breadcrumbNameMap[to]}
           </Typography>
-        ) : last && to.includes("/watchlist/") ? (
+        ) : last && (to.includes("/watchlist/") || to.includes("/stocks/")) ? (
           <Typography color="textPrimary" key={to}>
             {/[^/]*$/.exec(to)[0]}
           </Typography>

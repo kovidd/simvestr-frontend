@@ -19,6 +19,7 @@ import {
 import { StockTradeConfirmation } from "./StockTradeConfirmation";
 import { marketOrder } from "../../services/stock";
 import { NotificationContext } from "../ui/Notification";
+import { formatCurrency } from "../../helpers";
 
 const amountTypes = {
   quantity: "quantity",
@@ -29,6 +30,8 @@ const tradeTypes = {
   buy: "buy",
   sell: "sell",
 };
+
+const brokerageFee = 0;
 
 export const StockTrade = ({ symbol, quotePrice }) => {
   const [open, setOpen] = useState(false);
@@ -64,7 +67,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
       : amount / quotePrice
   );
 
-  const estimatedValue = (totalUnits * quotePrice).toFixed(2);
+  const estimatedValue = totalUnits * quotePrice;
   const excessAmount =
     tradeType === tradeTypes.buy
       ? estimatedValue > availableBalance
@@ -134,7 +137,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           Available:{" "}
           {tradeType === tradeTypes.sell
             ? `${availableUnits} Units`
-            : `$${availableBalance.toFixed(2)}`}
+            : formatCurrency(availableBalance)}
         </Typography>
       </Box>
       <Box display="flex" alignItems="baseline">
@@ -178,7 +181,6 @@ export const StockTrade = ({ symbol, quotePrice }) => {
                               ? availableUnits
                               : availableUnits * quotePrice
                           );
-                          // setAmountType(amountTypes.quantity);
                         }}
                       >
                         MAX
@@ -200,9 +202,11 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           </Typography>
         )}
         <Typography variant="body1" color={excessAmount ? "error" : "initial"}>
-          Estimated Value: ${estimatedValue}
+          Estimated Value: {formatCurrency(estimatedValue)}
         </Typography>
-        <Typography variant="body1">Brokerage Fee: $0.00</Typography>
+        <Typography variant="body1">
+          Brokerage Fee: {formatCurrency(brokerageFee)}
+        </Typography>
       </Box>
       <Box mt="1rem" color={tradeType === tradeTypes.buy ? "green" : "red"}>
         <Button
@@ -210,7 +214,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           onClick={() => setOpen(true)}
           fullWidth
           color="inherit"
-          disabled={excessAmount}
+          disabled={excessAmount || estimatedValue === 0}
         >
           {tradeType.toUpperCase()}
         </Button>
