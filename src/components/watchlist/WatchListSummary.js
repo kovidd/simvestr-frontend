@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Typography,
+  TableContainer,
   Table,
   TableHead,
   TableBody,
@@ -100,83 +101,89 @@ export const WatchListSummary = () => {
         stockSymbol={stockRemove}
       />
       <MainWrapper>
-        <Box width="50vw">
+        <Box width="70vw">
           {isLoading ? (
             <Box display="flex" justifyContent="center">
               <CircularProgress />
             </Box>
           ) : (
             watchedStocksDetails && (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Symbol</TableCell>
-                    <TableCell align="center">Company</TableCell>
-                    <TableCell align="center">Current Price (USD)</TableCell>
-                    <TableCell align="center">Close Price (USD)</TableCell>
-                    <TableCell align="center">Day Change</TableCell>
-                    <TableCell align="center"> </TableCell>
-                    <TableCell align="center"> </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {watchedStocksDetails.map((stock) => (
-                    <TableRow key={stock.symbol}>
-                      <TableCell component="th" scope="row">
-                        {stock.symbol}
-                      </TableCell>
-                      <TableCell align="center">{stock.name}</TableCell>
-                      <TableCell align="center">{stock.c}</TableCell>
-                      <TableCell align="center">{stock.pc}</TableCell>
-                      <TableCell align="center">
-                        <PriceWrapper>
-                          <PriceTypography
-                            variant="body1"
-                            change={stock.change}
-                          >{`${
-                            stock.change > 0 ? "+" : ""
-                          }${stock.change.toFixed(
-                            2
-                          )} (${stock.changePerc.toFixed(2)}%)${
-                            stock.change > 0 ? "↑" : "↓"
-                          }`}</PriceTypography>
-                        </PriceWrapper>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          style={{
-                            maxWidth: "40px",
-                            maxHeight: "25px",
-                          }}
-                          onClick={() =>
-                            history.push(`/watchlist/${stock.symbol}`)
-                          }
-                        >
-                          Details
-                        </Button>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          style={{
-                            maxWidth: "40px",
-                            maxHeight: "25px",
-                          }}
-                          onClick={() => {
-                            setStockRemove(stock.symbol);
-                            setOpen(true);
-                          }}
-                        >
-                          Remove
-                        </Button>
-                      </TableCell>
+              <TableContainer
+                style={{
+                  maxHeight: 448,
+                }}
+              >
+                <Table stickyHeader>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Symbol</TableCell>
+                      <TableCell align="center">Company</TableCell>
+                      <TableCell align="center">Current Price (USD)</TableCell>
+                      <TableCell align="center">Close Price (USD)</TableCell>
+                      <TableCell align="center">Day Change</TableCell>
+                      <TableCell align="center"> </TableCell>
+                      <TableCell align="center"> </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {watchedStocksDetails.map((stock) => (
+                      <TableRow key={stock.symbol}>
+                        <TableCell component="th" scope="row">
+                          {stock.symbol}
+                        </TableCell>
+                        <TableCell align="center">{stock.name}</TableCell>
+                        <TableCell align="center">{stock.c}</TableCell>
+                        <TableCell align="center">{stock.pc}</TableCell>
+                        <TableCell align="center">
+                          <PriceWrapper>
+                            <PriceTypography
+                              variant="body1"
+                              change={stock.change}
+                            >{`${
+                              stock.change > 0 ? "+" : ""
+                            }${stock.change.toFixed(
+                              2
+                            )} (${stock.changePerc.toFixed(2)}%)${
+                              stock.change > 0 ? "↑" : "↓"
+                            }`}</PriceTypography>
+                          </PriceWrapper>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            style={{
+                              maxWidth: "40px",
+                              maxHeight: "25px",
+                            }}
+                            onClick={() =>
+                              history.push(`/watchlist/${stock.symbol}`)
+                            }
+                          >
+                            Details
+                          </Button>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            style={{
+                              maxWidth: "40px",
+                              maxHeight: "25px",
+                            }}
+                            onClick={() => {
+                              setStockRemove(stock.symbol);
+                              setOpen(true);
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             )
           )}
         </Box>

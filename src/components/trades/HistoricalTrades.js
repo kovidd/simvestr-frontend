@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {
   Box,
   Typography,
+  TableContainer,
   Table,
   TableHead,
   TableBody,
@@ -74,45 +75,51 @@ export const HistoricalTrades = () => {
             </Box>
           ) : (
             tradeDetails && (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Date</TableCell>
-                    <TableCell align="center">Trade Type</TableCell>
-                    <TableCell align="center">Symbol</TableCell>
-                    <TableCell align="center">Quantity</TableCell>
-                    <TableCell align="center">Quote (USD)</TableCell>
-                    <TableCell align="center">Total Value (USD)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {tradeDetails.map((trade) => (
+              <TableContainer
+                style={{
+                  maxHeight: 448,
+                }}
+              >
+                <Table stickyHeader>
+                  <TableHead>
                     <TableRow>
-                      <TableCell align="center">
-                        {dayjs(trade.date).format("MMM DD YYYY HH:mm")}
-                      </TableCell>
-                      <TableCell align="center">{trade.type}</TableCell>
-                      <TableCell align="center">{trade.symbol}</TableCell>
-                      <TableCell align="center">
-                        {Math.abs(trade.quantity)}
-                      </TableCell>
-                      <TableCell align="center">{trade.quote}</TableCell>
-                      <TableCell align="center">
-                        <PriceWrapper>
-                          <PriceTypography
-                            variant="body1"
-                            quantity={trade.quantity}
-                          >
-                            {`${trade.quantity > 0 ? "-" : "+"}${Math.abs(
-                              trade.total
-                            ).toFixed(2)}`}
-                          </PriceTypography>
-                        </PriceWrapper>
-                      </TableCell>
+                      <TableCell align="center">Date</TableCell>
+                      <TableCell align="center">Trade Type</TableCell>
+                      <TableCell align="center">Symbol</TableCell>
+                      <TableCell align="center">Quantity</TableCell>
+                      <TableCell align="center">Quote (USD)</TableCell>
+                      <TableCell align="center">Total Value (USD)</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {tradeDetails.map((trade) => (
+                      <TableRow>
+                        <TableCell align="center">
+                          {dayjs(trade.date).format("MMM DD YYYY HH:mm")}
+                        </TableCell>
+                        <TableCell align="center">{trade.type}</TableCell>
+                        <TableCell align="center">{trade.symbol}</TableCell>
+                        <TableCell align="center">
+                          {Math.abs(trade.quantity)}
+                        </TableCell>
+                        <TableCell align="center">{trade.quote}</TableCell>
+                        <TableCell align="center">
+                          <PriceWrapper>
+                            <PriceTypography
+                              variant="body1"
+                              quantity={trade.quantity}
+                            >
+                              {`${trade.quantity > 0 ? "-" : "+"}${Math.abs(
+                                trade.total
+                              ).toFixed(2)}`}
+                            </PriceTypography>
+                          </PriceWrapper>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             )
           )}
         </Box>
