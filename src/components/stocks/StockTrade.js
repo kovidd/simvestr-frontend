@@ -35,7 +35,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
 
   var availableUnits = 0;
   Object.entries(portfolio.portfolio).map(async function ([k, v]) {
-    if (symbol === portfolio.portfolio[k].stock) {
+    if (symbol === portfolio.portfolio[k].symbol) {
       availableUnits = portfolio.portfolio[k].quantity;
     }
   });
