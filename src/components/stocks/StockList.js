@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Box, CircularProgress } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { StockSearch } from "./StockSearch";

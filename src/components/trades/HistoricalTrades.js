@@ -15,6 +15,7 @@ import {
 import { MainWrapper } from "../ui";
 import { getTrades } from "../../services/trades";
 import { NotificationContext } from "../ui/Notification";
+import { formatCurrency } from "../../helpers";
 
 const PriceWrapper = styled.div`
   display: flex;
@@ -87,8 +88,8 @@ export const HistoricalTrades = () => {
                       <TableCell align="center">Trade Type</TableCell>
                       <TableCell align="center">Symbol</TableCell>
                       <TableCell align="center">Quantity</TableCell>
-                      <TableCell align="center">Quote (USD)</TableCell>
-                      <TableCell align="center">Total Value (USD)</TableCell>
+                      <TableCell align="center">Quote</TableCell>
+                      <TableCell align="center">Total Value</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -102,16 +103,20 @@ export const HistoricalTrades = () => {
                         <TableCell align="center">
                           {Math.abs(trade.quantity)}
                         </TableCell>
-                        <TableCell align="center">{trade.quote}</TableCell>
+                        <TableCell align="center">
+                          {formatCurrency(trade.quote)}
+                        </TableCell>
                         <TableCell align="center">
                           <PriceWrapper>
                             <PriceTypography
                               variant="body1"
                               quantity={trade.quantity}
                             >
-                              {`${trade.quantity > 0 ? "-" : "+"}${Math.abs(
-                                trade.total
-                              ).toFixed(2)}`}
+                              {`${
+                                trade.quantity > 0 ? "-" : "+"
+                              }${formatCurrency(
+                                Math.abs(trade.total).toFixed(2)
+                              )}`}
                             </PriceTypography>
                           </PriceWrapper>
                         </TableCell>

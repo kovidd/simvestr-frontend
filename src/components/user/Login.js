@@ -43,7 +43,7 @@ const LoginForm = () => {
     } else {
       setNotification({
         open: true,
-        message: res.message,
+        message: `Invalid login, please retry.`,
       });
     }
   };

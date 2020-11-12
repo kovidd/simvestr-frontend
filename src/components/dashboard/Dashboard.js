@@ -4,7 +4,6 @@ import {
   Box,
   Grid,
   Paper,
-  Button,
   Typography,
   Table,
   TableHead,
@@ -18,7 +17,6 @@ import {
   PortfolioContext,
   getPortfolioDetails,
 } from "../../services/portfolio";
-import { stockDetails } from "../../services/stock";
 import {
   changeArrow,
   formatCurrency,

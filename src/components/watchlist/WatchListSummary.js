@@ -17,6 +17,7 @@ import { MainWrapper } from "../ui";
 import { getWatchlist, removeStock } from "../../services/watchlist";
 import { WatchlistRemoveConfirmation } from "./WatchListConfirmation";
 import { NotificationContext } from "../ui/Notification";
+import { formatCurrency } from "../../helpers";
 
 const PriceWrapper = styled.div`
   display: flex;
@@ -118,8 +119,8 @@ export const WatchListSummary = () => {
                     <TableRow>
                       <TableCell align="center">Symbol</TableCell>
                       <TableCell align="center">Company</TableCell>
-                      <TableCell align="center">Current Price (USD)</TableCell>
-                      <TableCell align="center">Close Price (USD)</TableCell>
+                      <TableCell align="center">Current Price</TableCell>
+                      <TableCell align="center">Close Price</TableCell>
                       <TableCell align="center">Day Change</TableCell>
                       <TableCell align="center"> </TableCell>
                       <TableCell align="center"> </TableCell>
@@ -132,8 +133,12 @@ export const WatchListSummary = () => {
                           {stock.symbol}
                         </TableCell>
                         <TableCell align="center">{stock.name}</TableCell>
-                        <TableCell align="center">{stock.c}</TableCell>
-                        <TableCell align="center">{stock.pc}</TableCell>
+                        <TableCell align="center">
+                          {formatCurrency(stock.c)}
+                        </TableCell>
+                        <TableCell align="center">
+                          {formatCurrency(stock.pc)}
+                        </TableCell>
                         <TableCell align="center">
                           <PriceWrapper>
                             <PriceTypography
