@@ -11,10 +11,9 @@ export function leaderboardPosition() {
 
 /**
  * Gets details of the top <leaderCount> highest value portfolio
- * @param {integer} leaderCount
- * @return {Promise<string[{id: integer, name: string, user: string, value: integer}]>}
+ * @return {Promise<string[{id: integer, position: integer, name: string, user: string, value: float}]>}
  */
-export function leaderboardLeaders(leaderCount = 6) {
-  const path = `/leaderboard/top/${leaderCount}`;
+export function leaderboardAll() {
+  const path = `/leaderboard/all`;
   return GETRequest(path);
 }

@@ -1,30 +1,24 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-
+import React, { useState, useEffect, useContext } from "react";
 import {
   Table,
   TableBody,
   TableContainer,
-  Paper,
   Box,
   Typography,
+  Button,
 } from "@material-ui/core";
-
 import { MainWrapper } from "../ui";
-
 import Portfolio from "./Portfolio";
 import {
   leaderboardPosition,
-  leaderboardLeaders,
+  leaderboardAll,
 } from "../../services/leaderboard";
-
-const StyledH3 = styled.h3`
-  font-size: 26px;
-`;
+import { NotificationContext } from "../ui/Notification";
 
 export const LeaderBoard = () => {
   const [positionText, setText] = useState("");
   const [leaders, setLeaders] = useState([]);
+  const { setNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     async function getLeaderboardPosition() {
@@ -32,49 +26,85 @@ export const LeaderBoard = () => {
       if (!res.error) {
         setText(res.data);
       } else {
-        console.error("error getting the portfolio details");
+        setNotification({
+          open: true,
+          message: `Error getting leader board position`,
+        });
       }
     }
     getLeaderboardPosition();
-  }, []);
+  }, [setNotification]);
 
   useEffect(() => {
     async function getLeaders() {
-      const res = await leaderboardLeaders();
+      const res = await leaderboardAll();
       if (!res.error) {
         var leaders = res.data;
-        leaders.sort((a, b) => (a.value < b.value ? 1 : -1));
+        leaders.sort((a, b) => (a.position > b.position ? 1 : -1));
         setLeaders(leaders);
       } else {
-        console.error("error getting the portfolio details");
+        setNotification({
+          open: true,
+          message: `Error loading leader board.`,
+        });
       }
     }
     getLeaders();
-  }, [leaders]);
+  }, [setNotification]);
+
+  const portfolioLeadersRef = React.createRef();
+
+  const scrollToPortfolio = () => {
+    const ITEM_HEIGHT = 64;
+    const NUM_OF_ITEMS = 7;
+    const amountToScroll =
+      ITEM_HEIGHT *
+      (positionText.slice(0, -2) - Math.floor(NUM_OF_ITEMS / 2) - 1);
+    portfolioLeadersRef.current.scrollTo(0, amountToScroll);
+  };
 
   return (
     <MainWrapper>
       <Box height="100%" alignItems="center" p="2rem" paddingTop="0">
         <div align="center">
-          <Typography variant="h2" align="center">
+          <Typography variant="h4" align="center">
             Simvestr Leader Board
           </Typography>
-          <StyledH3>You are currently in {positionText} position</StyledH3>
+          <Typography variant="h6" align="center">
+            You are currently in {positionText} position
+          </Typography>
           <div>
-            {leaders.map((item, index) => (
-              <TableContainer component={Paper}>
+            <TableContainer
+              ref={portfolioLeadersRef}
+              style={{
+                maxHeight: 448,
+                border: "2px solid #e4e4e4",
+              }}
+            >
+              {leaders.map((item, index) => (
                 <Table aria-label="simple table">
-                  <TableBody key={item.id}>
+                  <TableBody key={index}>
                     <Portfolio
-                      position={index + 1}
+                      position={item.position}
                       user={item.user}
                       name={item.name}
                       value={item.value}
+                      thisUser={item.position === positionText.slice(0, -2)}
                     />
                   </TableBody>
                 </Table>
-              </TableContainer>
-            ))}
+              ))}
+            </TableContainer>
+            <Button
+              variant="outlined"
+              color="primary"
+              style={{ bottom: "-15px" }}
+              onClick={() => {
+                scrollToPortfolio();
+              }}
+            >
+              My Portfolio
+            </Button>
           </div>
         </div>
       </Box>

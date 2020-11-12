@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, CircularProgress } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { stockDetails } from "../../services/stock";
 import { useParams } from "react-router-dom";
 import { StockDetails } from "../stocks/StockDetails";
+import { NotificationContext } from "../ui/Notification";
 
 export const WatchListDetails = () => {
   let { symbol } = useParams();
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { setNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     async function getStockDetails(symbol) {
@@ -31,12 +33,15 @@ export const WatchListDetails = () => {
             ) * 100,
         });
       } else {
-        console.error("error getting the stock details");
+        setNotification({
+          open: true,
+          message: `Error getting the stock details.`,
+        });
       }
       setIsLoading(false);
     }
     getStockDetails(symbol);
-  }, [setIsLoading, symbol]);
+  }, [setIsLoading, setNotification, symbol]);
 
   return (
     <MainWrapper>

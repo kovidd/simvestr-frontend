@@ -17,6 +17,7 @@ import {
   getPortfolioDetails,
 } from "../../services/portfolio";
 import { logout } from "../../services/user";
+import { NotificationContext } from "../ui/Notification";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -57,6 +58,7 @@ export const Homepage = () => {
   const { user, setUser } = useContext(UserContext);
   const { setPortfolio } = useContext(PortfolioContext);
   const [terminal, setTerminal] = useState([initialTerminal]);
+  const { setNotification } = useContext(NotificationContext);
 
   const updateTerminalAtIndex = (index, newValue) => {
     const newTerminal = terminal.map((el, innerIndex) =>
@@ -83,6 +85,11 @@ export const Homepage = () => {
         apiToken: null,
       });
       history.push("/login");
+    } else {
+      setNotification({
+        open: true,
+        message: `Error logging out.`,
+      });
     }
   };
 
@@ -95,10 +102,15 @@ export const Homepage = () => {
           lastName: res.data.last_name,
           email: res.data.email_id,
         });
+      } else {
+        setNotification({
+          open: true,
+          message: `Error getting user details.`,
+        });
       }
     }
     getUserDetails();
-  }, [setUser]);
+  }, [setUser, setNotification]);
 
   useEffect(() => {
     getPortfolioDetails(setPortfolio);
@@ -143,6 +155,13 @@ export const Homepage = () => {
           onClick={() => history.push("/watchlist")}
         >
           <StyledListItemText>{`Watchlist`}</StyledListItemText>
+        </StyledListItem>
+        <StyledListItem
+          button
+          disableGutters
+          onClick={() => history.push("/trades")}
+        >
+          <StyledListItemText>{`Historical Trades`}</StyledListItemText>
         </StyledListItem>
         <StyledListItem
           button
@@ -203,6 +222,11 @@ export const Homepage = () => {
                               history.push("/");
                             } else if (search.toLowerCase() === "watchlist") {
                               history.push("/watchlist");
+                            } else if (
+                              search.toLowerCase() === "historical trades" ||
+                              search.toLowerCase() === "trades"
+                            ) {
+                              history.push("/trades");
                             } else if (search.toLowerCase() === "leaderboard") {
                               history.push("/leaderboard");
                             } else if (search.toLowerCase() === "settings") {
@@ -210,7 +234,7 @@ export const Homepage = () => {
                             } else {
                               updateTerminalAtIndexAndPushNew(index, {
                                 search,
-                                result: "awesome!",
+                                result: "Awesome!",
                                 isNew: false,
                               });
                             }

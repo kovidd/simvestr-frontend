@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { throttle } from "throttle-debounce";
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { stockDetails, searchStockByName } from "../../services/stock";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
+import { NotificationContext } from "../ui/Notification";
 
 export const StockSearch = ({ setDetails, setIsLoading }) => {
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
+  const { setNotification } = useContext(NotificationContext);
 
   const getOptions = async (name) => {
     const res = await searchStockByName(name);
@@ -20,7 +22,7 @@ export const StockSearch = ({ setDetails, setIsLoading }) => {
         name: item.name,
       }));
     } else {
-      console.error("Error searching for the stocks");
+      console.error("Error searching for stocks.");
       return null;
     }
   };
@@ -67,7 +69,10 @@ export const StockSearch = ({ setDetails, setIsLoading }) => {
           });
         } else {
           setDetails(null);
-          console.error("error getting the stock details");
+          setNotification({
+            open: true,
+            message: `Error getting stock details for ${stockSymbol}.`,
+          });
         }
         setIsLoading(false);
       }
@@ -83,7 +88,14 @@ export const StockSearch = ({ setDetails, setIsLoading }) => {
     return () => {
       active = false;
     };
-  }, [value, inputValue, handleSearch, setDetails, setIsLoading]);
+  }, [
+    value,
+    inputValue,
+    handleSearch,
+    setDetails,
+    setIsLoading,
+    setNotification,
+  ]);
 
   return (
     <Autocomplete

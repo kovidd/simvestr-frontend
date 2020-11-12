@@ -16,8 +16,9 @@ export const PortfolioContext = React.createContext({
  * @return {Promise<{ data: {portfolio_name: string; balance: number; total_value: string; portfolio: object}}>} A list of all the stock tickers
  */
 export function portfolioDetails() {
-  const path = `/viewportfolio/user`;
-  return GETRequest(path);
+  let options = { headers: { "Content-Type": "application/text" } };
+  const path = `/portfolio/user?averagemode=moving`;
+  return GETRequest(path, options);
 }
 
 /*
