@@ -143,6 +143,13 @@ export const Homepage = () => {
         <StyledListItem
           button
           disableGutters
+          onClick={() => history.push("/trades")}
+        >
+          <StyledListItemText>{`Historical Trades`}</StyledListItemText>
+        </StyledListItem>
+        <StyledListItem
+          button
+          disableGutters
           onClick={() => history.push("/leaderboard")}
         >
           <StyledListItemText>{`Leaderboard`}</StyledListItemText>
@@ -199,6 +206,11 @@ export const Homepage = () => {
                               history.push("/");
                             } else if (search.toLowerCase() === "watchlist") {
                               history.push("/watchlist");
+                            } else if (
+                              search.toLowerCase() === "historical trades" ||
+                              search.toLowerCase() === "trades"
+                            ) {
+                              history.push("/trades");
                             } else if (search.toLowerCase() === "leaderboard") {
                               history.push("/leaderboard");
                             } else if (search.toLowerCase() === "settings") {
