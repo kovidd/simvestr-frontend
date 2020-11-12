@@ -99,6 +99,7 @@ export const Dashboard = () => {
                       <TableCell align="right">Change %</TableCell>
                       <TableCell align="right">Average Price</TableCell>
                       <TableCell align="right">Current Value</TableCell>
+                      <TableCell align="right">Total Paid</TableCell>
                       <TableCell align="right">Total Return</TableCell>
                     </TableRow>
                   </TableHead>
@@ -108,7 +109,7 @@ export const Dashboard = () => {
                       <TableCell align="right">
                         {formatCurrency(portfolio.balance)}
                       </TableCell>
-                      <TableCell colSpan={1}></TableCell>
+                      <TableCell colSpan={2}></TableCell>
                     </TableRow>
                     {portfolio.portfolio.map((stock) => {
                       const changePerc = getQuoteChangePerc(
@@ -140,6 +141,9 @@ export const Dashboard = () => {
                           </TableCell>
                           <TableCell align="right">
                             {formatCurrency(stock.value)}
+                          </TableCell>
+                          <TableCell align="right">
+                            {formatCurrency(stock.buy.total)}
                           </TableCell>
                           <PriceTableCell align="right" change={totalReturn}>
                             {`${formatCurrency(totalReturn)} (${formatPerc(
