@@ -41,19 +41,20 @@ export const WatchListSummary = () => {
     async function getWatchListDetails() {
       const res = await getWatchlist();
       if (!res.error) {
-        Object.entries(res.data).map(async function ([k, v]) {
+        console.log(res);
+        Object.entries(res.data.watchlist).map(async function ([k, v]) {
           setWatchedStocksDetails((oldWatchedStocksDetails) => [
             ...oldWatchedStocksDetails,
             {
-              symbol: res.data[k].symbol,
-              name: res.data[k].name,
-              c: res.data[k].quote.c,
-              pc: res.data[k].quote.pc,
-              change: res.data[k].quote.c - res.data[k].quote.pc,
+              symbol: res.data.watchlist[k].symbol,
+              name: res.data.watchlist[k].name,
+              c: res.data.watchlist[k].c,
+              pc: res.data.watchlist[k].pc,
+              change: res.data.watchlist[k].c - res.data.watchlist[k].pc,
               changePerc:
                 Math.abs(
-                  (res.data[k].quote.c - res.data[k].quote.pc) /
-                    res.data[k].quote.pc
+                  (res.data.watchlist[k].c - res.data.watchlist[k].pc) /
+                    res.data.watchlist[k].pc
                 ) * 100,
             },
           ]);

@@ -21,12 +21,14 @@ import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
+import { HistoricalTrades } from "./trades/HistoricalTrades";
 import { LeaderBoard } from "./leaderboard/LeaderBoard";
 import { WatchListSummary } from "./watchlist/WatchListSummary";
 import { WatchListDetails } from "./watchlist/WatchListDetails";
 import { AccountSettings } from "./settings/AccountSettings";
 import { PersonalDetails } from "./settings/PersonalDetails";
 import { Password } from "./settings/Password";
+import { Export } from "./settings/Export";
 
 // Contexts
 import { AuthContext } from "../services/api";
@@ -99,6 +101,7 @@ const Main = () => {
                   path="/watchlist/:symbol"
                   component={WatchListDetails}
                 />
+                <AuthenticatedRoute path="/trades" component={HistoricalTrades} />
                 <AuthenticatedRoute
                   path="/leaderboard"
                   component={LeaderBoard}
@@ -119,6 +122,11 @@ const Main = () => {
                   path="/settings/password"
                   component={Password}
                 />
+                <AuthenticatedRoute
+                exact
+                path="/settings/export"
+                component={Export}
+              />
                 <AuthenticatedRoute
                   exact
                   path="/settings/terms-and-conditions-settings"

@@ -22,7 +22,7 @@ const ResetPasswordForm = () => {
   const onSubmit = async (data) => {
     // submit the reset password form
     const body = {
-      email_id: data.email,
+      email: data.email,
       password: data.password,
       OTP: data.otp,
     };

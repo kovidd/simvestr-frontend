@@ -16,13 +16,13 @@ export function signup(payload) {
 }
 
 export function login(payload) {
-  const path = "/token";
+  const path = "/login";
   return POSTRequest(path, payload);
 }
 
 export function forgotPassword(payload) {
   let options = { headers: { "Content-Type": "application/text" } };
-  const path = `/forgotuser?email_id=${payload.email_id}`;
+  const path = `/forgotuser?email=${payload.email}`;
   return GETRequest(path, options);
 }
 
@@ -32,7 +32,7 @@ export function resetPassword(payload) {
 }
 
 export function userDetails() {
-  const path = "/verifytoken";
+  const path = "/user/info";
   return GETRequest(path);
 }
 

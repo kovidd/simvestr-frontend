@@ -46,7 +46,7 @@ export async function POSTRequest(path, payload, options) {
         } else {
           return { error: false };
         }
-      } else if (res.url === `${API}/token`) {
+      } else if (res.url === `${API}/login`) {
         if (hasJSONResponse(res)) {
           return { error: false };
         } else {

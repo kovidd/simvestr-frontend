@@ -10,7 +10,7 @@ import {
   Link,
 } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
-import { login, userDetails } from "../../services/user";
+import { login } from "../../services/user";
 import { AuthContext } from "../../services/api";
 import { useHistory } from "react-router-dom";
 
