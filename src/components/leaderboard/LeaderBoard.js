@@ -28,7 +28,7 @@ const Button = styled.button`
 `;
 
 export const LeaderBoard = () => {
-  const [positionText, setText] = useState("");
+  const [positionText, setText] = useState({ "nominal": null, "ordinal": "" });
   const [leaders, setLeaders] = useState([]);
 
   useEffect(() => {
@@ -48,7 +48,12 @@ export const LeaderBoard = () => {
       const res = await leaderboardAll();
       if (!res.error) {
         var leaders = res.data;
-        leaders.sort((a, b) => (a.value < b.value ? 1 : -1));
+        leaders.sort((a, b) => {
+          if (a.value === b.value) {
+            return a.id < b.id ? 1 : -1;
+          }
+          return a.value < b.value ? 1 : -1;
+        });
         setLeaders(leaders);
       } else {
         console.error("error getting the portfolio details");
@@ -62,7 +67,7 @@ export const LeaderBoard = () => {
   const scrollToPortfolio = () => {
     const ITEM_HEIGHT = 64;
     const NUM_OF_ITEMS = 7;
-    const amountToScroll = ITEM_HEIGHT * (positionText.slice(0, -2) - Math.floor(NUM_OF_ITEMS / 2) - 1);
+    const amountToScroll = ITEM_HEIGHT * (positionText["nominal"] - Math.floor(NUM_OF_ITEMS / 2) - 1);
     portfolioLeadersRef.current.scrollTo(0, amountToScroll);
   }
 
@@ -73,7 +78,7 @@ export const LeaderBoard = () => {
           <Typography variant="h2" align="center">
             Simvestr Leader Board
           </Typography>
-          <StyledH3>You are currently in {positionText} position</StyledH3>
+          <StyledH3>You are currently in {positionText["ordinal"]} position</StyledH3>
           <div >
             <TableContainer ref={portfolioLeadersRef} style={{ maxHeight: 448, border: "2px solid #e4e4e4" }}>
               {leaders.map((item, index) => (
@@ -84,7 +89,7 @@ export const LeaderBoard = () => {
                       user={item.user}
                       name={item.name}
                       value={item.value}
-                      thisUser={item.position == positionText.slice(0, -2)}
+                      thisUser={positionText["nominal"] == (index+1)}
                     />
                   </TableBody>
                 </Table>
