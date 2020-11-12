@@ -44,7 +44,7 @@ export const StockList = () => {
 
   return (
     <MainWrapper>
-      <Box width="50vw">
+      <Box>
         <StockSearch />
         {isLoading ? (
           <Box
