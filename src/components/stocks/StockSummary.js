@@ -9,6 +9,8 @@ import {
   TableBody,
 } from "@material-ui/core";
 
+import { formatCurrency } from "../../helpers";
+
 const StyledTableCell = styled(TableCell)`
   background-color: #eee;
   /* color: ${(props) => props.theme.palette.secondary.contrastText}; */
@@ -36,7 +38,7 @@ export const StockSummary = ({ details }) => (
         {Object.entries(quoteText).map(([key, text]) => (
           <TableRow key={key}>
             <TableCell>{text}</TableCell>
-            <TableCell>{details.quote[key]}</TableCell>
+            <TableCell>{formatCurrency(details.quote[key])}</TableCell>
           </TableRow>
         ))}
         <TableRow>

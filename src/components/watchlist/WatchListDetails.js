@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { Box, CircularProgress } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { stockDetails } from "../../services/stock";
-import { useParams } from "react-router-dom";
 import { StockDetails } from "../stocks/StockDetails";
 import { NotificationContext } from "../ui/Notification";
 

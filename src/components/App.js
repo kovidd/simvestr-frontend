@@ -21,6 +21,7 @@ import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
 import { StockList } from "./stocks/StockList";
+import { Dashboard } from "./dashboard/Dashboard";
 import { HistoricalTrades } from "./trades/HistoricalTrades";
 import { LeaderBoard } from "./leaderboard/LeaderBoard";
 import { WatchListSummary } from "./watchlist/WatchListSummary";
@@ -53,7 +54,7 @@ const Main = () => {
     name: "",
     balance: 0,
     totalValue: 0,
-    portfolio: {},
+    portfolio: [],
   });
 
   const [notification, setNotification] = useState({
@@ -90,7 +91,13 @@ const Main = () => {
                   path="/resetpassword"
                   component={ResetPassword}
                 />
+                <AuthenticatedRoute
+                  exact
+                  path="/stocks/:symbol"
+                  component={StockList}
+                />
                 <AuthenticatedRoute path="/stocks" component={StockList} />
+                <AuthenticatedRoute path="/dashboard" component={Dashboard} />
                 <AuthenticatedRoute
                   exact
                   path="/watchlist"
@@ -101,7 +108,10 @@ const Main = () => {
                   path="/watchlist/:symbol"
                   component={WatchListDetails}
                 />
-                <AuthenticatedRoute path="/trades" component={HistoricalTrades} />
+                <AuthenticatedRoute
+                  path="/trades"
+                  component={HistoricalTrades}
+                />
                 <AuthenticatedRoute
                   path="/leaderboard"
                   component={LeaderBoard}
@@ -123,10 +133,10 @@ const Main = () => {
                   component={Password}
                 />
                 <AuthenticatedRoute
-                exact
-                path="/settings/export"
-                component={Export}
-              />
+                  exact
+                  path="/settings/export"
+                  component={Export}
+                />
                 <AuthenticatedRoute
                   exact
                   path="/settings/terms-and-conditions-settings"
