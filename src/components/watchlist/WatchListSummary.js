@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -15,6 +15,7 @@ import {
 import { MainWrapper } from "../ui";
 import { getWatchlist, removeStock } from "../../services/watchlist";
 import { WatchlistRemoveConfirmation } from "./WatchListConfirmation";
+import { NotificationContext } from "../ui/Notification";
 
 const PriceWrapper = styled.div`
   display: flex;
@@ -36,12 +37,12 @@ export const WatchListSummary = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [stockRemove, setStockRemove] = useState("");
+  const { setNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     async function getWatchListDetails() {
       const res = await getWatchlist();
       if (!res.error) {
-        console.log(res);
         Object.entries(res.data.watchlist).map(async function ([k, v]) {
           setWatchedStocksDetails((oldWatchedStocksDetails) => [
             ...oldWatchedStocksDetails,
@@ -59,6 +60,11 @@ export const WatchListSummary = () => {
             },
           ]);
         });
+      } else {
+        setNotification({
+          open: true,
+          message: `Error loading watchlist.`,
+        });
       }
     }
     getWatchListDetails();
@@ -71,10 +77,16 @@ export const WatchListSummary = () => {
       const del = watchedStocksDetails.filter(
         (stock) => stockRemove !== stock.symbol
       );
-      console.log(del);
       setWatchedStocksDetails(del);
+      setNotification({
+        open: true,
+        message: `${stockRemove} removed from watchlist.`,
+      });
     } else {
-      console.log("error removing from watchlist");
+      setNotification({
+        open: true,
+        message: `Error removing ${stockRemove} from watchlist.`,
+      });
     }
     setOpen(false);
   };

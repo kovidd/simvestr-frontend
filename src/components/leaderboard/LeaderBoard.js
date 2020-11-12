@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-
 import {
   Table,
   TableBody,
@@ -10,22 +9,18 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-
 import { MainWrapper } from "../ui";
-
 import Portfolio from "./Portfolio";
 import {
   leaderboardPosition,
   leaderboardAll,
 } from "../../services/leaderboard";
-
-const StyledH3 = styled.h3`
-  font-size: 26px;
-`;
+import { NotificationContext } from "../ui/Notification";
 
 export const LeaderBoard = () => {
   const [positionText, setText] = useState("");
   const [leaders, setLeaders] = useState([]);
+  const { setNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     async function getLeaderboardPosition() {
@@ -33,7 +28,10 @@ export const LeaderBoard = () => {
       if (!res.error) {
         setText(res.data);
       } else {
-        console.error("error getting the portfolio details");
+        setNotification({
+          open: true,
+          message: `Error getting leader board position`,
+        });
       }
     }
     getLeaderboardPosition();
@@ -47,7 +45,10 @@ export const LeaderBoard = () => {
         leaders.sort((a, b) => (a.position > b.position ? 1 : -1));
         setLeaders(leaders);
       } else {
-        console.error("error getting the portfolio details");
+        setNotification({
+          open: true,
+          message: `Error loading leader board.`,
+        });
       }
     }
     getLeaders();

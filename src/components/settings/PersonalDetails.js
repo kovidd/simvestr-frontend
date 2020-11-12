@@ -5,10 +5,12 @@ import { useForm } from "react-hook-form";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
 import { changeName, UserContext, userDetails } from "../../services/user";
+import { NotificationContext } from "../ui/Notification";
 
 const PersonalDetailsForm = () => {
   const history = useHistory();
   const { user, setUser } = useContext(UserContext);
+  const { setNotification } = useContext(NotificationContext);
 
   const { register, handleSubmit, errors } = useForm({
     mode: "onBlur",
@@ -17,8 +19,6 @@ const PersonalDetailsForm = () => {
       lastName: user.lastName,
     },
   });
-
-  const [message, setMessage] = useState("");
 
   const onSubmit = async (data) => {
     // submit the change personal details
@@ -29,7 +29,10 @@ const PersonalDetailsForm = () => {
     };
     const res = await changeName(body);
     if (!res.error) {
-      setMessage("Personal details updated.");
+      setNotification({
+        open: true,
+        message: `Personal details updated.`,
+      });
       const res = await userDetails();
       if (!res.error) {
         setUser({
@@ -39,20 +42,15 @@ const PersonalDetailsForm = () => {
         });
       }
     } else {
-      setMessage("Failed to update personal details.");
+      setNotification({
+        open: true,
+        message: `Failed to update personal details.`,
+      });
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        color="#007f7f"
-        fontSize="h5.fontSize"
-      >
-        {message}
-      </Box>
       <Typography varaint="body2" align="center">
         Update your personal details here.
       </Typography>

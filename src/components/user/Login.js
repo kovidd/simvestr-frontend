@@ -13,9 +13,11 @@ import { MainWrapper, FormErrorMessage } from "../ui";
 import { login } from "../../services/user";
 import { AuthContext } from "../../services/api";
 import { useHistory } from "react-router-dom";
+import { NotificationContext } from "../ui/Notification";
 
 const LoginForm = () => {
   const history = useHistory();
+  const { setNotification } = useContext(NotificationContext);
 
   const { register, handleSubmit, errors } = useForm({
     mode: "onBlur",
@@ -25,8 +27,6 @@ const LoginForm = () => {
     },
   });
   const { auth, setAuth } = useContext(AuthContext);
-
-  const [message, setMessage] = useState("");
 
   const onSubmit = async (data) => {
     // submit the login
@@ -38,26 +38,18 @@ const LoginForm = () => {
     if (!res.error) {
       setAuth({
         isAuthenticated: true,
-        //  apiToken: res.data.token,
       });
-      //   const resp = await userDetails();
-      //   console.log(resp);
       history.push("/");
     } else {
-      setMessage(res.message);
+      setNotification({
+        open: true,
+        message: res.message,
+      });
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        color="#007f7f"
-        fontSize="h5.fontSize"
-      >
-        {message}
-      </Box>
       <Typography variant="h2" align="center">
         Simvestr
       </Typography>

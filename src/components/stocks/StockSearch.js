@@ -22,7 +22,7 @@ export const StockSearch = ({ setDetails, setIsLoading }) => {
         name: item.name,
       }));
     } else {
-      console.error("Error searching for the stocks");
+      console.error("Error searching for stocks.");
       return null;
     }
   };
@@ -71,7 +71,7 @@ export const StockSearch = ({ setDetails, setIsLoading }) => {
           setDetails(null);
           setNotification({
             open: true,
-            message: `Error getting to details for ${stockSymbol}`,
+            message: `Error getting stock details for ${stockSymbol}.`,
           });
         }
         setIsLoading(false);

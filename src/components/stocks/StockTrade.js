@@ -18,6 +18,7 @@ import {
 } from "../../services/portfolio";
 import { StockTradeConfirmation } from "./StockTradeConfirmation";
 import { marketOrder } from "../../services/stock";
+import { NotificationContext } from "../ui/Notification";
 
 const amountTypes = {
   quantity: "quantity",
@@ -32,6 +33,7 @@ const tradeTypes = {
 export const StockTrade = ({ symbol, quotePrice }) => {
   const [open, setOpen] = useState(false);
   const { portfolio, setPortfolio } = useContext(PortfolioContext);
+  const { setNotification } = useContext(NotificationContext);
 
   var availableUnits = 0;
   Object.entries(portfolio.portfolio).map(async function ([k, v]) {
@@ -81,8 +83,15 @@ export const StockTrade = ({ symbol, quotePrice }) => {
       await getPortfolioDetails(setPortfolio);
       setOpen(false);
       setAmount("");
+      setNotification({
+        open: true,
+        message: `Trade executed successfully.`,
+      });
     } else {
-      console.error("Error executing the trade");
+      setNotification({
+        open: true,
+        message: `Error executing the trade.`,
+      });
     }
   };
 

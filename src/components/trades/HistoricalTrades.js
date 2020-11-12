@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import * as dayjs from "dayjs";
 import styled from "styled-components";
@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { getTrades } from "../../services/trades";
+import { NotificationContext } from "../ui/Notification";
 
 const PriceWrapper = styled.div`
   display: flex;
@@ -33,12 +34,12 @@ const PriceTypography = styled(Typography)`
 export const HistoricalTrades = () => {
   const [tradeDetails, setTradeDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { setNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     async function getHistoricalTrades() {
       const res = await getTrades();
       if (!res.error) {
-        console.log(res);
         Object.entries(res.data.transactions).map(async function ([k, v]) {
           setTradeDetails((oldTradeDetails) => [
             ...oldTradeDetails,
@@ -53,6 +54,11 @@ export const HistoricalTrades = () => {
                 res.data.transactions[k].quote,
             },
           ]);
+        });
+      } else {
+        setNotification({
+          open: true,
+          message: `Error loading historical trades.`,
         });
       }
     }

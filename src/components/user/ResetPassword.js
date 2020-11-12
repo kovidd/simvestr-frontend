@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../index.css";
 import { useForm } from "react-hook-form";
 import {
@@ -11,13 +11,13 @@ import {
 } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
 import { resetPassword } from "../../services/user";
+import { NotificationContext } from "../ui/Notification";
 
 const ResetPasswordForm = () => {
   const { register, handleSubmit, errors, getValues } = useForm({
     mode: "onBlur",
   });
-
-  const [message, setMessage] = useState("");
+  const { setNotification } = useContext(NotificationContext);
 
   const onSubmit = async (data) => {
     // submit the reset password form
@@ -28,9 +28,15 @@ const ResetPasswordForm = () => {
     };
     const res = await resetPassword(body);
     if (!res.error) {
-      setMessage("Password reset successful.");
+      setNotification({
+        open: true,
+        message: `Password reset successful.`,
+      });
     } else {
-      setMessage(res.message);
+      setNotification({
+        open: true,
+        message: res.message,
+      });
     }
   };
 
@@ -39,14 +45,6 @@ const ResetPasswordForm = () => {
       <Typography>
         <Link href="./">Back to Login Page</Link>
       </Typography>
-      <Box
-        display="flex"
-        justifyContent="center"
-        color="#007f7f"
-        fontSize="h5.fontSize"
-      >
-        {message}
-      </Box>
       <Typography variant="h2" align="center">
         Simvestr
       </Typography>

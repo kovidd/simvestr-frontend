@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box, Grid, Button } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { exportPortfolio } from "../../services/export";
+import { NotificationContext } from "../ui/Notification";
 
 const StyledH3 = styled.h3`
   font-size: 26px;
@@ -21,15 +22,21 @@ const StyledP = styled.p`
 
 export const Export = () => {
   const history = useHistory();
-  const [apiMessage, setAPIMessage] = useState({ message: "." });
+  const { setNotification } = useContext(NotificationContext);
+
   const beginExport = () => {
     async function callExportfolio() {
       const res = await exportPortfolio();
       if (!res.error) {
-        console.log(res);
-        setAPIMessage({ message: res.data });
+        setNotification({
+          open: true,
+          message: `Portfolio exported successfully.`,
+        });
       } else {
-        setAPIMessage({ message: "error downloading portfolio" });
+        setNotification({
+          open: true,
+          message: `Error exporting portfolio.`,
+        });
       }
     }
     callExportfolio();

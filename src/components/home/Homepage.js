@@ -17,6 +17,7 @@ import {
   getPortfolioDetails,
 } from "../../services/portfolio";
 import { logout } from "../../services/user";
+import { NotificationContext } from "../ui/Notification";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -57,6 +58,7 @@ export const Homepage = () => {
   const { user, setUser } = useContext(UserContext);
   const { setPortfolio } = useContext(PortfolioContext);
   const [terminal, setTerminal] = useState([initialTerminal]);
+  const { setNotification } = useContext(NotificationContext);
 
   const updateTerminalAtIndex = (index, newValue) => {
     const newTerminal = terminal.map((el, innerIndex) =>
@@ -83,6 +85,11 @@ export const Homepage = () => {
         apiToken: null,
       });
       history.push("/login");
+    } else {
+      setNotification({
+        open: true,
+        message: `Error logging out.`,
+      });
     }
   };
 
@@ -94,6 +101,11 @@ export const Homepage = () => {
           firstName: res.data.first_name,
           lastName: res.data.last_name,
           email: res.data.email_id,
+        });
+      } else {
+        setNotification({
+          open: true,
+          message: `Error getting user details.`,
         });
       }
     }
@@ -218,7 +230,7 @@ export const Homepage = () => {
                             } else {
                               updateTerminalAtIndexAndPushNew(index, {
                                 search,
-                                result: "awesome!",
+                                result: "Awesome!",
                                 isNew: false,
                               });
                             }
