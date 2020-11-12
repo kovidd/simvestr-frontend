@@ -91,9 +91,13 @@ const Main = () => {
                   path="/resetpassword"
                   component={ResetPassword}
                 />
-                <Route exact path="/stocks/:symbol" component={StockList} />
+                <AuthenticatedRoute
+                  exact
+                  path="/stocks/:symbol"
+                  component={StockList}
+                />
                 <AuthenticatedRoute path="/stocks" component={StockList} />
-                <Route path="/dashboard" component={Dashboard} />
+                <AuthenticatedRoute path="/dashboard" component={Dashboard} />
                 <AuthenticatedRoute
                   exact
                   path="/watchlist"
