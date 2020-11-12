@@ -144,10 +144,8 @@ export const WatchListSummary = () => {
                             <PriceTypography
                               variant="body1"
                               change={stock.change}
-                            >{`${
-                              stock.change > 0 ? "+" : ""
-                            }${stock.change.toFixed(
-                              2
+                            >{`${stock.change > 0 ? "+" : ""}${formatCurrency(
+                              stock.change.toFixed(2)
                             )} (${stock.changePerc.toFixed(2)}%)${
                               stock.change > 0 ? "↑" : "↓"
                             }`}</PriceTypography>

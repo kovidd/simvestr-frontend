@@ -66,7 +66,7 @@ export const Dashboard = () => {
                 <PriceTypography
                   variant="body1"
                   change={totalPortfolioReturn}
-                >{`${totalPortfolioReturn >= 0 ? "+" : "-"}${formatCurrency(
+                >{`${totalPortfolioReturn >= 0 ? "+" : ""}${formatCurrency(
                   totalPortfolioReturn
                 )}  (${formatPerc(
                   Math.abs(totalPortfolioReturnPerc)
@@ -115,8 +115,7 @@ export const Dashboard = () => {
                         stock.previous
                       );
                       const totalReturn = stock.return;
-                      const totalReturnPerc =
-                        (totalReturn / stock.buy.total) * 100;
+                      const totalReturnPerc = totalReturn / stock.buy.total;
                       return (
                         <TableRow key={stock.symbol}>
                           <TableCell>
