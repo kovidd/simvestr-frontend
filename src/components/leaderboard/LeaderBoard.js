@@ -16,7 +16,7 @@ import {
 import { NotificationContext } from "../ui/Notification";
 
 export const LeaderBoard = () => {
-  const [positionText, setText] = useState("");
+  const [positionText, setText] = useState({ "nominal": null, "ordinal": "" });
   const [leaders, setLeaders] = useState([]);
   const { setNotification } = useContext(NotificationContext);
 
@@ -40,7 +40,12 @@ export const LeaderBoard = () => {
       const res = await leaderboardAll();
       if (!res.error) {
         var leaders = res.data;
-        leaders.sort((a, b) => (a.position > b.position ? 1 : -1));
+        leaders.sort((a, b) => {
+          if (a.value === b.value) {
+            return a.id < b.id ? 1 : -1;
+          }
+          return a.value < b.value ? 1 : -1;
+        });
         setLeaders(leaders);
       } else {
         setNotification({
@@ -57,9 +62,7 @@ export const LeaderBoard = () => {
   const scrollToPortfolio = () => {
     const ITEM_HEIGHT = 64;
     const NUM_OF_ITEMS = 7;
-    const amountToScroll =
-      ITEM_HEIGHT *
-      (positionText.slice(0, -2) - Math.floor(NUM_OF_ITEMS / 2) - 1);
+    const amountToScroll = ITEM_HEIGHT * (positionText["nominal"] - Math.floor(NUM_OF_ITEMS / 2) - 1);
     portfolioLeadersRef.current.scrollTo(0, amountToScroll);
   };
 
@@ -71,7 +74,7 @@ export const LeaderBoard = () => {
             Simvestr Leader Board
           </Typography>
           <Typography variant="h6" align="center">
-            You are currently in {positionText} position
+            You are currently in {positionText["ordinal"]} position
           </Typography>
           <div>
             <TableContainer
@@ -89,7 +92,7 @@ export const LeaderBoard = () => {
                       user={item.user}
                       name={item.name}
                       value={item.value}
-                      thisUser={item.position === positionText.slice(0, -2)}
+                      thisUser={positionText["nominal"] == (index+1)}
                     />
                   </TableBody>
                 </Table>
