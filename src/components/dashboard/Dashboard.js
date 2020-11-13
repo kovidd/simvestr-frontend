@@ -13,6 +13,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { MainWrapper, LinkRouter } from "../ui";
+import { HistoricChart } from "./HistoricChart";
 import {
   PortfolioContext,
   getPortfolioDetails,
@@ -80,7 +81,7 @@ export const Dashboard = () => {
             <Typography variant="body2">Historical Performance </Typography>{" "}
             <Paper variant="outlined">
               <Box minHeight="15rem">
-                <div> </div>
+                <HistoricChart netPortfolio={netPortfolio} />
               </Box>
             </Paper>
           </Grid>

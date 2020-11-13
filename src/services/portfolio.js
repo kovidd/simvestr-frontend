@@ -22,19 +22,11 @@ export function portfolioDetails() {
 }
 
 /**
- * Gets the stocks owned by the user
- * @returns {Promise<{data: {stocksowned: {symbol: string; quantity: number}[]}}>}
+ * Gets the portfolio history
+ * @param {number} num_days
  */
-export function stocksOwned() {
-  const path = `/portfolio/user/stocksowned`;
-  return GETRequest(path);
-}
-
-/**
- * Gets the current balance of the user
- */
-export function currentBalance() {
-  const path = `/balance/user/`;
+export function portfolioHistory(num_days = 7) {
+  const path = `/portfolio/user/historic?number_of_days=${num_days}`;
   return GETRequest(path);
 }
 
