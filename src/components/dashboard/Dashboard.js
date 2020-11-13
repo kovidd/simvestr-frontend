@@ -56,7 +56,7 @@ export const Dashboard = () => {
         </Box>
       ) : (
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <Typography variant="body2">Portfolio Position</Typography>
             <Paper variant="outlined">
               <Box minHeight="15rem" p="1rem">
@@ -65,7 +65,7 @@ export const Dashboard = () => {
                   {formatCurrency(netPortfolio)}
                 </Typography>
                 <PriceTypography
-                  variant="body1"
+                  variant="body2"
                   change={totalPortfolioReturn}
                 >{`${totalPortfolioReturn >= 0 ? "+" : ""}${formatCurrency(
                   totalPortfolioReturn
@@ -77,7 +77,7 @@ export const Dashboard = () => {
               </Box>
             </Paper>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={12} md={8}>
             <Typography variant="body2">Historical Performance </Typography>{" "}
             <Paper variant="outlined">
               <Box minHeight="15rem">
@@ -88,14 +88,14 @@ export const Dashboard = () => {
           <Grid item xs={12}>
             <Typography variant="body2">Portfolio Constituents </Typography>{" "}
             <Paper variant="outlined">
-              <Box minHeight="15em">
+              <Box minHeight="15em" overflow="auto">
                 <Table>
                   <TableHead>
                     <TableRow>
                       <TableCell>Symbol</TableCell>
                       <TableCell align="right">Units</TableCell>
                       <TableCell align="right">Price</TableCell>
-                      <TableCell align="right">Change %</TableCell>
+                      <TableCell align="right">Change</TableCell>
                       <TableCell align="right">Average Price</TableCell>
                       <TableCell align="right">Current Value</TableCell>
                       <TableCell align="right">Total Paid</TableCell>

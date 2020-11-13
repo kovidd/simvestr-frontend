@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
-import { NoSsr } from "@material-ui/core";
+import { Container, NoSsr } from "@material-ui/core";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 
@@ -137,7 +137,7 @@ const Main = () => {
                   exact
                   path="/settings/deleteaccount"
                   component={DeleteAccount}
-              />
+                />
                 <AuthenticatedRoute
                   exact
                   path="/settings/export"
@@ -168,7 +168,9 @@ function App() {
     <NoSsr>
       <MuiThemeProvider theme={theme}>
         <ThemeProvider theme={theme}>
-          <Main />
+          <Container maxWidth="md">
+            <Main />
+          </Container>
         </ThemeProvider>
       </MuiThemeProvider>
     </NoSsr>

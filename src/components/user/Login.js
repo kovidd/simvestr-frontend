@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
   Link,
+  Container,
 } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
 import { login } from "../../services/user";
@@ -135,16 +136,17 @@ export const Login = () => {
   //   history.replace("/");
   // }
   return (
-    <MainWrapper>
-      <Box
-        display="flex"
-        height="100%"
-        flexDirection="column"
-        alignItems="center"
-        p="2rem"
-      >
-        <LoginForm />
-      </Box>
-    </MainWrapper>
+    <Container maxWidth="sm">
+      <MainWrapper>
+        <Box
+          display="flex"
+          height="100%"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <LoginForm />
+        </Box>
+      </MainWrapper>
+    </Container>
   );
 };

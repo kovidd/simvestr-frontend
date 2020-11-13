@@ -18,14 +18,14 @@ export const StockDetails = ({ details, disableWatchlist }) => (
         </Box>
       </Paper>
     </Grid>
-    <Grid item xs={4}>
+    <Grid item xs={12} md={4}>
       <Paper variant="outlined">
         <Box p="1rem">
           <StockSummary details={details} hasButton={true} />
         </Box>
       </Paper>
     </Grid>
-    <Grid item xs={8}>
+    <Grid item xs={12} md={8}>
       <Paper variant="outlined" style={{ height: "100%" }}>
         <Box p="1rem">
           <StockTrade symbol={details.symbol} quotePrice={details.quote.c} />
