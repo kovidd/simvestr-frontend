@@ -17,25 +17,8 @@ export const PortfolioContext = React.createContext({
  */
 export function portfolioDetails() {
   let options = { headers: { "Content-Type": "application/text" } };
-  const path = `/portfolio/user?averagemode=moving`;
+  const path = `/portfolio?averagemode=moving`;
   return GETRequest(path, options);
-}
-
-/**
- * Gets the stocks owned by the user
- * @returns {Promise<{data: {stocksowned: {symbol: string; quantity: number}[]}}>}
- */
-export function stocksOwned() {
-  const path = `/portfolio/user/stocksowned`;
-  return GETRequest(path);
-}
-
-/**
- * Gets the current balance of the user
- */
-export function currentBalance() {
-  const path = `/balance/user/`;
-  return GETRequest(path);
 }
 
 /*

@@ -11,15 +11,6 @@ export function stockDetails(stockSymbol) {
 }
 
 /**
- * Gets a list of all the stocks
- * @return {Promise<string[]>} A list of all the stock tickers
- */
-export function stockList() {
-  const path = `/stocks`;
-  return GETRequest(path);
-}
-
-/**
  * Searches for stocks which match the name
  * @param {string} name
  */

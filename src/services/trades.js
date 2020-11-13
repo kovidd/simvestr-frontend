@@ -5,6 +5,6 @@ import { GETRequest } from "./api";
  * @return {Promise<string[]>} A list of all the stock tickers
  */
 export function getTrades() {
-  const path = `/transaction/user/`;
+  const path = `/transaction`;
   return GETRequest(path);
 }
