@@ -45,8 +45,8 @@ export const MainWrapper = ({ children }) => {
             "/resetpassword",
             "/terms-and-conditions-signup",
           ].includes(location.pathname) && (
-            <BreadCrumbsNav location={location} />
-          )}
+              <BreadCrumbsNav location={location} />
+            )}
           {children}
         </StyledPaper>
       </Terminal>
@@ -66,7 +66,8 @@ const breadcrumbNameMap = {
   "/settings/password": "password",
   "/settings/terms-and-conditions-settings": "terms and conditions",
   "/settings/faq": "FAQ",
-  "/settings/export": "Export"
+  "/settings/export": "Export",
+  "/settings/deleteaccount": "Delete Account"
 };
 
 export const BreadCrumbsNav = ({ location }) => {
@@ -89,10 +90,10 @@ export const BreadCrumbsNav = ({ location }) => {
             {/[^/]*$/.exec(to)[0]}
           </Typography>
         ) : (
-          <LinkRouter color="inherit" to={to} key={to}>
-            {breadcrumbNameMap[to]}
-          </LinkRouter>
-        );
+              <LinkRouter color="inherit" to={to} key={to}>
+                {breadcrumbNameMap[to]}
+              </LinkRouter>
+            );
       })}
     </Breadcrumbs>
   );

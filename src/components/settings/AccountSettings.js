@@ -60,9 +60,12 @@ export const AccountSettings = () => {
           <StyledListItem button disableGutters onClick={() => history.push("/settings/export")}>
             <StyledListItemText>{`Export`}</StyledListItemText>
           </StyledListItem>
+          <StyledListItem button disableGutters onClick={() => history.push("/settings/deleteaccount")}>
+            <StyledListItemText>{`Delete Account`}</StyledListItemText>
+          </StyledListItem>
           <StyledListItem button disableGutters onClick={() => history.push("/settings/terms-and-conditions-settings")}>
-          <StyledListItemText>{`Terms and Conditions`}</StyledListItemText>
-           </StyledListItem>
+            <StyledListItemText>{`Terms and Conditions`}</StyledListItemText>
+          </StyledListItem>
           <StyledListItem button disableGutters onClick={() => history.push("/settings/faq")}>
             <StyledListItemText>{`FAQ`}</StyledListItemText>
           </StyledListItem>
