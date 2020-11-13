@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import { Box, Tabs, Tab, Typography, Button } from "@material-ui/core";
+import {
+  Box,
+  Tabs,
+  Tab,
+  Typography,
+  Button,
+  CircularProgress,
+} from "@material-ui/core";
 import * as dayjs from "dayjs";
 import ReactApexChart from "react-apexcharts";
 
@@ -108,8 +115,10 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
   const [range, setRange] = useState("Y");
   const [open, setOpen] = useState(false);
   const options = getOptions(range);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     async function getStockCandles(symbol, range) {
+      setIsLoading(true);
       const res = await stockCandles(symbol, range);
       if (!res.error) {
         const dataPoints = parseCandles(res.data);
@@ -119,6 +128,7 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
             data: dataPoints,
           },
         ]);
+        setIsLoading(false);
       } else {
         setNotification({
           open: true,
@@ -223,15 +233,28 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
             >{`Historical Performance - (last ${rangeCopy[range]})`}</Typography>
           </Box>
         </Box>
-        {series.length > 0 && (
-          <ReactApexChart
-            options={options}
-            series={series}
-            type="candlestick"
-            height={250}
-            width="100%"
-          />
-        )}
+        <Box minHeight={270}>
+          {isLoading ? (
+            <Box
+              minHeight={270}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            series.length > 0 && (
+              <ReactApexChart
+                options={options}
+                series={series}
+                type="candlestick"
+                height={250}
+                width="100%"
+              />
+            )
+          )}
+        </Box>
       </Box>
     </>
   );

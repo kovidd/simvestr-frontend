@@ -9,33 +9,31 @@ const Terminal = styled.div`
   &:hover {
     border-color: rgba(0, 127, 127, 0.8);
   }
+  width: 100%;
 `;
 
 const StyledPaper = styled(Paper)`
-  min-width: 40vw;
   padding: 1rem;
   min-height: 40vh;
   display: flex;
   flex-direction: column;
   flex: 1;
+  max-height: calc(100vh - 3.6rem);
+  overflow-y: auto;
 `;
 
 export const MainWrapper = ({ children }) => {
   const location = useLocation();
   return (
     <Box
-      height="100vh"
       display="flex"
       flex="1"
-      alignItems="center"
+      mt="1rem"
+      alignItems="flex-start"
       justifyContent="center"
     >
       <Terminal>
-        <StyledPaper
-          square
-          elevation={10}
-          style={{ maxHeight: "95vh", overflow: "auto" }}
-        >
+        <StyledPaper square elevation={10}>
           {![
             "/",
             "/signup",
@@ -45,8 +43,8 @@ export const MainWrapper = ({ children }) => {
             "/resetpassword",
             "/terms-and-conditions-signup",
           ].includes(location.pathname) && (
-              <BreadCrumbsNav location={location} />
-            )}
+            <BreadCrumbsNav location={location} />
+          )}
           {children}
         </StyledPaper>
       </Terminal>
@@ -61,7 +59,7 @@ const breadcrumbNameMap = {
   "/": "home",
   "/watchlist": "watchlist",
   "/dashboard": "dashboard",
-  "/leaderboard": "leader board",
+  "/leaderboard": "leaderboard",
   "/trades": "historical trades",
   "/settings": "settings",
   "/settings/personaldetails": "personal details",
@@ -69,7 +67,7 @@ const breadcrumbNameMap = {
   "/settings/terms-and-conditions-settings": "terms and conditions",
   "/settings/faq": "FAQ",
   "/settings/export": "Export",
-  "/settings/deleteaccount": "Delete Account"
+  "/settings/deleteaccount": "Delete Account",
 };
 
 export const BreadCrumbsNav = ({ location }) => {
@@ -93,10 +91,10 @@ export const BreadCrumbsNav = ({ location }) => {
             {/[^/]*$/.exec(to)[0]}
           </Typography>
         ) : (
-              <LinkRouter color="inherit" to={to} key={to}>
-                {breadcrumbNameMap[to]}
-              </LinkRouter>
-            );
+          <LinkRouter color="inherit" to={to} key={to}>
+            {breadcrumbNameMap[to]}
+          </LinkRouter>
+        );
       })}
     </Breadcrumbs>
   );
