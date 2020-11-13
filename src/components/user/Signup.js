@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -15,13 +15,14 @@ import {
 import { MainWrapper, FormErrorMessage, LinkRouter } from "../ui";
 import { signup } from "../../services/user";
 import { AuthContext } from "../../services/api";
+import { NotificationContext } from "../ui/Notification";
 
 const SignupForm = () => {
   const history = useHistory();
   const { register, handleSubmit, errors, getValues } = useForm({
     mode: "onBlur",
   });
-  const [message, setMessage] = useState("");
+  const { setNotification } = useContext(NotificationContext);
 
   const onSubmit = async (data) => {
     // submit the signup
@@ -33,9 +34,16 @@ const SignupForm = () => {
     };
     const res = await signup(body);
     if (!res.error) {
+      setNotification({
+        open: true,
+        message: `Singup Successful.`,
+      });
       history.push("/login");
     } else {
-      setMessage(res.message);
+      setNotification({
+        open: true,
+        message: res.message,
+      });
     }
   };
 
@@ -50,14 +58,6 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        color="#007f7f"
-        fontSize="h5.fontSize"
-      >
-        {message}
-      </Box>
       <Typography variant="h2" align="center">
         Simvestr
       </Typography>
@@ -203,6 +203,7 @@ export const Signup = () => {
         flexDirection="column"
         alignItems="center"
         p="2rem"
+        width="50vw"
       >
         <SignupForm />
       </Box>

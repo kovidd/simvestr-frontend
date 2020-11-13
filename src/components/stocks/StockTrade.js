@@ -18,6 +18,8 @@ import {
 } from "../../services/portfolio";
 import { StockTradeConfirmation } from "./StockTradeConfirmation";
 import { marketOrder } from "../../services/stock";
+import { NotificationContext } from "../ui/Notification";
+import { formatCurrency } from "../../helpers";
 
 const amountTypes = {
   quantity: "quantity",
@@ -29,13 +31,16 @@ const tradeTypes = {
   sell: "sell",
 };
 
+const brokerageFee = 0;
+
 export const StockTrade = ({ symbol, quotePrice }) => {
   const [open, setOpen] = useState(false);
   const { portfolio, setPortfolio } = useContext(PortfolioContext);
+  const { setNotification } = useContext(NotificationContext);
 
   var availableUnits = 0;
   Object.entries(portfolio.portfolio).map(async function ([k, v]) {
-    if (symbol === portfolio.portfolio[k].stock) {
+    if (symbol === portfolio.portfolio[k].symbol) {
       availableUnits = portfolio.portfolio[k].quantity;
     }
   });
@@ -62,7 +67,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
       : amount / quotePrice
   );
 
-  const estimatedValue = (totalUnits * quotePrice).toFixed(2);
+  const estimatedValue = totalUnits * quotePrice;
   const excessAmount =
     tradeType === tradeTypes.buy
       ? estimatedValue > availableBalance
@@ -81,8 +86,15 @@ export const StockTrade = ({ symbol, quotePrice }) => {
       await getPortfolioDetails(setPortfolio);
       setOpen(false);
       setAmount("");
+      setNotification({
+        open: true,
+        message: `Trade executed successfully.`,
+      });
     } else {
-      console.error("Error executing the trade");
+      setNotification({
+        open: true,
+        message: `Error executing the trade.`,
+      });
     }
   };
 
@@ -125,7 +137,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           Available:{" "}
           {tradeType === tradeTypes.sell
             ? `${availableUnits} Units`
-            : `$${availableBalance.toFixed(2)}`}
+            : formatCurrency(availableBalance)}
         </Typography>
       </Box>
       <Box display="flex" alignItems="baseline">
@@ -169,7 +181,6 @@ export const StockTrade = ({ symbol, quotePrice }) => {
                               ? availableUnits
                               : availableUnits * quotePrice
                           );
-                          // setAmountType(amountTypes.quantity);
                         }}
                       >
                         MAX
@@ -191,9 +202,11 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           </Typography>
         )}
         <Typography variant="body1" color={excessAmount ? "error" : "initial"}>
-          Estimated Value: ${estimatedValue}
+          Estimated Value: {formatCurrency(estimatedValue)}
         </Typography>
-        <Typography variant="body1">Brokerage Fee: $0.00</Typography>
+        <Typography variant="body1">
+          Brokerage Fee: {formatCurrency(brokerageFee)}
+        </Typography>
       </Box>
       <Box mt="1rem" color={tradeType === tradeTypes.buy ? "green" : "red"}>
         <Button
@@ -201,7 +214,7 @@ export const StockTrade = ({ symbol, quotePrice }) => {
           onClick={() => setOpen(true)}
           fullWidth
           color="inherit"
-          disabled={excessAmount}
+          disabled={excessAmount || estimatedValue === 0}
         >
           {tradeType.toUpperCase()}
         </Button>

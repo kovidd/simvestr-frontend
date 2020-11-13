@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Box, Tabs, Tab, Typography, Button } from "@material-ui/core";
 import * as dayjs from "dayjs";
@@ -6,7 +6,14 @@ import ReactApexChart from "react-apexcharts";
 
 import { addStock } from "../../services/watchlist";
 import { stockCandles } from "../../services/stock";
+import { NotificationContext } from "../ui/Notification";
 import { WatchlistAddConfirmation } from "../watchlist/WatchListConfirmation";
+import {
+  changeArrow,
+  formatPerc,
+  getQuoteChange,
+  getQuoteChangePerc,
+} from "../../helpers";
 
 /**
  * Converts the candle data to the respective chart data
@@ -46,59 +53,61 @@ const rangeCopy = {
   Y: "year",
 };
 
+const getOptions = (range) => ({
+  chart: {
+    type: "candlestick",
+    height: "100%",
+    width: "100%",
+    toolbar: {
+      show: false,
+    },
+    offsetY: -15,
+  },
+  xaxis: {
+    type: "category",
+    labels: {
+      show: false,
+      formatter: function (val) {
+        return dayjs(val).format(
+          range === "Y" ? "MMM DD YYYY" : "MMM DD HH:mm"
+        );
+      },
+    },
+    tooltip: {
+      style: {
+        fontFamily: "inherit",
+        fontSize: 12,
+      },
+      offsetY: -10,
+    },
+  },
+  yaxis: {
+    decimalsInFloat: 1,
+    tooltip: {
+      enabled: true,
+    },
+    labels: {
+      offsetX: -10,
+      style: {
+        fontSize: 12,
+        fontFamily: "inherit",
+      },
+    },
+  },
+  grid: {
+    padding: {
+      left: 5,
+      right: 5,
+    },
+  },
+});
+
 export const StockChart = ({ details, disableWatchlist = false }) => {
+  const { setNotification } = useContext(NotificationContext);
   const [series, setSeries] = useState([]);
   const [range, setRange] = useState("Y");
   const [open, setOpen] = useState(false);
-
-  const options = {
-    chart: {
-      type: "candlestick",
-      height: "100%",
-      width: "100%",
-      toolbar: {
-        show: false,
-      },
-      offsetY: -15,
-    },
-    xaxis: {
-      type: "category",
-      labels: {
-        show: false,
-        formatter: function (val) {
-          return dayjs(val).format(
-            range === "Y" ? "MMM DD YYYY" : "MMM DD HH:mm"
-          );
-        },
-      },
-      tooltip: {
-        style: {
-          fontFamily: "inherit",
-          fontSize: 12,
-        },
-        offsetY: -10,
-      },
-    },
-    yaxis: {
-      decimalsInFloat: 1,
-      tooltip: {
-        enabled: true,
-      },
-      labels: {
-        offsetX: -10,
-        style: {
-          fontSize: 12,
-          fontFamily: "inherit",
-        },
-      },
-    },
-    grid: {
-      padding: {
-        left: 5,
-        right: 5,
-      },
-    },
-  };
+  const options = getOptions(range);
   useEffect(() => {
     async function getStockCandles(symbol, range) {
       const res = await stockCandles(symbol, range);
@@ -111,24 +120,28 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
           },
         ]);
       } else {
-        console.error("error getting the candles");
+        setNotification({
+          open: true,
+          message: "Error getting the stock candles",
+        });
       }
     }
     getStockCandles(details.symbol, range);
-  }, [details.symbol, range]);
+  }, [details.symbol, range, setNotification]);
 
   const handleAdd = async () => {
     const res = await addStock(details.symbol);
-    if (!res.error) {
-      console.log("added to watchlist");
-    } else {
-      console.log("error adding to watchlist");
+    if (res.error) {
+      setNotification({
+        open: true,
+        message: `Error adding ${details.symbol} to watchlist`,
+      });
     }
   };
 
   if (!details) return null;
-  const change = details.quote.c - details.quote.pc;
-  const changePrec = Math.abs((change / details.quote.pc) * 100);
+  const change = getQuoteChange(details.quote.c, details.quote.pc);
+  const changePerc = getQuoteChangePerc(details.quote.c, details.quote.pc);
   return (
     <>
       {!disableWatchlist && (
@@ -184,9 +197,9 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
             </Typography>
             <PriceTypography variant="body1" change={change}>{`${
               change > 0 ? "+" : ""
-            }${change.toFixed(2)} (${changePrec.toFixed(2)}%)${
-              change > 0 ? "↑" : "↓"
-            }`}</PriceTypography>
+            }${change.toFixed(2)} (${formatPerc(
+              Math.abs(changePerc)
+            )})${changeArrow(changePerc)}`}</PriceTypography>
           </PriceWrapper>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
