@@ -30,6 +30,7 @@ import { AccountSettings } from "./settings/AccountSettings";
 import { PersonalDetails } from "./settings/PersonalDetails";
 import { Password } from "./settings/Password";
 import { Export } from "./settings/Export";
+import { DeleteAccount } from "./settings/DeleteAccount";
 
 // Contexts
 import { AuthContext } from "../services/api";
@@ -87,7 +88,7 @@ const Main = () => {
                   path="/forgotpassword"
                   component={ForgotPassword}
                 />
-                <AuthenticatedRoute
+                <UnauthenticatedRoute
                   path="/resetpassword"
                   component={ResetPassword}
                 />
@@ -132,6 +133,11 @@ const Main = () => {
                   path="/settings/password"
                   component={Password}
                 />
+                <AuthenticatedRoute
+                  exact
+                  path="/settings/deleteaccount"
+                  component={DeleteAccount}
+              />
                 <AuthenticatedRoute
                   exact
                   path="/settings/export"

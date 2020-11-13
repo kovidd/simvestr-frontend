@@ -17,7 +17,7 @@ export const PortfolioContext = React.createContext({
  */
 export function portfolioDetails() {
   let options = { headers: { "Content-Type": "application/text" } };
-  const path = `/portfolio/user?averagemode=moving`;
+  const path = `/portfolio?averagemode=moving`;
   return GETRequest(path, options);
 }
 

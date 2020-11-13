@@ -5,7 +5,7 @@ import { GETRequest, POSTRequest, DELETERequest } from "./api";
  * @param {string} stockSymbol The stock symbol/ticker
  */
 export function addStock(stockSymbol) {
-  const path = `/watchlist/symbol/${stockSymbol}`;
+  const path = `/watchlist/${stockSymbol}`;
   return POSTRequest(path);
 }
 
@@ -14,7 +14,7 @@ export function addStock(stockSymbol) {
  * @param {string} stockSymbol The stock symbol/ticker
  */
 export function removeStock(stockSymbol) {
-  const path = `/watchlist/symbol/${stockSymbol}`;
+  const path = `/watchlist/${stockSymbol}`;
   return DELETERequest(path);
 }
 
@@ -23,6 +23,6 @@ export function removeStock(stockSymbol) {
  * @return {Promise<string[]>} A list of all the stock tickers
  */
 export function getWatchlist() {
-  const path = `/watchlist/`;
+  const path = `/watchlist`;
   return GETRequest(path);
 }
