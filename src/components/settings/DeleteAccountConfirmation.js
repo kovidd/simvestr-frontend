@@ -23,12 +23,13 @@ export const DeleteAccountConfirmation = ({
         </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="inherit" autoFocus>
-                    Cancel
-                </Button>
                 <Button onClick={handleDelete} color="inherit" autoFocus>
                     DELETE
                 </Button>
+                <Button onClick={handleClose} color="inherit" autoFocus>
+                    Cancel
+                </Button>
+
             </DialogActions>
         </Dialog>
     );
