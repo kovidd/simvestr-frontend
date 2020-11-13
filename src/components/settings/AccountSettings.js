@@ -56,6 +56,15 @@ export const AccountSettings = () => {
             <StyledListItemText>{`Export Portfolio`}</StyledListItemText>
           </StyledListItem>
           <StyledListItem
+            button 
+            disableGutters 
+            onClick={() => 
+              history.push("/settings/deleteaccount")
+            }
+           >
+            <StyledListItemText>{`Delete Account`}</StyledListItemText>
+          </StyledListItem>
+          <StyledListItem
             button
             disableGutters
             onClick={() =>
@@ -69,7 +78,7 @@ export const AccountSettings = () => {
             disableGutters
             onClick={() => history.push("/settings/faq")}
           >
-            <StyledListItemText>{`FAQ`}</StyledListItemText>
+           <StyledListItemText>{`FAQ`}</StyledListItemText>
           </StyledListItem>
           <ListItem disableGutters>
             <form
