@@ -26,7 +26,7 @@ export function portfolioDetails() {
  * @param {number} num_days
  */
 export function portfolioHistory(num_days = 7) {
-  const path = `/portfolio/user/historic?number_of_days=${num_days}`;
+  const path = `/portfolio/historic?number_of_days=${num_days}`;
   return GETRequest(path);
 }
 
