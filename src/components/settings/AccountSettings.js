@@ -1,12 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-} from "@material-ui/core";
+import { List, ListItem, ListItemText } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
 
@@ -54,20 +48,37 @@ export const AccountSettings = () => {
           >
             <StyledListItemText>{`Password`}</StyledListItemText>
           </StyledListItem>
-          <StyledListItem button disableGutters>
-            <StyledListItemText>{`Portfolio`}</StyledListItemText>
+          <StyledListItem
+            button
+            disableGutters
+            onClick={() => history.push("/settings/export")}
+          >
+            <StyledListItemText>{`Export Portfolio`}</StyledListItemText>
           </StyledListItem>
-          <StyledListItem button disableGutters onClick={() => history.push("/settings/export")}>
-            <StyledListItemText>{`Export`}</StyledListItemText>
-          </StyledListItem>
-          <StyledListItem button disableGutters onClick={() => history.push("/settings/deleteaccount")}>
+          <StyledListItem
+            button 
+            disableGutters 
+            onClick={() => 
+              history.push("/settings/deleteaccount")
+            }
+           >
             <StyledListItemText>{`Delete Account`}</StyledListItemText>
           </StyledListItem>
-          <StyledListItem button disableGutters onClick={() => history.push("/settings/terms-and-conditions-settings")}>
+          <StyledListItem
+            button
+            disableGutters
+            onClick={() =>
+              history.push("/settings/terms-and-conditions-settings")
+            }
+          >
             <StyledListItemText>{`Terms and Conditions`}</StyledListItemText>
           </StyledListItem>
-          <StyledListItem button disableGutters onClick={() => history.push("/settings/faq")}>
-            <StyledListItemText>{`FAQ`}</StyledListItemText>
+          <StyledListItem
+            button
+            disableGutters
+            onClick={() => history.push("/settings/faq")}
+          >
+           <StyledListItemText>{`FAQ`}</StyledListItemText>
           </StyledListItem>
           <ListItem disableGutters>
             <form

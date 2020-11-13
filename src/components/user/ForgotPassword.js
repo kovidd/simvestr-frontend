@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import "../../index.css";
 import { useForm } from "react-hook-form";
 import {
@@ -11,26 +11,32 @@ import {
 } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
 import { forgotPassword } from "../../services/user";
+import { NotificationContext } from "../ui/Notification";
 
 const ForgotPasswordForm = () => {
   const { register, handleSubmit, errors } = useForm({
     mode: "onBlur",
   });
-
-  const [message, setMessage] = useState("");
+  const { setNotification } = useContext(NotificationContext);
 
   const onSubmit = async (data) => {
     // submit the forgot password request
     const body = {
-      email_id: data.email,
+      email: data.email,
     };
     const res = await forgotPassword(body);
     if (!res.error) {
-      setMessage("An email has been sent to you.");
+      setNotification({
+        open: true,
+        message: `An email has been sent to you.`,
+      });
       var win = window.open("/resetpassword", "_blank");
       win.focus();
     } else {
-      setMessage(res.message);
+      setNotification({
+        open: true,
+        message: res.message,
+      });
     }
   };
 
@@ -39,14 +45,6 @@ const ForgotPasswordForm = () => {
       <Typography>
         <Link href="./">Back to Login Page</Link>
       </Typography>
-      <Box
-        display="flex"
-        justifyContent="center"
-        color="#007f7f"
-        fontSize="h5.fontSize"
-      >
-        {message}
-      </Box>
       <Typography variant="h2" align="center">
         Simvestr
       </Typography>

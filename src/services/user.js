@@ -22,7 +22,7 @@ export function login(payload) {
 
 export function forgotPassword(payload) {
   let options = { headers: { "Content-Type": "application/text" } };
-  const path = `/forgotuser?email_id=${payload.email_id}`;
+  const path = `/forgotuser?email=${payload.email}`;
   return GETRequest(path, options);
 }
 

@@ -1,14 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
 import { MainWrapper, FormErrorMessage } from "../ui";
 import { changePassword, UserContext } from "../../services/user";
+import { NotificationContext } from "../ui/Notification";
 
 const PasswordForm = () => {
   const history = useHistory();
   const { user } = useContext(UserContext);
+  const { setNotification } = useContext(NotificationContext);
 
   const { register, handleSubmit, errors, getValues } = useForm({
     mode: "onBlur",
@@ -18,8 +20,6 @@ const PasswordForm = () => {
     },
   });
 
-  const [message, setMessage] = useState("");
-
   const onSubmit = async (data) => {
     // submit the change password
     const body = {
@@ -28,22 +28,20 @@ const PasswordForm = () => {
     };
     const res = await changePassword(body);
     if (!res.error) {
-      setMessage("Password changed.");
+      setNotification({
+        open: true,
+        message: `Password changed.`,
+      });
     } else {
-      setMessage("Failed to change password.");
+      setNotification({
+        open: true,
+        message: `Failed to change password.`,
+      });
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        color="#007f7f"
-        fontSize="h5.fontSize"
-      >
-        {message}
-      </Box>
       <Typography varaint="body2" align="center">
         Change your password here.
       </Typography>

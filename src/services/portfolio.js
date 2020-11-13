@@ -6,7 +6,7 @@ export const PortfolioContext = React.createContext({
     name: "",
     balance: 0,
     totalValue: 0,
-    portfolio: {},
+    portfolio: [],
   },
   setPortfolio: () => {},
 });
@@ -21,6 +21,23 @@ export function portfolioDetails() {
   return GETRequest(path, options);
 }
 
+/**
+ * Gets the stocks owned by the user
+ * @returns {Promise<{data: {stocksowned: {symbol: string; quantity: number}[]}}>}
+ */
+export function stocksOwned() {
+  const path = `/portfolio/user/stocksowned`;
+  return GETRequest(path);
+}
+
+/**
+ * Gets the current balance of the user
+ */
+export function currentBalance() {
+  const path = `/balance/user/`;
+  return GETRequest(path);
+}
+
 /*
  * Fetches the portfolio details and sets them
  * @param {*} setPortfolio
@@ -32,6 +49,7 @@ export async function getPortfolioDetails(setPortfolio) {
       name: res.data.portfolio_name,
       balance: res.data.balance,
       totalValue: res.data.total_value,
+      totalReturn: res.data.total_return,
       portfolio: res.data.portfolio,
     });
   } else {
