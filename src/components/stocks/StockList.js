@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, LinearProgress } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { StockSearch } from "./StockSearch";
 import { StockDetails } from "./StockDetails";
@@ -47,14 +47,7 @@ export const StockList = () => {
       <Box>
         <StockSearch />
         {isLoading ? (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flex="1"
-          >
-            <CircularProgress />
-          </Box>
+          <LinearProgress />
         ) : (
           details && <StockDetails details={details} />
         )}

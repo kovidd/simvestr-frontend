@@ -45,7 +45,7 @@ export const WatchListDetails = () => {
 
   return (
     <MainWrapper>
-      <Box width="50vw" mt="1rem">
+      <Box mt="1rem">
         {isLoading ? (
           <Box display="flex" justifyContent="center">
             <CircularProgress />

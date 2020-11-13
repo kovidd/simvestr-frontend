@@ -21,6 +21,15 @@ export function portfolioDetails() {
   return GETRequest(path, options);
 }
 
+/**
+ * Gets the portfolio history
+ * @param {number} num_days
+ */
+export function portfolioHistory(num_days = 7) {
+  const path = `/portfolio/historic?number_of_days=${num_days}`;
+  return GETRequest(path);
+}
+
 /*
  * Fetches the portfolio details and sets them
  * @param {*} setPortfolio
