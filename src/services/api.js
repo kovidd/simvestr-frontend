@@ -156,7 +156,7 @@ export async function GETRequest(path, options) {
  * @param {string} path - the extension path to the REST API endpoint
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
  */
-export async function DELETERequest(path, options) {
+export async function DELETERequest(path, payload, options) {
   try {
     let config = {
       method: "delete",
@@ -165,11 +165,14 @@ export async function DELETERequest(path, options) {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
       },
+      ...(payload && {
+        body: !options || options.stringify ? JSON.stringify(payload) : payload,
+      }),
     };
 
     const res = await fetch(`${API}${path}`, config);
     if (res.ok) {
-      return { error: false };
+      return { error: false, data: payload };
     } else {
       const { message } = await res.json();
       return { error: true, message, status: res.status };

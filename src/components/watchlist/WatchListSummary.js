@@ -56,7 +56,8 @@ export const WatchListSummary = () => {
   }, [setNotification, setWatchlist, setIsLoading]);
 
   const handleRemove = async () => {
-    const res = await removeStock(stockRemove);
+    const body = { symbol: stockRemove };
+    const res = await removeStock(body);
     if (!res.error) {
       const remaining = watchlist.filter(
         (stock) => stockRemove !== stock.symbol

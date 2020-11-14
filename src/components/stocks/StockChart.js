@@ -140,7 +140,8 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
   }, [details.symbol, range, setNotification]);
 
   const handleAdd = async () => {
-    const res = await addStock(details.symbol);
+    const body = { symbol: details.symbol };
+    const res = await addStock(body);
     if (res.error) {
       setNotification({
         open: true,
