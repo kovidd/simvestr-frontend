@@ -12,30 +12,27 @@ import {
   TableRow,
   TableCell,
   CircularProgress,
+  LinearProgress,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
-import { getWatchlist, removeStock } from "../../services/watchlist";
+import {
+  getWatchlist,
+  removeStock,
+  WatchlistContext,
+} from "../../services/watchlist";
 import { WatchlistRemoveConfirmation } from "./WatchListConfirmation";
 import { NotificationContext } from "../ui/Notification";
-import { formatCurrency } from "../../helpers";
-
-const PriceWrapper = styled.div`
-  display: flex;
-  align-items: baseline;
-  & > * {
-    padding-right: 0.25rem;
-  }
-`;
-
-const PriceTypography = styled(Typography)`
-  && {
-    color: ${(props) => (props.change > 0 ? "green" : "red")};
-  }
-`;
+import {
+  formatCurrency,
+  formatPerc,
+  getQuoteChangePerc,
+  getQuoteChange,
+  changeArrow,
+} from "../../helpers";
+import { PriceTableCell, LinkRouter } from "../ui";
 
 export const WatchListSummary = () => {
-  const history = useHistory();
-  const [watchedStocksDetails, setWatchedStocksDetails] = useState([]);
+  const { watchlist, setWatchlist } = useContext(WatchlistContext);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [stockRemove, setStockRemove] = useState("");
@@ -43,43 +40,28 @@ export const WatchListSummary = () => {
 
   useEffect(() => {
     async function getWatchListDetails() {
+      setIsLoading(true);
       const res = await getWatchlist();
       if (!res.error) {
-        Object.entries(res.data.watchlist).map(async function ([k, v]) {
-          setWatchedStocksDetails((oldWatchedStocksDetails) => [
-            ...oldWatchedStocksDetails,
-            {
-              symbol: res.data.watchlist[k].symbol,
-              name: res.data.watchlist[k].name,
-              c: res.data.watchlist[k].c,
-              pc: res.data.watchlist[k].pc,
-              change: res.data.watchlist[k].c - res.data.watchlist[k].pc,
-              changePerc:
-                Math.abs(
-                  (res.data.watchlist[k].c - res.data.watchlist[k].pc) /
-                    res.data.watchlist[k].pc
-                ) * 100,
-            },
-          ]);
-        });
+        setWatchlist(res.data.watchlist);
       } else {
         setNotification({
           open: true,
           message: `Error loading watchlist.`,
         });
       }
+      setIsLoading(false);
     }
     getWatchListDetails();
-    setIsLoading(false);
-  }, [setNotification]);
+  }, [setNotification, setWatchlist, setIsLoading]);
 
   const handleRemove = async () => {
     const res = await removeStock(stockRemove);
     if (!res.error) {
-      const del = watchedStocksDetails.filter(
+      const remaining = watchlist.filter(
         (stock) => stockRemove !== stock.symbol
       );
-      setWatchedStocksDetails(del);
+      setWatchlist(remaining);
       setNotification({
         open: true,
         message: `${stockRemove} removed from watchlist.`,
@@ -102,88 +84,62 @@ export const WatchListSummary = () => {
         stockSymbol={stockRemove}
       />
       <MainWrapper>
-        <Box>
+        <Box mt="1rem">
           {isLoading ? (
-            <Box display="flex" justifyContent="center">
-              <CircularProgress />
-            </Box>
+            <LinearProgress />
           ) : (
-            watchedStocksDetails && (
-              <TableContainer
-                style={{
-                  maxHeight: 448,
-                }}
-              >
+            watchlist && (
+              <TableContainer>
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center">Symbol</TableCell>
-                      <TableCell align="center">Company</TableCell>
-                      <TableCell align="center">Current Price</TableCell>
-                      <TableCell align="center">Close Price</TableCell>
-                      <TableCell align="center">Day Change</TableCell>
-                      <TableCell align="center"> </TableCell>
-                      <TableCell align="center"> </TableCell>
+                      <TableCell>Symbol</TableCell>
+                      <TableCell>Company</TableCell>
+                      <TableCell align="right">Current Price</TableCell>
+                      <TableCell align="right">Close Price</TableCell>
+                      <TableCell align="right">Day Change</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {watchedStocksDetails.map((stock) => (
-                      <TableRow key={stock.symbol}>
-                        <TableCell component="th" scope="row">
-                          {stock.symbol}
-                        </TableCell>
-                        <TableCell align="center">{stock.name}</TableCell>
-                        <TableCell align="center">
-                          {formatCurrency(stock.c)}
-                        </TableCell>
-                        <TableCell align="center">
-                          {formatCurrency(stock.pc)}
-                        </TableCell>
-                        <TableCell align="center">
-                          <PriceWrapper>
-                            <PriceTypography
-                              variant="body1"
-                              change={stock.change}
-                            >{`${stock.change > 0 ? "+" : ""}${formatCurrency(
-                              stock.change.toFixed(2)
-                            )} (${stock.changePerc.toFixed(2)}%)${
-                              stock.change > 0 ? "↑" : "↓"
-                            }`}</PriceTypography>
-                          </PriceWrapper>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            style={{
-                              maxWidth: "40px",
-                              maxHeight: "25px",
-                            }}
-                            onClick={() =>
-                              history.push(`/watchlist/${stock.symbol}`)
-                            }
-                          >
-                            Details
-                          </Button>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            style={{
-                              maxWidth: "40px",
-                              maxHeight: "25px",
-                            }}
-                            onClick={() => {
-                              setStockRemove(stock.symbol);
-                              setOpen(true);
-                            }}
-                          >
-                            Remove
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {watchlist.map((stock) => {
+                      const change = getQuoteChange(stock.c, stock.pc);
+                      const changePerc = getQuoteChangePerc(stock.c, stock.pc);
+                      return (
+                        <TableRow key={stock.symbol}>
+                          <TableCell>
+                            <LinkRouter to={`stocks/${stock.symbol}`}>
+                              {stock.symbol}
+                            </LinkRouter>
+                          </TableCell>
+                          <TableCell>{stock.name}</TableCell>
+                          <TableCell align="right">
+                            {formatCurrency(stock.c)}
+                          </TableCell>
+                          <TableCell align="right">
+                            {formatCurrency(stock.pc)}
+                          </TableCell>
+                          <PriceTableCell align="right" change={change}>
+                            {`${formatCurrency(changePerc)} (${formatPerc(
+                              Math.abs(changePerc)
+                            )}) ${changeArrow(changePerc)}`}
+                          </PriceTableCell>
+                          <TableCell align="center">
+                            <Button
+                              variant="outlined"
+                              color="primary"
+                              size="small"
+                              onClick={() => {
+                                setStockRemove(stock.symbol);
+                                setOpen(true);
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>
