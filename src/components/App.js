@@ -20,7 +20,7 @@ import { FAQ } from "./settings/FAQ";
 import { ForgotPassword } from "./user/ForgotPassword";
 import { ResetPassword } from "./user/ResetPassword";
 import { Homepage } from "./home/Homepage";
-import { StockList } from "./stocks/StockList";
+import { StockOverview } from "./stocks/StockOverview";
 import { Dashboard } from "./dashboard/Dashboard";
 import { HistoricalTrades } from "./trades/HistoricalTrades";
 import { LeaderBoard } from "./leaderboard/LeaderBoard";
@@ -99,9 +99,9 @@ const Main = () => {
                   <AuthenticatedRoute
                     exact
                     path="/stocks/:symbol"
-                    component={StockList}
+                    component={StockOverview}
                   />
-                  <AuthenticatedRoute path="/stocks" component={StockList} />
+                  <AuthenticatedRoute path="/stocks" component={StockOverview} />
                   <AuthenticatedRoute path="/dashboard" component={Dashboard} />
                   <AuthenticatedRoute
                     exact
