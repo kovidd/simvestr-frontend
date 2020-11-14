@@ -8,11 +8,15 @@ import {
   Button,
 } from "@material-ui/core";
 import { deleteAccount } from "../../services/delete";
+import { logout } from "../../services/user";
 import { NotificationContext } from "../ui/Notification";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../services/api";
 
 export const DeleteAccountDialog = ({ open, setOpen }) => {
   const { setNotification } = useContext(NotificationContext);
-
+  const history = useHistory();
+  const { setAuth } = useContext(AuthContext);
   const handleClose = () => setOpen(false);
 
   const beginDeleteAccount = () => {
@@ -27,10 +31,28 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
         setNotification({
           open: true,
           message: `Error deleting account.`,
+
         });
+        handleLogout();
       }
     }
     callDeleteAccount();
+  };
+
+  const handleLogout = async () => {
+    const res = await logout();
+    if (!res.error) {
+      setAuth({
+        isAuthenticated: false,
+        apiToken: null,
+      });
+      history.push("/login");
+    } else {
+      setNotification({
+        open: true,
+        message: `Error logging out.`,
+      });
+    }
   };
 
   return (
@@ -38,7 +60,7 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
       <DialogTitle>Delete Account</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Your account and all its associated datawill be deleted. This includes
+          Your account and all its associated data will be deleted. This includes
           your watchlist and portfolio. This cannot be undone.
         </DialogContentText>
       </DialogContent>
