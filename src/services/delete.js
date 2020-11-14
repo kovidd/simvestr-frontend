@@ -5,7 +5,7 @@ import { GETRequest } from "./api";
  * @return {Promise<string[]>} confirmation of download
  */
 export function deleteAccount() {
-    const path = `/deleteAccount`;
+    const path = `/deleteaccount`;
     return GETRequest(path);
 }
 

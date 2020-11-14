@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
+import { DeleteAccountDialog } from "./DeleteAccountDialog";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -24,9 +25,11 @@ const StyledListItem = styled(ListItem)`
 
 export const AccountSettings = () => {
   const history = useHistory();
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
+      <DeleteAccountDialog open={open} setOpen={setOpen} />
       <MainWrapper>
         <List>
           <ListItem disableGutters>
@@ -55,13 +58,7 @@ export const AccountSettings = () => {
           >
             <StyledListItemText>{`Export Portfolio`}</StyledListItemText>
           </StyledListItem>
-          <StyledListItem
-            button 
-            disableGutters 
-            onClick={() => 
-              history.push("/settings/deleteaccount")
-            }
-           >
+          <StyledListItem button disableGutters onClick={() => setOpen(true)}>
             <StyledListItemText>{`Delete Account`}</StyledListItemText>
           </StyledListItem>
           <StyledListItem
@@ -78,7 +75,7 @@ export const AccountSettings = () => {
             disableGutters
             onClick={() => history.push("/settings/faq")}
           >
-           <StyledListItemText>{`FAQ`}</StyledListItemText>
+            <StyledListItemText>{`FAQ`}</StyledListItemText>
           </StyledListItem>
           <ListItem disableGutters>
             <form
@@ -87,7 +84,7 @@ export const AccountSettings = () => {
             ></form>
           </ListItem>
         </List>
-      </MainWrapper>{" "}
+      </MainWrapper>
     </div>
   );
 };

@@ -67,7 +67,6 @@ const breadcrumbNameMap = {
   "/settings/terms-and-conditions-settings": "terms and conditions",
   "/settings/faq": "FAQ",
   "/settings/export": "Export",
-  "/settings/deleteaccount": "Delete Account",
 };
 
 export const BreadCrumbsNav = ({ location }) => {
