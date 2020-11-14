@@ -17,6 +17,16 @@ const hasJSONResponse = (res) => {
   return contentType && contentType.indexOf("application/json") !== -1;
 };
 
+const hasXLSXResponse = (res) => {
+  const contentType = res.headers.get("content-type");
+  return (
+    contentType &&
+    contentType.indexOf(
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) !== -1
+  );
+};
+
 /**
  * POSTRequest - Sends a POST Request to the specified endpoint
  * @param {string} path - the extension path to the REST API endpoint
@@ -122,6 +132,9 @@ export async function GETRequest(path, options) {
       if (hasJSONResponse(res)) {
         const data = await res.json();
         return { error: false, data };
+      } else if (hasXLSXResponse(res)) {
+        const blob = await res.blob();
+        return { error: false, data: blob };
       } else {
         return { error: false };
       }

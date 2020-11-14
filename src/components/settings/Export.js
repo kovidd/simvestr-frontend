@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { saveAs } from "file-saver";
 import { Box, Grid, Button } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import styled from "styled-components";
@@ -28,6 +29,8 @@ export const Export = () => {
     async function callExportfolio() {
       const res = await exportPortfolio();
       if (!res.error) {
+        const blob = res.data;
+        saveAs(blob, "portfolio.xlsx");
         setNotification({
           open: true,
           message: `Portfolio exported successfully.`,
@@ -64,7 +67,7 @@ export const Export = () => {
               variant="contained"
               color="primary"
               style={{ bottom: "-25px" }}
-              onClick={() => beginExport()}
+              onClick={beginExport}
             >
               Export
             </Button>
