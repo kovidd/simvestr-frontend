@@ -34,6 +34,7 @@ import { Password } from "./settings/Password";
 import { AuthContext } from "../services/api";
 import { UserContext } from "../services/user";
 import { PortfolioContext } from "../services/portfolio";
+import { WatchlistContext } from "../services/watchlist";
 import { Notification, NotificationContext } from "./ui/Notification";
 
 // Routes
@@ -56,6 +57,8 @@ const Main = () => {
     portfolio: [],
   });
 
+  const [watchlist, setWatchlist] = useState([]);
+
   const [notification, setNotification] = useState({
     open: false,
     message: "",
@@ -66,85 +69,89 @@ const Main = () => {
     <AuthContext.Provider value={{ auth, setAuth }}>
       <UserContext.Provider value={{ user, setUser }}>
         <PortfolioContext.Provider value={{ portfolio, setPortfolio }}>
-          <NotificationContext.Provider
-            value={{ notification, setNotification }}
-          >
-            <Notification
-              open={notification.open}
-              message={notification.message}
-              handleClose={() => setNotification({ open: false, message: "" })}
-            />
-            <Router>
-              <Switch>
-                <Route
-                  path="/terms-and-conditions-signup"
-                  component={TermsAndConditionsSignup}
-                />
-                <UnauthenticatedRoute path="/signup" component={Signup} />
-                <UnauthenticatedRoute path="/login" component={Login} />
-                <UnauthenticatedRoute
-                  path="/forgotpassword"
-                  component={ForgotPassword}
-                />
-                <UnauthenticatedRoute
-                  path="/resetpassword"
-                  component={ResetPassword}
-                />
-                <AuthenticatedRoute
-                  exact
-                  path="/stocks/:symbol"
-                  component={StockList}
-                />
-                <AuthenticatedRoute path="/stocks" component={StockList} />
-                <AuthenticatedRoute path="/dashboard" component={Dashboard} />
-                <AuthenticatedRoute
-                  exact
-                  path="/watchlist"
-                  component={WatchListSummary}
-                />
-                <AuthenticatedRoute
-                  exact
-                  path="/watchlist/:symbol"
-                  component={WatchListDetails}
-                />
-                <AuthenticatedRoute
-                  path="/trades"
-                  component={HistoricalTrades}
-                />
-                <AuthenticatedRoute
-                  path="/leaderboard"
-                  component={LeaderBoard}
-                />
-                <AuthenticatedRoute exact path="/" component={Homepage} />
-                <AuthenticatedRoute
-                  exact
-                  path="/settings"
-                  component={AccountSettings}
-                />
-                <AuthenticatedRoute
-                  exact
-                  path="/settings/personaldetails"
-                  component={PersonalDetails}
-                />
-                <AuthenticatedRoute
-                  exact
-                  path="/settings/password"
-                  component={Password}
-                />
-                <AuthenticatedRoute
-                  exact
-                  path="/settings/terms-and-conditions-settings"
-                  component={TermsAndConditionsSettings}
-                />
-                <AuthenticatedRoute
-                  exact
-                  path="/settings/faq"
-                  component={FAQ}
-                />
-                <Redirect to={{ pathname: fallbackUri }} />
-              </Switch>
-            </Router>
-          </NotificationContext.Provider>
+          <WatchlistContext.Provider value={{ watchlist, setWatchlist }}>
+            <NotificationContext.Provider
+              value={{ notification, setNotification }}
+            >
+              <Notification
+                open={notification.open}
+                message={notification.message}
+                handleClose={() =>
+                  setNotification({ open: false, message: "" })
+                }
+              />
+              <Router>
+                <Switch>
+                  <Route
+                    path="/terms-and-conditions-signup"
+                    component={TermsAndConditionsSignup}
+                  />
+                  <UnauthenticatedRoute path="/signup" component={Signup} />
+                  <UnauthenticatedRoute path="/login" component={Login} />
+                  <UnauthenticatedRoute
+                    path="/forgotpassword"
+                    component={ForgotPassword}
+                  />
+                  <UnauthenticatedRoute
+                    path="/resetpassword"
+                    component={ResetPassword}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/stocks/:symbol"
+                    component={StockList}
+                  />
+                  <AuthenticatedRoute path="/stocks" component={StockList} />
+                  <AuthenticatedRoute path="/dashboard" component={Dashboard} />
+                  <AuthenticatedRoute
+                    exact
+                    path="/watchlist"
+                    component={WatchListSummary}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/watchlist/:symbol"
+                    component={WatchListDetails}
+                  />
+                  <AuthenticatedRoute
+                    path="/trades"
+                    component={HistoricalTrades}
+                  />
+                  <AuthenticatedRoute
+                    path="/leaderboard"
+                    component={LeaderBoard}
+                  />
+                  <AuthenticatedRoute exact path="/" component={Homepage} />
+                  <AuthenticatedRoute
+                    exact
+                    path="/settings"
+                    component={AccountSettings}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/settings/personaldetails"
+                    component={PersonalDetails}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/settings/password"
+                    component={Password}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/settings/terms-and-conditions-settings"
+                    component={TermsAndConditionsSettings}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/settings/faq"
+                    component={FAQ}
+                  />
+                  <Redirect to={{ pathname: fallbackUri }} />
+                </Switch>
+              </Router>
+            </NotificationContext.Provider>
+          </WatchlistContext.Provider>
         </PortfolioContext.Provider>
       </UserContext.Provider>
     </AuthContext.Provider>
