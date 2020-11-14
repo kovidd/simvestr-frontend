@@ -33,7 +33,7 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
           message: `Error deleting account.`,
 
         });
-        handleLogout();
+        handleLogout(); // this should be in the no error code (CORS issue forces it here!!)
       }
     }
     callDeleteAccount();
