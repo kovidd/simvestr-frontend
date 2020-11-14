@@ -38,8 +38,8 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
       <DialogTitle>Delete Account</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Your account and all its associated datawill be deleted. This includes
-          your watchlist and portfolio. This cannot be undone.
+          Your account and all its associated data will be deleted. This
+          includes your watchlist and portfolio. This cannot be undone.
         </DialogContentText>
       </DialogContent>
       <DialogActions>

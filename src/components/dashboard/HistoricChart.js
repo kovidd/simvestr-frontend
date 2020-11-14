@@ -9,6 +9,7 @@ const options = {
       show: false,
     },
   },
+  colors: ["#007f7f"],
   xaxis: {
     type: "datetime",
   },
@@ -27,6 +28,9 @@ const options = {
     y: {
       formatter: (value) => formatCurrency(value),
     },
+  },
+  fill: {
+    colors: ["#005253"],
   },
 };
 
