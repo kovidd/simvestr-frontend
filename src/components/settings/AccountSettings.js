@@ -4,6 +4,7 @@ import { List, ListItem, ListItemText } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
+import { ExportDialog } from "./ExportDialog";
 
 const StyledListItemText = styled(ListItemText)`
   & > :before {
@@ -25,11 +26,16 @@ const StyledListItem = styled(ListItem)`
 
 export const AccountSettings = () => {
   const history = useHistory();
-  const [open, setOpen] = useState(false);
+  const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
+  const [openExportDialog, setOpenExportDialog] = useState(false);
 
   return (
     <div>
-      <DeleteAccountDialog open={open} setOpen={setOpen} />
+      <DeleteAccountDialog
+        open={openDeleteAccountDialog}
+        setOpen={setOpenDeleteAccountDialog}
+      />
+      <ExportDialog open={openExportDialog} setOpen={setOpenExportDialog} />
       <MainWrapper>
         <List>
           <ListItem disableGutters>
@@ -54,11 +60,15 @@ export const AccountSettings = () => {
           <StyledListItem
             button
             disableGutters
-            onClick={() => history.push("/settings/export")}
+            onClick={() => setOpenExportDialog(true)}
           >
             <StyledListItemText>{`Export Portfolio`}</StyledListItemText>
           </StyledListItem>
-          <StyledListItem button disableGutters onClick={() => setOpen(true)}>
+          <StyledListItem
+            button
+            disableGutters
+            onClick={() => setOpenDeleteAccountDialog(true)}
+          >
             <StyledListItemText>{`Delete Account`}</StyledListItemText>
           </StyledListItem>
           <StyledListItem
