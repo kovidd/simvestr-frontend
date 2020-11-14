@@ -58,7 +58,7 @@ export const StockSearch = () => {
   useEffect(() => {
     let active = true;
 
-    if (inputValue === "" || inputValue.length < 2) {
+    if (inputValue === "") {
       setOptions(value ? [value] : []);
       return undefined;
     }
