@@ -169,16 +169,18 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
             justifyContent="space-between"
           >
             <Box display="flex" alignItems="baseline">
-              <img
-                alt="Stock Logo"
-                style={{
-                  height: "24px",
-                  marginRight: "0.5rem",
-                  position: "relative",
-                  top: "4px",
-                }}
-                src={details.logo}
-              />
+              {details.logo && (
+                <img
+                  alt="Stock Logo"
+                  style={{
+                    height: "24px",
+                    marginRight: "0.5rem",
+                    position: "relative",
+                    top: "4px",
+                  }}
+                  src={details.logo}
+                />
+              )}
               <Typography variant="h5" style={{ marginRight: "1rem" }}>
                 {details.name}
               </Typography>

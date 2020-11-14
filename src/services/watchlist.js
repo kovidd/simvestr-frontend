@@ -1,4 +1,10 @@
+import React from "react";
 import { GETRequest, POSTRequest, DELETERequest } from "./api";
+
+export const WatchlistContext = React.createContext({
+  watchlist: [],
+  setWatchlist: () => {},
+});
 
 /**
  * Add specified stock symbol to watchlist
