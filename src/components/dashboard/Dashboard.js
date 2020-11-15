@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import styled from "styled-components";
 import {
   Box,
   Grid,
@@ -10,7 +9,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  CircularProgress,
   LinearProgress,
 } from "@material-ui/core";
 import { MainWrapper, LinkRouter } from "../ui";

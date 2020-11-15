@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import {
   Box,
   Button,
-  Typography,
   TableContainer,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
-  CircularProgress,
   LinearProgress,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
