@@ -191,7 +191,7 @@ const Main = () => {
                       path="/settings/faq"
                       component={FAQ}
                     />
-                    {/* <Redirect to={{ pathname: fallbackUri }} /> */}
+                    <Redirect to={{ pathname: fallbackUri }} />
                   </Switch>
                 </Router>
               </NotificationContext.Provider>
