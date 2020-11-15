@@ -46,7 +46,7 @@ export const Dashboard = () => {
             <Grid item xs={12} md={4}>
               <Typography variant="body2">Portfolio Position</Typography>
               <Paper variant="outlined">
-                <Box minHeight="15rem" p="1rem">
+                <Box minHeight="280px" p="1rem">
                   <Typography variant="body2">Net Portfolio</Typography>
                   <Typography variant="h4">
                     {formatCurrency(netPortfolio)}
@@ -67,7 +67,7 @@ export const Dashboard = () => {
             <Grid item xs={12} md={8}>
               <Typography variant="body2">Historical Performance </Typography>{" "}
               <Paper variant="outlined">
-                <Box minHeight="15rem">
+                <Box minHeight="280px">
                   <HistoricChart netPortfolio={netPortfolio} />
                 </Box>
               </Paper>
