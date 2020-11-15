@@ -27,32 +27,25 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
           open: true,
           message: `Account deleted successfully.`,
         });
+        handleLogout();
       } else {
         setNotification({
           open: true,
           message: `Error deleting account.`,
 
         });
-        handleLogout(); // this should be in the no error code (CORS issue forces it here!!)
+        handleLogout(); // TESTING  (currently needed due to CORS issue!!)
       }
     }
     callDeleteAccount();
   };
 
-  const handleLogout = async () => {
-    const res = await logout();
-    if (!res.error) {
-      setAuth({
-        isAuthenticated: false,
-        apiToken: null,
-      });
-      history.push("/login");
-    } else {
-      setNotification({
-        open: true,
-        message: `Error logging out.`,
-      });
-    }
+  const handleLogout = () => {
+    setAuth({
+      isAuthenticated: false,
+      apiToken: null,
+    });
+    history.push("/login");
   };
 
   return (
