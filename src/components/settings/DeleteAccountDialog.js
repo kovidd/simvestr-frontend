@@ -9,10 +9,13 @@ import {
 } from "@material-ui/core";
 import { deleteAccount } from "../../services/delete";
 import { NotificationContext } from "../ui/Notification";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../services/api";
 
 export const DeleteAccountDialog = ({ open, setOpen }) => {
   const { setNotification } = useContext(NotificationContext);
-
+  const history = useHistory();
+  const { setAuth } = useContext(AuthContext);
   const handleClose = () => setOpen(false);
 
   const beginDeleteAccount = () => {
@@ -23,7 +26,7 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
           open: true,
           message: `Account deleted successfully.`,
         });
-        window.open("/login", "_self");
+        handleLogout();
       } else {
         setNotification({
           open: true,
@@ -32,6 +35,14 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
       }
     }
     callDeleteAccount();
+  };
+
+  const handleLogout = () => {
+    setAuth({
+      isAuthenticated: false,
+      apiToken: null,
+    });
+    history.push("/login");
   };
 
   return (
