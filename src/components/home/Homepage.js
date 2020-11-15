@@ -184,7 +184,7 @@ export const Homepage = () => {
           >
             <div>
               {terminal.map(({ search, result, isNew }, index) => (
-                <>
+                <React.Fragment key={search + index}>
                   <ListItemText>
                     <Box
                       display="inline"
@@ -252,7 +252,7 @@ export const Homepage = () => {
                     )}
                   </ListItemText>
                   {result && <ListItemText>{result}</ListItemText>}
-                </>
+                </React.Fragment>
               ))}
             </div>
           </form>

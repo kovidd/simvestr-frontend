@@ -76,7 +76,7 @@ export const HistoricalTrades = () => {
                   </TableHead>
                   <TableBody>
                     {transactions.map((trade) => (
-                      <TableRow>
+                      <TableRow key={trade.timestamp}>
                         <TableCell>
                           <LinkRouter to={`stocks/${trade.symbol}`}>
                             {trade.symbol}
