@@ -21,7 +21,7 @@ function Portfolio(props) {
   const bgColour = props.thisUser ? "#f3f3f3" : "white";
 
   return (
-    <TableRow style={{ background: bgColour }}>
+    <TableRow ref={props.portRef} style={{ background: bgColour }}>
       <TableCell className={classes.tablecell} width="10%" align="left">
         {props.position}
       </TableCell>

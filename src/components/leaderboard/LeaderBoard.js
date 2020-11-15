@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   Table,
   TableBody,
@@ -57,16 +57,15 @@ export const LeaderBoard = () => {
     getLeaders();
   }, [setNotification]);
 
-  const portfolioLeadersRef = React.createRef();
+  const MY_PORTFOLIO_AT_POSITION = 4     // users portfolio will be at this position after scrollToPortfolio()
+  const HEIGHT_OF_PORTFOLIO_TABLE = 448  // max height of portfolio container
 
-  const scrollToPortfolio = () => {
-    const ITEM_HEIGHT = 64;
-    const NUM_OF_ITEMS = 7;
-    const amountToScroll =
-      ITEM_HEIGHT *
-      (positionText["nominal"] - Math.floor(NUM_OF_ITEMS / 2) - 1);
-    portfolioLeadersRef.current.scrollTo(0, amountToScroll);
-  };
+  // allow for portfolio to be at the top of the screen
+  const positionOnScreen = Math.min(positionText["nominal"], MY_PORTFOLIO_AT_POSITION);
+
+  const myPortfolio = useRef(null);
+
+  const scrollToPortfolio = () => myPortfolio.current.scrollIntoView();
 
   return (
     <MainWrapper>
@@ -80,9 +79,8 @@ export const LeaderBoard = () => {
           You are currently in {positionText["ordinal"]} position
         </Typography>
         <TableContainer
-          ref={portfolioLeadersRef}
           style={{
-            maxHeight: 448,
+            maxHeight: HEIGHT_OF_PORTFOLIO_TABLE,
             border: "2px solid #e4e4e4",
           }}
         >
@@ -96,6 +94,7 @@ export const LeaderBoard = () => {
                   name={item.name}
                   value={item.value}
                   thisUser={positionText["nominal"] === index + 1}
+                  portRef={positionText["nominal"] === index + positionOnScreen ? myPortfolio : null}
                 />
               ))}
             </TableBody>
