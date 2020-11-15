@@ -36,7 +36,7 @@ export const HistoricalTrades = () => {
             .map((transaction) => ({
               symbol: transaction.symbol,
               quote: transaction.quote,
-              timestamp: transaction.timestamp * 1000, // convert to ms
+              timestamp: (transaction.timestamp - 3600) * 1000, // convert to ms
               quantity: Math.abs(transaction.quantity),
               fee: transaction.fee,
               type: transaction.quantity > 0 ? "buy" : "sell",
