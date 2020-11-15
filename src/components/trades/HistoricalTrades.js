@@ -1,38 +1,27 @@
 import React, { useState, useEffect, useContext } from "react";
 import * as dayjs from "dayjs";
-import styled from "styled-components";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import {
   Box,
-  Typography,
   TableContainer,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
-  CircularProgress,
+  LinearProgress,
 } from "@material-ui/core";
-import { MainWrapper } from "../ui";
+import { MainWrapper, LinkRouter, PriceTableCell } from "../ui";
 import { getTrades } from "../../services/trades";
 import { NotificationContext } from "../ui/Notification";
 import { formatCurrency } from "../../helpers";
 
-const PriceWrapper = styled.div`
-  display: flex;
-  align-items: baseline;
-  & > * {
-    padding-right: 0.25rem;
-  }
-`;
-
-const PriceTypography = styled(Typography)`
-  && {
-    color: ${(props) => (props.quantity < 0 ? "green" : "red")};
-  }
-`;
-
 export const HistoricalTrades = () => {
-  const [tradeDetails, setTradeDetails] = useState([]);
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
+  dayjs.tz.guess();
+  const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { setNotification } = useContext(NotificationContext);
 
@@ -40,85 +29,73 @@ export const HistoricalTrades = () => {
     async function getHistoricalTrades() {
       const res = await getTrades();
       if (!res.error) {
-        Object.entries(res.data.transactions).map(async function ([k, v]) {
-          setTradeDetails((oldTradeDetails) => [
-            ...oldTradeDetails,
-            {
-              date: res.data.transactions[k].timestamp * 1000,
-              symbol: res.data.transactions[k].symbol,
-              quantity: res.data.transactions[k].quantity,
-              quote: res.data.transactions[k].quote,
-              type: res.data.transactions[k].quantity > 0 ? "Buy" : "Sell",
-              total:
-                res.data.transactions[k].quantity *
-                res.data.transactions[k].quote,
-            },
-          ]);
-        });
+        setIsLoading(true);
+        setTransactions(
+          res.data.transactions
+            .sort((a, b) => b.timestamp - a.timestamp)
+            .map((transaction) => ({
+              symbol: transaction.symbol,
+              quote: transaction.quote,
+              timestamp: transaction.timestamp * 1000, // convert to ms
+              quantity: Math.abs(transaction.quantity),
+              fee: transaction.fee,
+              type: transaction.quantity > 0 ? "buy" : "sell",
+              total: Math.abs(transaction.quantity * transaction.quote),
+            }))
+        );
       } else {
         setNotification({
           open: true,
           message: `Error loading historical trades.`,
         });
       }
+      setIsLoading(false);
     }
     getHistoricalTrades();
-    setIsLoading(false);
-  }, [setNotification]);
+  }, [setNotification, setTransactions, setIsLoading]);
 
   return (
     <>
       <MainWrapper>
-        <Box>
+        <Box mt="1rem">
           {isLoading ? (
-            <Box display="flex" justifyContent="center">
-              <CircularProgress />
-            </Box>
+            <LinearProgress />
           ) : (
-            tradeDetails && (
-              <TableContainer
-                style={{
-                  maxHeight: 448,
-                }}
-              >
+            transactions && (
+              <TableContainer style={{ maxHeight: "80vh" }}>
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center">Date</TableCell>
-                      <TableCell align="center">Trade Type</TableCell>
-                      <TableCell align="center">Symbol</TableCell>
-                      <TableCell align="center">Quantity</TableCell>
-                      <TableCell align="center">Quote</TableCell>
-                      <TableCell align="center">Total Value</TableCell>
+                      <TableCell>Symbol</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Trade Type</TableCell>
+                      <TableCell align="right">Quantity</TableCell>
+                      <TableCell align="right">Quote</TableCell>
+                      <TableCell align="right">Total Value</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {tradeDetails.map((trade) => (
-                      <TableRow>
-                        <TableCell align="center">
-                          {dayjs(trade.date).format("MMM DD YYYY HH:mm")}
+                    {transactions.map((trade) => (
+                      <TableRow key={trade.timestamp}>
+                        <TableCell>
+                          <LinkRouter to={`stocks/${trade.symbol}`}>
+                            {trade.symbol}
+                          </LinkRouter>
                         </TableCell>
-                        <TableCell align="center">{trade.type}</TableCell>
-                        <TableCell align="center">{trade.symbol}</TableCell>
-                        <TableCell align="center">
-                          {Math.abs(trade.quantity)}
+                        <TableCell>
+                          {dayjs
+                            .tz(trade.timestamp)
+                            .format("MMM DD YYYY HH:mm")}
                         </TableCell>
-                        <TableCell align="center">
+                        <PriceTableCell change={trade.type === "buy" ? 1 : -1}>
+                          {trade.type.toUpperCase()}
+                        </PriceTableCell>
+                        <TableCell align="right">{trade.quantity}</TableCell>
+                        <TableCell align="right">
                           {formatCurrency(trade.quote)}
                         </TableCell>
-                        <TableCell align="center">
-                          <PriceWrapper>
-                            <PriceTypography
-                              variant="body1"
-                              quantity={trade.quantity}
-                            >
-                              {`${
-                                trade.quantity > 0 ? "-" : "+"
-                              }${formatCurrency(
-                                Math.abs(trade.total).toFixed(2)
-                              )}`}
-                            </PriceTypography>
-                          </PriceWrapper>
+                        <TableCell align="right">
+                          {formatCurrency(trade.total)}
                         </TableCell>
                       </TableRow>
                     ))}

@@ -6,7 +6,6 @@ import { API } from "./uri";
 
 export const AuthContext = React.createContext({
   auth: {
-    apiToken: "",
     isAuthenticated: false,
   },
   setAuth: () => {},
@@ -15,6 +14,16 @@ export const AuthContext = React.createContext({
 const hasJSONResponse = (res) => {
   const contentType = res.headers.get("content-type");
   return contentType && contentType.indexOf("application/json") !== -1;
+};
+
+const hasXLSXResponse = (res) => {
+  const contentType = res.headers.get("content-type");
+  return (
+    contentType &&
+    contentType.indexOf(
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) !== -1
+  );
 };
 
 /**
@@ -105,7 +114,6 @@ export async function PUTRequest(path, payload, options) {
 /**
  * GETRequest - Sends a GET Request to the specified endpoint
  * @param {string} path - the extension path to the REST API endpoint
- * @param {string} apiToken - the apiToken to validate the request
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
  */
 export async function GETRequest(path, options) {
@@ -122,6 +130,9 @@ export async function GETRequest(path, options) {
       if (hasJSONResponse(res)) {
         const data = await res.json();
         return { error: false, data };
+      } else if (hasXLSXResponse(res)) {
+        const blob = await res.blob();
+        return { error: false, data: blob };
       } else {
         return { error: false };
       }
@@ -143,7 +154,7 @@ export async function GETRequest(path, options) {
  * @param {string} path - the extension path to the REST API endpoint
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
  */
-export async function DELETERequest(path, options) {
+export async function DELETERequest(path, payload, options) {
   try {
     let config = {
       method: "delete",
@@ -152,11 +163,14 @@ export async function DELETERequest(path, options) {
         "Content-Type": "application/json",
         ...(options && { ...options.headers }),
       },
+      ...(payload && {
+        body: !options || options.stringify ? JSON.stringify(payload) : payload,
+      }),
     };
 
     const res = await fetch(`${API}${path}`, config);
     if (res.ok) {
-      return { error: false };
+      return { error: false, data: payload };
     } else {
       const { message } = await res.json();
       return { error: true, message, status: res.status };
