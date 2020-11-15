@@ -23,6 +23,7 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
           open: true,
           message: `Account deleted successfully.`,
         });
+        window.open("/login", "_self");
       } else {
         setNotification({
           open: true,
