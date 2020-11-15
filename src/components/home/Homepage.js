@@ -11,7 +11,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { MainWrapper } from "../ui";
 import { AuthContext } from "../../services/api";
-import { UserContext, userDetails } from "../../services/user";
+import { UserContext } from "../../services/user";
 import {
   PortfolioContext,
   getPortfolioDetails,
@@ -54,8 +54,8 @@ const initialTerminal = {
 
 export const Homepage = () => {
   const history = useHistory();
+  const { user } = useContext(UserContext);
   const { setAuth } = useContext(AuthContext);
-  const { user, setUser } = useContext(UserContext);
   const { setPortfolio } = useContext(PortfolioContext);
   const [terminal, setTerminal] = useState([initialTerminal]);
   const { setNotification } = useContext(NotificationContext);
@@ -82,7 +82,6 @@ export const Homepage = () => {
     if (!res.error) {
       setAuth({
         isAuthenticated: false,
-        apiToken: null,
       });
       history.push("/login");
     } else {
@@ -92,25 +91,6 @@ export const Homepage = () => {
       });
     }
   };
-
-  useEffect(() => {
-    async function getUserDetails() {
-      const res = await userDetails();
-      if (!res.error) {
-        setUser({
-          firstName: res.data.first_name,
-          lastName: res.data.last_name,
-          email: res.data.email_id,
-        });
-      } else {
-        setNotification({
-          open: true,
-          message: `Error getting user details.`,
-        });
-      }
-    }
-    getUserDetails();
-  }, [setUser, setNotification]);
 
   useEffect(() => {
     getPortfolioDetails(setPortfolio);
