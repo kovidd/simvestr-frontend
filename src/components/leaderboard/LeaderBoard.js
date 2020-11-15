@@ -1,18 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   Table,
+  TableHead,
   TableBody,
+  TableRow,
+  TableCell,
   TableContainer,
   Box,
   Typography,
   Button,
 } from "@material-ui/core";
-import { MainWrapper } from "../ui";
-import Portfolio from "./Portfolio";
+import { LinkRouter, MainWrapper } from "../ui";
 import {
   leaderboardPosition,
   leaderboardAll,
 } from "../../services/leaderboard";
+import { formatCurrency } from "../../helpers";
 import { NotificationContext } from "../ui/Notification";
 
 export const LeaderBoard = () => {
@@ -57,16 +60,17 @@ export const LeaderBoard = () => {
     getLeaders();
   }, [setNotification]);
 
-  const portfolioLeadersRef = React.createRef();
+  const MY_PORTFOLIO_AT_POSITION = 4; // users portfolio will be at this position after scrollToPortfolio()
 
-  const scrollToPortfolio = () => {
-    const ITEM_HEIGHT = 64;
-    const NUM_OF_ITEMS = 7;
-    const amountToScroll =
-      ITEM_HEIGHT *
-      (positionText["nominal"] - Math.floor(NUM_OF_ITEMS / 2) - 1);
-    portfolioLeadersRef.current.scrollTo(0, amountToScroll);
-  };
+  // allow for portfolio to be at the top of the screen
+  const positionOnScreen = Math.min(
+    positionText["nominal"],
+    MY_PORTFOLIO_AT_POSITION
+  );
+
+  const myPortfolio = useRef(null);
+
+  const scrollToPortfolio = () => myPortfolio.current.scrollIntoView();
 
   return (
     <MainWrapper>
@@ -80,24 +84,42 @@ export const LeaderBoard = () => {
           You are currently in {positionText["ordinal"]} position
         </Typography>
         <TableContainer
-          ref={portfolioLeadersRef}
           style={{
-            maxHeight: 448,
-            border: "2px solid #e4e4e4",
+            maxHeight: "500px",
           }}
         >
-          <Table aria-label="simple table">
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Position</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Portfolio Name</TableCell>
+                <TableCell align="right">Total Value</TableCell>
+              </TableRow>
+            </TableHead>
             <TableBody>
-              {leaders.map((item, index) => (
-                <Portfolio
-                  key={item.user}
-                  position={item.position}
-                  user={item.user}
-                  name={item.name}
-                  value={item.value}
-                  thisUser={positionText["nominal"] === index + 1}
-                />
-              ))}
+              {leaders.map((item, index) => {
+                const rowRef =
+                  positionText["nominal"] === index + positionOnScreen
+                    ? myPortfolio
+                    : null;
+                const isMyPortfolio = positionText["nominal"] === index + 1
+                const bgColor = isMyPortfolio   ? "rgba(0,127,127,0.1)" : "inherit";
+                return (
+                  <TableRow
+                    key={item.user}
+                    ref={rowRef}
+                    style={{ background: bgColor }}
+                  >
+                    <TableCell align="left">{item.position}</TableCell>
+                    <TableCell align="left">{item.user}</TableCell>
+                    <TableCell align="left">{isMyPortfolio ? <LinkRouter to="dashboard">{item.name}</LinkRouter> :  item.name}</TableCell>
+                    <TableCell align="right">
+                      {formatCurrency(item.value)}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
