@@ -62,7 +62,7 @@ export const HistoricalTrades = () => {
             <LinearProgress />
           ) : (
             transactions && (
-              <TableContainer>
+              <TableContainer style={{ maxHeight: "80vh" }}>
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
