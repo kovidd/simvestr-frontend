@@ -112,7 +112,7 @@ const getOptions = (range) => ({
 export const StockChart = ({ details, disableWatchlist = false }) => {
   const { setNotification } = useContext(NotificationContext);
   const [series, setSeries] = useState([]);
-  const [range, setRange] = useState("Y");
+  const [range, setRange] = useState("W");
   const [open, setOpen] = useState(false);
   const options = getOptions(range);
   const [isLoading, setIsLoading] = useState(false);
