@@ -8,7 +8,6 @@ import {
   Button,
 } from "@material-ui/core";
 import { deleteAccount } from "../../services/delete";
-import { logout } from "../../services/user";
 import { NotificationContext } from "../ui/Notification";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../services/api";
@@ -32,9 +31,7 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
         setNotification({
           open: true,
           message: `Error deleting account.`,
-
         });
-        handleLogout(); // TESTING  (currently needed due to CORS issue!!)
       }
     }
     callDeleteAccount();
@@ -53,8 +50,8 @@ export const DeleteAccountDialog = ({ open, setOpen }) => {
       <DialogTitle>Delete Account</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Your account and all its associated data will be deleted. This includes
-          your watchlist and portfolio. This cannot be undone.
+          Your account and all its associated data will be deleted. This
+          includes your watchlist and portfolio. This cannot be undone.
         </DialogContentText>
       </DialogContent>
       <DialogActions>

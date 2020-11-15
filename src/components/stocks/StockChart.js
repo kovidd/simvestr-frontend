@@ -112,7 +112,7 @@ const getOptions = (range) => ({
 export const StockChart = ({ details, disableWatchlist = false }) => {
   const { setNotification } = useContext(NotificationContext);
   const [series, setSeries] = useState([]);
-  const [range, setRange] = useState("Y");
+  const [range, setRange] = useState("W");
   const [open, setOpen] = useState(false);
   const options = getOptions(range);
   const [isLoading, setIsLoading] = useState(false);
@@ -140,7 +140,8 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
   }, [details.symbol, range, setNotification]);
 
   const handleAdd = async () => {
-    const res = await addStock(details.symbol);
+    const body = { symbol: details.symbol };
+    const res = await addStock(body);
     if (res.error) {
       setNotification({
         open: true,
@@ -169,16 +170,18 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
             justifyContent="space-between"
           >
             <Box display="flex" alignItems="baseline">
-              <img
-                alt="Stock Logo"
-                style={{
-                  height: "24px",
-                  marginRight: "0.5rem",
-                  position: "relative",
-                  top: "4px",
-                }}
-                src={details.logo}
-              />
+              {details.logo && (
+                <img
+                  alt="Stock Logo"
+                  style={{
+                    height: "24px",
+                    marginRight: "0.5rem",
+                    position: "relative",
+                    top: "4px",
+                  }}
+                  src={details.logo}
+                />
+              )}
               <Typography variant="h5" style={{ marginRight: "1rem" }}>
                 {details.name}
               </Typography>

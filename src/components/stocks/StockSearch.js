@@ -6,15 +6,24 @@ import { searchStockByName } from "../../services/stock";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import { NotificationContext } from "../ui/Notification";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 
 export const StockSearch = () => {
   const history = useHistory();
+  const location = useLocation();
   const { symbol } = useParams();
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
   const { setNotification } = useContext(NotificationContext);
+
+  useEffect(() => {
+    if (location.pathname === "/stocks") {
+      setValue(null);
+      setInputValue("");
+      setOptions([]);
+    }
+  }, [location.pathname]);
 
   const getOptions = async (name) => {
     const res = await searchStockByName(name);
@@ -58,7 +67,7 @@ export const StockSearch = () => {
   useEffect(() => {
     let active = true;
 
-    if (inputValue === "" || inputValue.length < 2) {
+    if (inputValue === "") {
       setOptions(value ? [value] : []);
       return undefined;
     }
@@ -73,7 +82,7 @@ export const StockSearch = () => {
     return () => {
       active = false;
     };
-  }, [value, inputValue, handleSearch, setNotification, history, symbol]);
+  }, [value, inputValue, handleSearch, setNotification, history]);
 
   return (
     <Autocomplete
@@ -114,6 +123,7 @@ export const StockSearch = () => {
       renderInput={(params) => (
         <TextField
           {...params}
+          focused={symbol}
           label="Search Stocks"
           margin="normal"
           variant="outlined"

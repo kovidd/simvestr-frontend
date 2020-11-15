@@ -1,21 +1,27 @@
+import React from "react";
 import { GETRequest, POSTRequest, DELETERequest } from "./api";
+
+export const WatchlistContext = React.createContext({
+  watchlist: [],
+  setWatchlist: () => {},
+});
 
 /**
  * Add specified stock symbol to watchlist
  * @param {string} stockSymbol The stock symbol/ticker
  */
-export function addStock(stockSymbol) {
-  const path = `/watchlist/${stockSymbol}`;
-  return POSTRequest(path);
+export function addStock(payload) {
+  const path = `/watchlist`;
+  return POSTRequest(path, payload);
 }
 
 /**
  * Add specified stock symbol to watchlist
  * @param {string} stockSymbol The stock symbol/ticker
  */
-export function removeStock(stockSymbol) {
-  const path = `/watchlist/${stockSymbol}`;
-  return DELETERequest(path);
+export function removeStock(payload) {
+  const path = `/watchlist`;
+  return DELETERequest(path, payload);
 }
 
 /**

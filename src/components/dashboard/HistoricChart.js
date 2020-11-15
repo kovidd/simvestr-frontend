@@ -9,6 +9,7 @@ const options = {
       show: false,
     },
   },
+  colors: ["#007f7f"],
   xaxis: {
     type: "datetime",
   },
@@ -28,6 +29,9 @@ const options = {
       formatter: (value) => formatCurrency(value),
     },
   },
+  fill: {
+    colors: ["#005253"],
+  },
 };
 
 export const HistoricChart = ({ netPortfolio }) => {
@@ -36,7 +40,6 @@ export const HistoricChart = ({ netPortfolio }) => {
     async function getHistoricBalance() {
       const res = await portfolioHistory();
       if (!res.error) {
-        console.log(res.data);
         setSeries([
           {
             name: "Total Portfolio",

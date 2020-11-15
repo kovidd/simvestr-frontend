@@ -129,12 +129,6 @@ const LoginForm = () => {
 };
 
 export const Login = () => {
-  // const history = useHistory();
-  // const { auth } = useContext(AuthContext);
-  // console.log(auth);
-  // if (auth.isAuthenticated) {
-  //   history.replace("/");
-  // }
   return (
     <Container maxWidth="sm">
       <MainWrapper>

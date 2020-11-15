@@ -1,6 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Box, Paper, Breadcrumbs, Link, Typography } from "@material-ui/core";
+import {
+  Box,
+  Paper,
+  Breadcrumbs,
+  Link,
+  Typography,
+  TableCell,
+} from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
 
@@ -112,3 +119,15 @@ export const FormErrorMessage = ({ errors, name }) => (
     render={({ message }) => <ErrorWrapper>{message}</ErrorWrapper>}
   />
 );
+
+export const PriceTypography = styled(Typography)`
+  && {
+    color: ${(props) => (props.change >= 0 ? "green" : "red")};
+  }
+`;
+
+export const PriceTableCell = styled(TableCell)`
+  && {
+    color: ${(props) => (props.change >= 0 ? "green" : "red")};
+  }
+`;

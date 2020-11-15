@@ -37,6 +37,8 @@ export const StockTrade = ({ symbol, quotePrice }) => {
   const [open, setOpen] = useState(false);
   const { portfolio, setPortfolio } = useContext(PortfolioContext);
   const { setNotification } = useContext(NotificationContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
 
   var availableUnits = 0;
   Object.entries(portfolio.portfolio).map(async function ([k, v]) {
@@ -81,29 +83,39 @@ export const StockTrade = ({ symbol, quotePrice }) => {
   };
 
   const handleTrade = async () => {
+    setIsLoading(true);
     const res = await marketOrder(tradeDetails);
     if (!res.error) {
+      setIsComplete(true);
       await getPortfolioDetails(setPortfolio);
-      setOpen(false);
-      setAmount("");
-      setNotification({
-        open: true,
-        message: `Trade executed successfully.`,
-      });
     } else {
       setNotification({
         open: true,
         message: `Error executing the trade.`,
       });
+      setIsComplete(false);
+      setOpen(false);
     }
+    setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (open) {
+      setIsComplete(false);
+    }
+  }, [open]);
 
   return (
     <>
       <StockTradeConfirmation
         open={open}
-        handleClose={() => setOpen(false)}
+        handleClose={() => {
+          setAmount(false);
+          setOpen(false);
+        }}
         handleTrade={handleTrade}
+        isExecuting={isLoading}
+        isComplete={isComplete}
         tradeDetails={tradeDetails}
       />
       <Box display="flex" alignItems="center" justifyContent="space-between">

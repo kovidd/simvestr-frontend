@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
-import { Box, CircularProgress, LinearProgress } from "@material-ui/core";
+import { useParams, useLocation } from "react-router-dom";
+import { LinearProgress } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { StockSearch } from "./StockSearch";
 import { StockDetails } from "./StockDetails";
 import { NotificationContext } from "../ui/Notification";
 import { stockDetails } from "../../services/stock";
 
-export const StockList = () => {
+export const StockOverview = () => {
   let { symbol } = useParams();
+  let location = useLocation();
   const { setNotification } = useContext(NotificationContext);
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +35,7 @@ export const StockList = () => {
           open: true,
           message: `Error getting the stock details.`,
         });
+        setDetails(null);
       }
       setIsLoading(false);
     }
@@ -42,16 +44,21 @@ export const StockList = () => {
     }
   }, [setIsLoading, setNotification, symbol]);
 
+  useEffect(() => {
+    if (location.pathname === "/stocks") {
+      setDetails(null);
+      setIsLoading(false);
+    }
+  }, [location.pathname]);
+
   return (
     <MainWrapper>
-      <Box>
-        <StockSearch />
-        {isLoading ? (
-          <LinearProgress />
-        ) : (
-          details && <StockDetails details={details} />
-        )}
-      </Box>
+      <StockSearch />
+      {isLoading ? (
+        <LinearProgress />
+      ) : (
+        details && <StockDetails details={details} />
+      )}
     </MainWrapper>
   );
 };
