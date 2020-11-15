@@ -6,7 +6,6 @@ import { API } from "./uri";
 
 export const AuthContext = React.createContext({
   auth: {
-    apiToken: "",
     isAuthenticated: false,
   },
   setAuth: () => {},
@@ -115,7 +114,6 @@ export async function PUTRequest(path, payload, options) {
 /**
  * GETRequest - Sends a GET Request to the specified endpoint
  * @param {string} path - the extension path to the REST API endpoint
- * @param {string} apiToken - the apiToken to validate the request
  * @param {{stringify: boolean, headers: HeadersInit}} options - the optional headers
  */
 export async function GETRequest(path, options) {

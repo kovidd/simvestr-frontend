@@ -20,6 +20,11 @@ export function login(payload) {
   return POSTRequest(path, payload);
 }
 
+export function refreshToken() {
+  const path = "/refreshtoken";
+  return PUTRequest(path);
+}
+
 export function forgotPassword(payload) {
   let options = { headers: { "Content-Type": "application/text" } };
   const path = `/forgotuser?email=${payload.email}`;
