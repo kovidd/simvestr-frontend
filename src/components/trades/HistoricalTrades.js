@@ -2,10 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import * as dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import styled from "styled-components";
 import {
   Box,
-  Typography,
   TableContainer,
   Table,
   TableHead,
@@ -19,29 +17,14 @@ import { getTrades } from "../../services/trades";
 import { NotificationContext } from "../ui/Notification";
 import { formatCurrency } from "../../helpers";
 
-const PriceWrapper = styled.div`
-  display: flex;
-  align-items: baseline;
-  & > * {
-    padding-right: 0.25rem;
-  }
-`;
-
-const PriceTypography = styled(Typography)`
-  && {
-    color: ${(props) => (props.quantity < 0 ? "green" : "red")};
-  }
-`;
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.guess();
-
 export const HistoricalTrades = () => {
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
+  dayjs.tz.guess();
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { setNotification } = useContext(NotificationContext);
-  console.log(transactions);
+
   useEffect(() => {
     async function getHistoricalTrades() {
       const res = await getTrades();

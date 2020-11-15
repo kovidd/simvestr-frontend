@@ -40,7 +40,6 @@ export const HistoricChart = ({ netPortfolio }) => {
     async function getHistoricBalance() {
       const res = await portfolioHistory();
       if (!res.error) {
-        console.log(res.data);
         setSeries([
           {
             name: "Total Portfolio",
