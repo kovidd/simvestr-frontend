@@ -30,6 +30,7 @@ export const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     getPortfolioDetails(setPortfolio).then(() => setIsLoading(false));
   }, [setPortfolio]);
 
@@ -65,7 +66,7 @@ export const Dashboard = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Typography variant="body2">Historical Performance </Typography>{" "}
+              <Typography variant="body2">Historical Performance</Typography>
               <Paper variant="outlined">
                 <Box minHeight="280px">
                   <HistoricChart netPortfolio={netPortfolio} />
@@ -73,7 +74,7 @@ export const Dashboard = () => {
               </Paper>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body2">Portfolio Constituents </Typography>{" "}
+              <Typography variant="body2">Portfolio Constituents</Typography>
               <Paper variant="outlined">
                 <Box minHeight="15em" overflow="auto">
                   <Table>

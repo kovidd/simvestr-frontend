@@ -59,7 +59,7 @@ export const HistoricChart = ({ netPortfolio }) => {
         console.error("error getting the portfolio history");
       }
     }
-    getHistoricBalance();
+    netPortfolio && getHistoricBalance();
   }, [netPortfolio, setSeries]);
 
   return (
