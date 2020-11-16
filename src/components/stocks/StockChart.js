@@ -29,8 +29,9 @@ import {
  * Converts the candle data to the respective chart data
  */
 function parseCandles(candles) {
+  var timeOffset = new Date().getTimezoneOffset() * 60; //convert to s
   return candles.t.map((timestamp, index) => ({
-    x: new Date(timestamp * 1000),
+    x: new Date((timestamp - timeOffset) * 1000),
     y: [candles.o[index], candles.h[index], candles.l[index], candles.c[index]],
   }));
 }

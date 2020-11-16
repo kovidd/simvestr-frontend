@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import * as dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import {
   Box,
   TableContainer,
@@ -18,9 +16,7 @@ import { NotificationContext } from "../ui/Notification";
 import { formatCurrency } from "../../helpers";
 
 export const HistoricalTrades = () => {
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  dayjs.tz.guess();
+  var timeOffset = new Date().getTimezoneOffset() * 60; //convert to s
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { setNotification } = useContext(NotificationContext);
@@ -36,7 +32,7 @@ export const HistoricalTrades = () => {
             .map((transaction) => ({
               symbol: transaction.symbol,
               quote: transaction.quote,
-              timestamp: (transaction.timestamp - 3600) * 1000, // convert to ms
+              timestamp: (transaction.timestamp - timeOffset) * 1000, // convert to ms
               quantity: Math.abs(transaction.quantity),
               fee: transaction.fee,
               type: transaction.quantity > 0 ? "buy" : "sell",
@@ -52,7 +48,7 @@ export const HistoricalTrades = () => {
       setIsLoading(false);
     }
     getHistoricalTrades();
-  }, [setNotification, setTransactions, setIsLoading]);
+  }, [setNotification, setTransactions, setIsLoading, timeOffset]);
 
   return (
     <>
@@ -83,9 +79,7 @@ export const HistoricalTrades = () => {
                           </LinkRouter>
                         </TableCell>
                         <TableCell>
-                          {dayjs
-                            .tz(trade.timestamp)
-                            .format("MMM DD YYYY HH:mm")}
+                          {dayjs(trade.timestamp).format("MMM DD YYYY HH:mm")}
                         </TableCell>
                         <PriceTableCell change={trade.type === "buy" ? 1 : -1}>
                           {trade.type.toUpperCase()}
