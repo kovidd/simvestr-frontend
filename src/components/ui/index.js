@@ -49,7 +49,7 @@ export const MainWrapper = ({ children }) => {
     ? "sm"
     : "md";
   return (
-    <StyledContainer maxWidth={maxWidth} md={matches}>
+    <StyledContainer maxWidth={maxWidth}>
       <Box
         display="flex"
         flex="1"

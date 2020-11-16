@@ -123,7 +123,7 @@ export const StockSearch = () => {
       renderInput={(params) => (
         <TextField
           {...params}
-          focused={symbol}
+          focused={Boolean(symbol)}
           label="Search Stocks"
           margin="normal"
           variant="outlined"

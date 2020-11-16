@@ -106,7 +106,7 @@ export const LeaderBoard = () => {
               const bgColor = isMyPortfolio ? "rgba(0,127,127,0.1)" : "inherit";
               return (
                 <TableRow
-                  key={item.user}
+                  key={item.user + index}
                   ref={rowRef}
                   style={{ background: bgColor }}
                 >

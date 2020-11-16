@@ -54,7 +54,7 @@ export const StockTradeConfirmation = ({
       </DialogContent>
       <DialogActions>
         {isComplete ? (
-          <Button onClick={handleClose} color="primay">
+          <Button onClick={handleClose} color="primary">
             Close
           </Button>
         ) : (

@@ -42,7 +42,7 @@ export const FAQ = () => {
   return (
     <Box>
       {faqs.map(({ question, answer }) => (
-        <Box mt="1rem">
+        <Box key={question} mt="1rem">
           <Typography variant="subtitle2" color="primary">
             {question.toUpperCase()}
           </Typography>

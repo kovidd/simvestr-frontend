@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
-import { Container, NoSsr, useMediaQuery, useTheme } from "@material-ui/core";
+import { NoSsr } from "@material-ui/core";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 
