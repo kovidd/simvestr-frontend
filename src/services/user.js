@@ -26,9 +26,8 @@ export function refreshToken() {
 }
 
 export function forgotPassword(payload) {
-  let options = { headers: { "Content-Type": "application/text" } };
-  const path = `/forgotuser?email=${payload.email}`;
-  return GETRequest(path, options);
+  const path = `/forgotuser`;
+  return POSTRequest(path, payload);
 }
 
 export function resetPassword(payload) {
