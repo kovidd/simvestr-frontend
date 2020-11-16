@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import styled from "styled-components";
+import React, { useContext, useEffect } from "react";
 import {
   Box,
   Button,
@@ -9,7 +8,8 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { MainWrapper, StyledListItem, StyledListItemText } from "../ui";
+
+import logo from "../../assets/logo.png";
 import { AuthContext } from "../../services/api";
 import { UserContext } from "../../services/user";
 import {
@@ -19,6 +19,7 @@ import {
 import { logout } from "../../services/user";
 import { NotificationContext } from "../ui/Notification";
 import { Terminal } from "./Terminal";
+import { StyledListItemText, StyledListItem } from "./ui";
 
 export const Homepage = () => {
   const history = useHistory();
@@ -50,17 +51,24 @@ export const Homepage = () => {
   }, [setPortfolio]);
 
   return (
-    <MainWrapper>
+    <Box>
       <Box display="flex" justifyContent="space-between">
-        <Typography variant="h4">Simvestr v1.0</Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          color="primary"
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
+        <Box display="inline-flex" alignItems="center">
+          <Box mr="1rem">
+            <img src={logo} alt="Simvestr Logo" height="60" width="60" />
+          </Box>
+          <Typography variant="h4">Simvestr v1.0</Typography>
+        </Box>
+        <Box>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </Box>
       </Box>
       <List disablePadding>
         <ListItem disableGutters>
@@ -114,6 +122,6 @@ export const Homepage = () => {
           <Terminal user={user} />
         </ListItem>
       </List>
-    </MainWrapper>
+    </Box>
   );
 };

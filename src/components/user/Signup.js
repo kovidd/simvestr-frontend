@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
-import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
-  Container,
   Grid,
   Box,
   Typography,
@@ -11,12 +9,12 @@ import {
   Checkbox,
   TextField,
   Button,
-  Link,
 } from "@material-ui/core";
-import { MainWrapper, FormErrorMessage, LinkRouter } from "../ui";
+import { FormErrorMessage, LinkRouter } from "../ui";
 import { signup } from "../../services/user";
 import { AuthContext } from "../../services/api";
 import { NotificationContext } from "../ui/Notification";
+import logo from "../../assets/logo.png";
 
 const SignupForm = () => {
   const history = useHistory();
@@ -63,11 +61,14 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h2" align="center">
-        Simvestr
-      </Typography>
-      <Typography varaint="body2" align="center">
-        Welcome, please sign up your account.
+      <Box mb="1rem" width="100%" display="inline-flex" alignItems="center">
+        <Box mr="1rem">
+          <img src={logo} alt="Simvestr Logo" height="60" width="60" />
+        </Box>
+        <Typography variant="h4">Simvestr v1.0</Typography>
+      </Box>
+      <Typography varaint="body2">
+        Welcome, please sign up to create your account.
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -177,7 +178,7 @@ const SignupForm = () => {
 
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Typography>
-          Already a member? <Link href="./login">Log In</Link>
+          Already a member? <LinkRouter to="login">Log In</LinkRouter>
         </Typography>
         <Box display="flex" justifyContent="center">
           <Button type="submit" variant="contained" color="primary">
@@ -196,17 +197,13 @@ export const Signup = () => {
     history.replace("/");
   }
   return (
-    <Container maxWidth="sm">
-      <MainWrapper>
-        <Box
-          display="flex"
-          height="100%"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <SignupForm />
-        </Box>
-      </MainWrapper>
-    </Container>
+    <Box
+      display="flex"
+      height="100%"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <SignupForm />
+    </Box>
   );
 };

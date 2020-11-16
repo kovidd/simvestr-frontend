@@ -1,6 +1,5 @@
 import React from "react";
 import { Typography, Box } from "@material-ui/core";
-import { MainWrapper } from "../ui";
 
 const faqs = [
   {
@@ -41,7 +40,7 @@ const faqs = [
 ];
 export const FAQ = () => {
   return (
-    <MainWrapper>
+    <Box>
       {faqs.map(({ question, answer }) => (
         <Box mt="1rem">
           <Typography variant="subtitle2" color="primary">
@@ -50,6 +49,6 @@ export const FAQ = () => {
           <Typography variant="body1">{answer}</Typography>
         </Box>
       ))}
-    </MainWrapper>
+    </Box>
   );
 };

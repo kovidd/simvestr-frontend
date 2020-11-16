@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import "../../index.css";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 import {
   Grid,
   Box,
@@ -8,13 +8,13 @@ import {
   TextField,
   Button,
   Link,
-  Container,
 } from "@material-ui/core";
-import { MainWrapper, FormErrorMessage } from "../ui";
+
+import { FormErrorMessage, LinkRouter } from "../ui";
 import { login } from "../../services/user";
 import { AuthContext } from "../../services/api";
-import { useHistory } from "react-router-dom";
 import { NotificationContext } from "../ui/Notification";
+import logo from "../../assets/logo.png";
 
 const LoginForm = () => {
   const history = useHistory();
@@ -51,10 +51,13 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h2" align="center">
-        Simvestr
-      </Typography>
-      <Typography varaint="body2" align="center">
+      <Box mb="1rem" width="100%" display="inline-flex" alignItems="center">
+        <Box mr="1rem">
+          <img src={logo} alt="Simvestr Logo" height="60" width="60" />
+        </Box>
+        <Typography variant="h4">Simvestr v1.0</Typography>
+      </Box>
+      <Typography varaint="body2">
         Welcome back, please login to your account.
       </Typography>
       <Grid container spacing={2}>
@@ -91,7 +94,7 @@ const LoginForm = () => {
           />
           <FormErrorMessage errors={errors} name="password" />
           <Box display="flex" justifyContent="flex-end">
-            <Link href="./forgotpassword">Forgot Password?</Link>
+            <LinkRouter to="forgotpassword">Forgot Password?</LinkRouter>
           </Box>
         </Grid>
         <Grid item xs={12}>
@@ -102,7 +105,7 @@ const LoginForm = () => {
           >
             <Box display="flex" justifyContent="flex-start">
               <Typography>
-                Not a member? <Link href="./signup">Sign Up</Link>
+                Not a member? <LinkRouter to="signup">Sign Up</LinkRouter>
               </Typography>
             </Box>
             <Button type="submit" variant="contained" color="primary">
@@ -117,17 +120,13 @@ const LoginForm = () => {
 
 export const Login = () => {
   return (
-    <Container maxWidth="sm">
-      <MainWrapper>
-        <Box
-          display="flex"
-          height="100%"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <LoginForm />
-        </Box>
-      </MainWrapper>
-    </Container>
+    <Box
+      display="flex"
+      height="100%"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <LoginForm />
+    </Box>
   );
 };

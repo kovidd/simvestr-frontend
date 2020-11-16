@@ -10,7 +10,7 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import { LinkRouter, MainWrapper } from "../ui";
+import { LinkRouter } from "../ui";
 import {
   leaderboardPosition,
   leaderboardAll,
@@ -73,66 +73,66 @@ export const LeaderBoard = () => {
   const scrollToPortfolio = () => myPortfolio.current.scrollIntoView();
 
   return (
-    <MainWrapper>
-      <Box
-        height="100%"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
+    <Box
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <Typography variant="body2" align="center" gutterBottom>
+        You are currently in {positionText["ordinal"]} position
+      </Typography>
+      <TableContainer
+        style={{
+          maxHeight: "500px",
+        }}
       >
-        <Typography variant="body2" align="center" gutterBottom>
-          You are currently in {positionText["ordinal"]} position
-        </Typography>
-        <TableContainer
-          style={{
-            maxHeight: "500px",
-          }}
-        >
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell>Position</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Portfolio Name</TableCell>
-                <TableCell align="right">Total Value</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {leaders.map((item, index) => {
-                const rowRef =
-                  positionText["nominal"] === index + positionOnScreen
-                    ? myPortfolio
-                    : null;
-                const isMyPortfolio = positionText["nominal"] === index + 1
-                const bgColor = isMyPortfolio   ? "rgba(0,127,127,0.1)" : "inherit";
-                return (
-                  <TableRow
-                    key={item.user}
-                    ref={rowRef}
-                    style={{ background: bgColor }}
-                  >
-                    <TableCell align="left">{item.position}</TableCell>
-                    <TableCell align="left">{item.user}</TableCell>
-                    <TableCell align="left">{isMyPortfolio ? <LinkRouter to="dashboard">{item.name}</LinkRouter> :  item.name}</TableCell>
-                    <TableCell align="right">
-                      {formatCurrency(item.value)}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box pt="1rem">
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={scrollToPortfolio}
-          >
-            My Position
-          </Button>
-        </Box>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Position</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Portfolio Name</TableCell>
+              <TableCell align="right">Total Value</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {leaders.map((item, index) => {
+              const rowRef =
+                positionText["nominal"] === index + positionOnScreen
+                  ? myPortfolio
+                  : null;
+              const isMyPortfolio = positionText["nominal"] === index + 1;
+              const bgColor = isMyPortfolio ? "rgba(0,127,127,0.1)" : "inherit";
+              return (
+                <TableRow
+                  key={item.user}
+                  ref={rowRef}
+                  style={{ background: bgColor }}
+                >
+                  <TableCell align="left">{item.position}</TableCell>
+                  <TableCell align="left">{item.user}</TableCell>
+                  <TableCell align="left">
+                    {isMyPortfolio ? (
+                      <LinkRouter to="dashboard">{item.name}</LinkRouter>
+                    ) : (
+                      item.name
+                    )}
+                  </TableCell>
+                  <TableCell align="right">
+                    {formatCurrency(item.value)}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box pt="1rem">
+        <Button variant="outlined" color="primary" onClick={scrollToPortfolio}>
+          My Position
+        </Button>
       </Box>
-    </MainWrapper>
+    </Box>
   );
 };
