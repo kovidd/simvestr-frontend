@@ -8,7 +8,7 @@ import {
   DialogTitle,
   Button,
 } from "@material-ui/core";
-import { exportPortfolio } from "../../services/export";
+import { exportPortfolio } from "../../services/portfolio";
 import { NotificationContext } from "../ui/Notification";
 
 export const ExportDialog = ({ open, setOpen }) => {

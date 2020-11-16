@@ -7,26 +7,31 @@ export const WatchlistContext = React.createContext({
 });
 
 /**
- * Add specified stock symbol to watchlist
- * @param {string} stockSymbol The stock symbol/ticker
+ * Add the specified stock symbol to watchlist
+ * @param {string} symbol The stock symbol/ticker
  */
-export function addStock(payload) {
+export function addStock(symbol) {
   const path = `/watchlist`;
+  const payload = {
+    symbol,
+  };
   return POSTRequest(path, payload);
 }
 
 /**
- * Add specified stock symbol to watchlist
- * @param {string} stockSymbol The stock symbol/ticker
+ * Remove the specified stock symbol from the watchlist
+ * @param {string} symbol The stock symbol/ticker
  */
-export function removeStock(payload) {
+export function removeStock(symbol) {
   const path = `/watchlist`;
+  const payload = {
+    symbol,
+  };
   return DELETERequest(path, payload);
 }
 
 /**
- * Gets a list of all the stocks
- * @return {Promise<string[]>} A list of all the stock tickers
+ * Get the users watchlist details
  */
 export function getWatchlist() {
   const path = `/watchlist`;

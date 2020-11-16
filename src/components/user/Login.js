@@ -30,7 +30,6 @@ const LoginForm = () => {
   const { setAuth } = useContext(AuthContext);
 
   const onSubmit = async (data) => {
-    // submit the login
     const body = {
       email: data.email.toLowerCase(),
       password: data.password,

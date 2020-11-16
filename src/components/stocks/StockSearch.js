@@ -34,7 +34,7 @@ export const StockSearch = () => {
         name: item.name,
       }));
     } else {
-      console.error("Error searching for stocks.");
+      setNotification("Error searching for stocks.");
       return null;
     }
   };
