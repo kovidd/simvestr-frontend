@@ -1,11 +1,9 @@
 import { GETRequest } from "./api";
 
 /**
- * Gets the position of user in the leaderboard
- * @return {Promise<string[]>} confirmation of download
+ * Deletes the users account
  */
 export function deleteAccount() {
-    const path = `/deleteaccount`;
-    return GETRequest(path);
+  const path = `/deleteaccount`;
+  return GETRequest(path);
 }
-

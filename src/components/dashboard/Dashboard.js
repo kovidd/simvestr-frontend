@@ -37,11 +37,11 @@ export const Dashboard = () => {
   const netPortfolio = portfolio.balance + portfolio.totalValue;
   const previousDayPortfolio =
     portfolio.previousBalance + portfolio.previousInvestmentValue;
-  console.log(previousDayPortfolio);
   const dayReturn = netPortfolio - previousDayPortfolio;
   const dayReturnPerc = dayReturn / previousDayPortfolio;
   const totalPortfolioReturn = portfolio.totalReturn;
   const totalPortfolioReturnPerc = totalPortfolioReturn / 100000;
+
   return (
     <Box mt="1rem" minHeight="300px">
       {isLoading ? (

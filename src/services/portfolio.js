@@ -16,7 +16,6 @@ export const PortfolioContext = React.createContext({
 
 /**
  * Gets the users portfolio details
- * @return {Promise<{ data: {portfolio_name: string; balance: number; total_value: string; portfolio: object}}>} A list of all the stock tickers
  */
 export function portfolioDetails() {
   let options = { headers: { "Content-Type": "application/text" } };
@@ -33,10 +32,14 @@ export function portfolioHistory(num_days = 7) {
   return GETRequest(path);
 }
 
-/*
- * Fetches the portfolio details and sets them
- * @param {*} setPortfolio
+/**
+ * Exports the users portfolio
  */
+export function exportPortfolio() {
+  const path = `/exportfolio`;
+  return GETRequest(path);
+}
+
 export async function getPortfolioDetails(setPortfolio) {
   const res = await portfolioDetails();
   if (!res.error) {

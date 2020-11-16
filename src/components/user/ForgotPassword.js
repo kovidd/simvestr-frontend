@@ -20,10 +20,10 @@ const ForgotPasswordForm = () => {
 
   const onSubmit = async (data) => {
     // submit the forgot password request
-    const body = {
+    const payload = {
       email: data.email,
     };
-    const res = await forgotPassword(body);
+    const res = await forgotPassword(payload);
     if (!res.error) {
       setNotification({
         open: true,

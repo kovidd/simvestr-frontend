@@ -1,8 +1,11 @@
 import React from "react";
 import { API } from "./uri";
-// This code holds the boiler plate for the APIs
-// The reason we use this is so that we don't have to rewrite these calls
-// everytime we want to hit another endpoint
+
+/**
+ * This code holds the boiler plate for the APIs
+ * The reason we use this is so that we don't have to rewrite these calls
+ * everytime we want to hit another endpoint
+ */
 
 export const AuthContext = React.createContext({
   auth: {

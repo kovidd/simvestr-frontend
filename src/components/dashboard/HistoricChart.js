@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Box } from "@material-ui/core";
 import { formatCurrency } from "../../helpers";
 import { portfolioHistory } from "../../services/portfolio";
+import { NotificationContext } from "../ui/Notification";
 
 const options = {
   chart: {
@@ -37,6 +38,7 @@ const options = {
 
 export const HistoricChart = ({ netPortfolio }) => {
   const [series, setSeries] = useState([]);
+  const { setNotification } = useContext(NotificationContext);
   useEffect(() => {
     async function getHistoricBalance() {
       const res = await portfolioHistory();
@@ -57,11 +59,11 @@ export const HistoricChart = ({ netPortfolio }) => {
           },
         ]);
       } else {
-        console.error("error getting the portfolio history");
+        setNotification("error getting the portfolio history");
       }
     }
     netPortfolio && getHistoricBalance();
-  }, [netPortfolio, setSeries]);
+  }, [netPortfolio, setSeries, setNotification]);
 
   return (
     <Box overflow="hidden">

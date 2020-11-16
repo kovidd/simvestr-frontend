@@ -3,7 +3,6 @@ import { GETRequest, POSTRequest } from "./api";
 /**
  * Gets the details of the specified stock symbol
  * @param {string} stockSymbol The stock symbol/ticker
- * @return {Promise<{id: string, country: string, ticker: string}>} The details of the stock
  */
 export function stockDetails(stockSymbol) {
   const path = `/search/details/${stockSymbol}`;

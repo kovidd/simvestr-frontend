@@ -15,8 +15,7 @@ export const WatchlistRemoveConfirmation = ({ open, setOpen, symbol }) => {
   const { setNotification } = useContext(NotificationContext);
 
   const handleRemove = async () => {
-    const body = { symbol };
-    const res = await removeStock(body);
+    const res = await removeStock(symbol);
     if (!res.error) {
       setWatchlist((previous) =>
         previous.filter((stock) => symbol !== stock.symbol)
