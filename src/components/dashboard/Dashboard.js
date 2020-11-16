@@ -34,6 +34,11 @@ export const Dashboard = () => {
   }, [setPortfolio]);
 
   const netPortfolio = portfolio.balance + portfolio.totalValue;
+  const previousDayPortfolio =
+    portfolio.previousBalance + portfolio.previousInvestmentValue;
+  console.log(previousDayPortfolio);
+  const dayReturn = netPortfolio - previousDayPortfolio;
+  const dayReturnPerc = dayReturn / previousDayPortfolio;
   const totalPortfolioReturn = portfolio.totalReturn;
   const totalPortfolioReturnPerc = totalPortfolioReturn / 100000;
   return (
@@ -51,6 +56,11 @@ export const Dashboard = () => {
                   <Typography variant="h4">
                     {formatCurrency(netPortfolio)}
                   </Typography>
+                  <PriceTypography variant="body2" change={dayReturn}>{`${
+                    dayReturn >= 0 ? "+" : ""
+                  }${formatCurrency(dayReturn)}  (${formatPerc(
+                    Math.abs(dayReturnPerc)
+                  )}) Day ${changeArrow(dayReturn)}`}</PriceTypography>
                   <PriceTypography
                     variant="body2"
                     change={totalPortfolioReturn}

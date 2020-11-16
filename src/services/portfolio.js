@@ -5,7 +5,10 @@ export const PortfolioContext = React.createContext({
   portfolio: {
     name: "",
     balance: 0,
+    previousBalance: 0,
+    previousInvestmentValue: 0,
     totalValue: 0,
+    totalReturn: 0,
     portfolio: [],
   },
   setPortfolio: () => {},
@@ -40,6 +43,8 @@ export async function getPortfolioDetails(setPortfolio) {
     setPortfolio({
       name: res.data.portfolio_name,
       balance: res.data.balance,
+      previousBalance: res.data.prev_balance,
+      previousInvestmentValue: res.data.prev_investment_value,
       totalValue: res.data.total_value,
       totalReturn: res.data.total_return,
       portfolio: res.data.portfolio,
