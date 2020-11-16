@@ -95,32 +95,19 @@ const LoginForm = () => {
           </Box>
         </Grid>
         <Grid item xs={12}>
-          {/* <Box display="flex" flexDirection="row" justifyContent="flex-start">
-            <Box>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="rememberMe"
-                    color="primary"
-                    defaultChecked={
-                      localStorage.getItem("rememberMe") === "true"
-                    }
-                  />
-                }
-                inputRef={register}
-                label="Remember me"
-              />
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box display="flex" justifyContent="flex-start">
+              <Typography>
+                Not a member? <Link href="./signup">Sign Up</Link>
+              </Typography>
             </Box>
-          </Box> */}
-          <Box display="flex" justifyContent="center">
             <Button type="submit" variant="contained" color="primary">
               Login
             </Button>
-          </Box>
-          <Box display="flex" flexDirection="row" justifyContent="flex-start">
-            <Typography>
-              Not a member? <Link href="./signup">Sign Up</Link>
-            </Typography>
           </Box>
         </Grid>
       </Grid>

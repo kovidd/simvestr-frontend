@@ -3,6 +3,7 @@ import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
+  Container,
   Grid,
   Box,
   Typography,
@@ -154,7 +155,7 @@ const SignupForm = () => {
           <FormErrorMessage errors={errors} name="confirmPassword" />
         </Grid>
         <Grid item xs={12}>
-          <Box display="flex" flexDirection="row" justifyContent="flex-start">
+          <Box display="flex" justifyContent="flex-start">
             <Box>
               <FormControlLabel
                 inputRef={register({
@@ -167,23 +168,18 @@ const SignupForm = () => {
               <FormErrorMessage errors={errors} name="terms" />
             </Box>
           </Box>
-          <Box display="flex" justifyContent="center">
-            <Button type="submit" variant="contained" color="primary">
-              Signup
-            </Button>
-          </Box>
         </Grid>
       </Grid>
 
-      <Box display="flex" flexDirection="row" justifyContent="flex-start">
-        <Typography
-          style={{
-            position: "relative",
-            bottom: "-18px",
-          }}
-        >
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Typography>
           Already a member? <Link href="./login">Log In</Link>
         </Typography>
+        <Box display="flex" justifyContent="center">
+          <Button type="submit" variant="contained" color="primary">
+            Signup
+          </Button>
+        </Box>
       </Box>
     </form>
   );
@@ -196,17 +192,17 @@ export const Signup = () => {
     history.replace("/");
   }
   return (
-    <MainWrapper>
-      <Box
-        display="flex"
-        height="100%"
-        flexDirection="column"
-        alignItems="center"
-        p="2rem"
-        width="50vw"
-      >
-        <SignupForm />
-      </Box>
-    </MainWrapper>
+    <Container maxWidth="sm">
+      <MainWrapper>
+        <Box
+          display="flex"
+          height="100%"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <SignupForm />
+        </Box>
+      </MainWrapper>
+    </Container>
   );
 };
