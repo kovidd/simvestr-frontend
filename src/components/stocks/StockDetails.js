@@ -5,16 +5,12 @@ import { StockSummary } from "./StockSummary";
 import { StockTrade } from "./StockTrade";
 import { StockChart } from "./StockChart";
 
-export const StockDetails = ({ details, disableWatchlist }) => (
+export const StockDetails = ({ details }) => (
   <Grid container spacing={2}>
     <Grid item xs={12}>
       <Paper variant="outlined">
         <Box minHeight="200px">
-          <StockChart
-            details={details}
-            symbol={details.symbol}
-            disableWatchlist={disableWatchlist}
-          />
+          <StockChart details={details} symbol={details.symbol} />
         </Box>
       </Paper>
     </Grid>
