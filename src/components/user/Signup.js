@@ -51,7 +51,11 @@ const SignupForm = () => {
   const termsLabel = (
     <span>
       I agree with the{" "}
-      <LinkRouter to="./terms-and-conditions-signup" target="_blank">
+      <LinkRouter
+        to="./terms-and-conditions"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
         Terms and Conditions
       </LinkRouter>
     </span>

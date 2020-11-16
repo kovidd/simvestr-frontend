@@ -121,7 +121,7 @@ const Main = () => {
                 <Router>
                   <Switch>
                     <Route
-                      path="/terms-and-conditions-signup"
+                      path="/terms-and-conditions"
                       component={TermsAndConditionsSignup}
                     />
                     <UnauthenticatedRoute path="/signup" component={Signup} />

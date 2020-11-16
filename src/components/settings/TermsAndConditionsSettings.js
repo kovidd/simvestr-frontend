@@ -6,14 +6,7 @@ import { TermsAndConditionsText } from "../user/TermsAndConditionsText";
 export const TermsAndConditionsSettings = () => {
   return (
     <MainWrapper>
-      <Box
-        height="100%"
-        alignItems="center"
-        p="2rem"
-        paddingTop="0"
-        fontSize="10"
-        align="center"
-      >
+      <Box height="100%">
         <TermsAndConditionsText />
       </Box>
     </MainWrapper>

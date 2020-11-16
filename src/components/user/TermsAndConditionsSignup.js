@@ -1,19 +1,13 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { MainWrapper } from "../ui";
 import { TermsAndConditionsText } from "./TermsAndConditionsText";
 
 export const TermsAndConditionsSignup = () => {
   return (
     <MainWrapper>
-      <Box
-        height="100%"
-        alignItems="center"
-        p="2rem"
-        paddingTop="0"
-        fontSize="10"
-        align="center"
-      >
+      <Box height="100%">
+        <Typography variant="h4">Terms and Conditions</Typography>
         <TermsAndConditionsText />
       </Box>
     </MainWrapper>
