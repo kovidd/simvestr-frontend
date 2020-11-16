@@ -117,12 +117,14 @@ const getOptions = (range) => ({
 export const StockChart = ({ details }) => {
   const { setNotification } = useContext(NotificationContext);
   const { watchlist, setWatchlist } = useContext(WatchlistContext);
+
   const [series, setSeries] = useState([]);
   const [range, setRange] = useState("M");
   const [openAdd, setOpenAdd] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
   const options = getOptions(range);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const watchlistDetails = details
     ? watchlist.find((item) => item.symbol === details.symbol)
@@ -141,17 +143,23 @@ export const StockChart = ({ details }) => {
             data: dataPoints,
           },
         ]);
+        setErrorMessage(null);
       } else {
         setNotification({
           open: true,
           message: "Error getting the stock candles",
         });
+        setErrorMessage(
+          range === "AWL"
+            ? "Stock recently added to watchlist, no historical data found"
+            : "No historical data found"
+        );
         setSeries([]);
       }
       setIsLoading(false);
     }
     getStockCandles(details.symbol, range, dateAdded);
-  }, [details.symbol, range, dateAdded, setNotification]);
+  }, [details.symbol, range, dateAdded, setNotification, setErrorMessage]);
 
   useEffect(() => {
     if (!dateAdded) {
@@ -279,14 +287,20 @@ export const StockChart = ({ details }) => {
           </Box>
         </Box>
         <Box minHeight={270}>
-          {isLoading ? (
+          {isLoading || errorMessage ? (
             <Box
               minHeight={270}
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
-              <CircularProgress />
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                errorMessage && (
+                  <Typography variant="body2">{errorMessage}</Typography>
+                )
+              )}
             </Box>
           ) : (
             series.length > 0 && (
