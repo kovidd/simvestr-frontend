@@ -8,13 +8,10 @@ import {
   Link,
   Typography,
   TableCell,
-<<<<<<< HEAD
-  ListItemText,
-  ListItem,
-=======
   useTheme,
   useMediaQuery,
->>>>>>> 4a28b33210411e26bef6488935b3504bc8478a7e
+  ListItem,
+  ListItemText,
 } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";

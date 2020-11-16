@@ -19,7 +19,7 @@ import {
 import { logout } from "../../services/user";
 import { NotificationContext } from "../ui/Notification";
 import { Terminal } from "./Terminal";
-import { StyledListItemText, StyledListItem } from "./ui";
+import { StyledListItemText, StyledListItem } from "../ui";
 
 export const Homepage = () => {
   const history = useHistory();

@@ -3,6 +3,7 @@ import { List, ListItem, ListItemText } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import { ExportDialog } from "./ExportDialog";
+import { StyledListItemText, StyledListItem } from "../ui";
 
 export const AccountSettings = () => {
   const history = useHistory();
