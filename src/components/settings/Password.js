@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import "../../index.css";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";

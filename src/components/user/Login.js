@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import "../../index.css";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+
 import {
   Grid,
   Box,
@@ -13,8 +14,8 @@ import {
 import { MainWrapper, FormErrorMessage } from "../ui";
 import { login } from "../../services/user";
 import { AuthContext } from "../../services/api";
-import { useHistory } from "react-router-dom";
 import { NotificationContext } from "../ui/Notification";
+import logo from "../../assets/logo.png";
 
 const LoginForm = () => {
   const history = useHistory();
@@ -51,10 +52,13 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h2" align="center">
-        Simvestr
-      </Typography>
-      <Typography varaint="body2" align="center">
+      <Box mb="1rem" width="100%" display="inline-flex" alignItems="center">
+        <Box mr="1rem">
+          <img src={logo} alt="Simvestr Logo" height="60" width="60" />
+        </Box>
+        <Typography variant="h4">Simvestr v1.0</Typography>
+      </Box>
+      <Typography varaint="body2">
         Welcome back, please login to your account.
       </Typography>
       <Grid container spacing={2}>

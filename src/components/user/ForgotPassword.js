@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import "../../index.css";
 import { useForm } from "react-hook-form";
 import {
   Grid,
