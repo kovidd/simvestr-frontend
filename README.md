@@ -5,6 +5,10 @@ Please follow the instructions below to run development and production versions 
 
 ## Available Scripts
 
+To download all the required dependencies for the application to run, you can run:
+
+### `yarn install`
+
 In the project directory, you can run:
 
 ### `yarn start`
