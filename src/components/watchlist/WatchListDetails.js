@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Box, CircularProgress } from "@material-ui/core";
-import { MainWrapper } from "../ui";
 import { stockDetails } from "../../services/stock";
 import { StockDetails } from "../stocks/StockDetails";
 import { NotificationContext } from "../ui/Notification";
@@ -44,16 +43,14 @@ export const WatchListDetails = () => {
   }, [setIsLoading, setNotification, symbol]);
 
   return (
-    <MainWrapper>
-      <Box mt="1rem">
-        {isLoading ? (
-          <Box display="flex" justifyContent="center">
-            <CircularProgress />
-          </Box>
-        ) : (
-          details && <StockDetails details={details} disableWatchlist />
-        )}
-      </Box>
-    </MainWrapper>
+    <Box mt="1rem">
+      {isLoading ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      ) : (
+        details && <StockDetails details={details} disableWatchlist />
+      )}
+    </Box>
   );
 };

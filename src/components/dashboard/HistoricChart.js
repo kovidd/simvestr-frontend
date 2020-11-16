@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
+import { Box } from "@material-ui/core";
 import { formatCurrency } from "../../helpers";
 import { portfolioHistory } from "../../services/portfolio";
 
@@ -63,14 +64,16 @@ export const HistoricChart = ({ netPortfolio }) => {
   }, [netPortfolio, setSeries]);
 
   return (
-    series.length > 0 && (
-      <ReactApexChart
-        series={series}
-        options={options}
-        type="area"
-        height={250}
-        width="100%"
-      />
-    )
+    <Box overflow="hidden">
+      {series.length > 0 && (
+        <ReactApexChart
+          series={series}
+          options={options}
+          type="area"
+          height={250}
+          width="100%"
+        />
+      )}
+    </Box>
   );
 };

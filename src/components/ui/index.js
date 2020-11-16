@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import {
+  Container,
   Box,
   Paper,
   Breadcrumbs,
   Link,
   Typography,
   TableCell,
+  useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
@@ -17,45 +20,59 @@ const Terminal = styled.div`
     border-color: rgba(0, 127, 127, 0.8);
   }
   width: 100%;
+  max-height: 100%;
+  display: flex;
+  overflow-y: auto;
 `;
 
 const StyledPaper = styled(Paper)`
   padding: 1rem;
-  min-height: 40vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-height: calc(100vh - 3.6rem);
-  overflow-y: auto;
+  min-height: 350px;
+`;
+
+const StyledContainer = styled(Container)`
+  display: flex;
+  height: calc(100vh - 2rem);
 `;
 
 export const MainWrapper = ({ children }) => {
   const location = useLocation();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("md"), { noSsr: true });
+  const maxWidth = ["/signup", "/login"].includes(location.pathname)
+    ? "sm"
+    : "md";
   return (
-    <Box
-      display="flex"
-      flex="1"
-      mt="1rem"
-      alignItems="flex-start"
-      justifyContent="center"
-    >
-      <Terminal>
-        <StyledPaper square elevation={10}>
-          {![
-            "/",
-            "/signup",
-            "/login",
-            "/signupsuccess",
-            "/forgotpassword",
-            "/resetpassword",
-            "/terms-and-conditions",
-          ].includes(location.pathname) && (
-            <BreadCrumbsNav location={location} />
-          )}
-          {children}
-        </StyledPaper>
-      </Terminal>
-    </Box>
+    <StyledContainer maxWidth={maxWidth} md={matches}>
+      <Box
+        display="flex"
+        flex="1"
+        mt={matches ? "2rem" : "1rem"}
+        alignItems="flex-start"
+        justifyContent="center"
+        minHeight={matches ? "350px" : "100%"}
+      >
+        <Terminal>
+          <StyledPaper square elevation={10}>
+            {![
+              "/",
+              "/signup",
+              "/login",
+              "/forgotpassword",
+              "/resetpassword",
+              "/terms-and-conditions",
+            ].includes(location.pathname) && (
+              <BreadCrumbsNav location={location} />
+            )}
+            {children}
+          </StyledPaper>
+        </Terminal>
+      </Box>
+    </StyledContainer>
   );
 };
 

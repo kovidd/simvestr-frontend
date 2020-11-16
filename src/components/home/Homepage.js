@@ -9,6 +9,8 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+
+import logo from "../../assets/logo.png";
 import { MainWrapper } from "../ui";
 import { AuthContext } from "../../services/api";
 import { UserContext } from "../../services/user";
@@ -97,17 +99,24 @@ export const Homepage = () => {
   }, [setPortfolio]);
 
   return (
-    <MainWrapper>
+    <Box>
       <Box display="flex" justifyContent="space-between">
-        <Typography variant="h4">Simvestr v1.0</Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          color="primary"
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
+        <Box display="inline-flex" alignItems="center">
+          <Box mr="1rem">
+            <img src={logo} alt="Simvestr Logo" height="60" width="60" />
+          </Box>
+          <Typography variant="h4">Simvestr v1.0</Typography>
+        </Box>
+        <Box>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </Box>
       </Box>
       <List>
         <ListItem disableGutters>
@@ -238,6 +247,6 @@ export const Homepage = () => {
           </form>
         </ListItem>
       </List>
-    </MainWrapper>
+    </Box>
   );
 };

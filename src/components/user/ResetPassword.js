@@ -1,15 +1,7 @@
 import React, { useContext } from "react";
-import "../../index.css";
 import { useForm } from "react-hook-form";
-import {
-  Grid,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Link,
-} from "@material-ui/core";
-import { MainWrapper, FormErrorMessage } from "../ui";
+import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
+import { FormErrorMessage, LinkRouter } from "../ui";
 import { resetPassword } from "../../services/user";
 import { NotificationContext } from "../ui/Notification";
 
@@ -43,7 +35,7 @@ const ResetPasswordForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography>
-        <Link href="./">Back to Login Page</Link>
+        <LinkRouter to="/">Back to Login Page</LinkRouter>
       </Typography>
       <Typography variant="h2" align="center">
         Simvestr
@@ -144,16 +136,14 @@ const ResetPasswordForm = () => {
 
 export const ResetPassword = () => {
   return (
-    <MainWrapper>
-      <Box
-        display="flex"
-        height="100%"
-        flexDirection="column"
-        alignItems="center"
-        p="2rem"
-      >
-        <ResetPasswordForm />
-      </Box>
-    </MainWrapper>
+    <Box
+      display="flex"
+      height="100%"
+      flexDirection="column"
+      alignItems="center"
+      p="2rem"
+    >
+      <ResetPasswordForm />
+    </Box>
   );
 };

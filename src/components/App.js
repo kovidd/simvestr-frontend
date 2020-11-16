@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
-import { Container, NoSsr } from "@material-ui/core";
+import { Container, NoSsr, useMediaQuery, useTheme } from "@material-ui/core";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 
@@ -29,6 +29,7 @@ import { WatchListDetails } from "./watchlist/WatchListDetails";
 import { AccountSettings } from "./settings/AccountSettings";
 import { PersonalDetails } from "./settings/PersonalDetails";
 import { Password } from "./settings/Password";
+import { MainWrapper } from "./ui";
 
 // Contexts
 import { AuthContext } from "../services/api";
@@ -119,80 +120,82 @@ const Main = () => {
                   }
                 />
                 <Router>
-                  <Switch>
-                    <Route
-                      path="/terms-and-conditions"
-                      component={TermsAndConditionsSignup}
-                    />
-                    <UnauthenticatedRoute path="/signup" component={Signup} />
-                    <UnauthenticatedRoute path="/login" component={Login} />
-                    <UnauthenticatedRoute
-                      path="/forgotpassword"
-                      component={ForgotPassword}
-                    />
-                    <UnauthenticatedRoute
-                      path="/resetpassword"
-                      component={ResetPassword}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/stocks/:symbol"
-                      component={StockOverview}
-                    />
-                    <AuthenticatedRoute
-                      path="/stocks"
-                      component={StockOverview}
-                    />
-                    <AuthenticatedRoute
-                      path="/dashboard"
-                      component={Dashboard}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/watchlist"
-                      component={WatchListSummary}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/watchlist/:symbol"
-                      component={WatchListDetails}
-                    />
-                    <AuthenticatedRoute
-                      path="/trades"
-                      component={HistoricalTrades}
-                    />
-                    <AuthenticatedRoute
-                      path="/leaderboard"
-                      component={LeaderBoard}
-                    />
-                    <AuthenticatedRoute exact path="/" component={Homepage} />
-                    <AuthenticatedRoute
-                      exact
-                      path="/settings"
-                      component={AccountSettings}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/settings/personaldetails"
-                      component={PersonalDetails}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/settings/password"
-                      component={Password}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/settings/terms-and-conditions-settings"
-                      component={TermsAndConditionsSettings}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/settings/faq"
-                      component={FAQ}
-                    />
-                    <Redirect to={{ pathname: fallbackUri }} />
-                  </Switch>
+                  <MainWrapper>
+                    <Switch>
+                      <Route
+                        path="/terms-and-conditions"
+                        component={TermsAndConditionsSignup}
+                      />
+                      <UnauthenticatedRoute path="/signup" component={Signup} />
+                      <UnauthenticatedRoute path="/login" component={Login} />
+                      <UnauthenticatedRoute
+                        path="/forgotpassword"
+                        component={ForgotPassword}
+                      />
+                      <UnauthenticatedRoute
+                        path="/resetpassword"
+                        component={ResetPassword}
+                      />
+                      <AuthenticatedRoute
+                        exact
+                        path="/stocks/:symbol"
+                        component={StockOverview}
+                      />
+                      <AuthenticatedRoute
+                        path="/stocks"
+                        component={StockOverview}
+                      />
+                      <AuthenticatedRoute
+                        path="/dashboard"
+                        component={Dashboard}
+                      />
+                      <AuthenticatedRoute
+                        exact
+                        path="/watchlist"
+                        component={WatchListSummary}
+                      />
+                      <AuthenticatedRoute
+                        exact
+                        path="/watchlist/:symbol"
+                        component={WatchListDetails}
+                      />
+                      <AuthenticatedRoute
+                        path="/trades"
+                        component={HistoricalTrades}
+                      />
+                      <AuthenticatedRoute
+                        path="/leaderboard"
+                        component={LeaderBoard}
+                      />
+                      <AuthenticatedRoute exact path="/" component={Homepage} />
+                      <AuthenticatedRoute
+                        exact
+                        path="/settings"
+                        component={AccountSettings}
+                      />
+                      <AuthenticatedRoute
+                        exact
+                        path="/settings/personaldetails"
+                        component={PersonalDetails}
+                      />
+                      <AuthenticatedRoute
+                        exact
+                        path="/settings/password"
+                        component={Password}
+                      />
+                      <AuthenticatedRoute
+                        exact
+                        path="/settings/terms-and-conditions-settings"
+                        component={TermsAndConditionsSettings}
+                      />
+                      <AuthenticatedRoute
+                        exact
+                        path="/settings/faq"
+                        component={FAQ}
+                      />
+                      <Redirect to={{ pathname: fallbackUri }} />
+                    </Switch>
+                  </MainWrapper>
                 </Router>
               </NotificationContext.Provider>
             </WatchlistContext.Provider>
@@ -208,9 +211,7 @@ function App() {
     <NoSsr>
       <MuiThemeProvider theme={theme}>
         <ThemeProvider theme={theme}>
-          <Container maxWidth="md">
-            <Main />
-          </Container>
+          <Main />
         </ThemeProvider>
       </MuiThemeProvider>
     </NoSsr>
