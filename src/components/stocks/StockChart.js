@@ -181,7 +181,6 @@ export const StockChart = ({ details }) => {
         },
       ]);
       setOpenAdd(true);
-      // add the stock to the watchlist
     } else {
       setNotification({
         open: true,
