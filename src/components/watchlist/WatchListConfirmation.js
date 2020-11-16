@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Dialog,
   DialogActions,
@@ -7,19 +7,41 @@ import {
   DialogTitle,
   Button,
 } from "@material-ui/core";
+import { NotificationContext } from "../ui/Notification";
+import { removeStock, WatchlistContext } from "../../services/watchlist";
 
-export const WatchlistRemoveConfirmation = ({
-  open,
-  handleClose,
-  handleRemove,
-  stockSymbol,
-}) => {
+export const WatchlistRemoveConfirmation = ({ open, setOpen, symbol }) => {
+  const { setWatchlist } = useContext(WatchlistContext);
+  const { setNotification } = useContext(NotificationContext);
+
+  const handleRemove = async () => {
+    const body = { symbol };
+    const res = await removeStock(body);
+    if (!res.error) {
+      setWatchlist((previous) =>
+        previous.filter((stock) => symbol !== stock.symbol)
+      );
+      setNotification({
+        open: true,
+        message: `${symbol} removed from watchlist.`,
+      });
+    } else {
+      setNotification({
+        open: true,
+        message: `Error removing ${symbol} from watchlist.`,
+      });
+    }
+    setOpen(false);
+  };
+
+  const handleClose = () => setOpen(false);
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Remove from Watchlist</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to remove {stockSymbol} from your watchlist?
+          Are you sure you want to remove {symbol} from your watchlist?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -34,22 +56,19 @@ export const WatchlistRemoveConfirmation = ({
   );
 };
 
-export const WatchlistAddConfirmation = ({
-  open,
-  handleClose,
-  stockSymbol,
-}) => {
+export const WatchlistAddConfirmation = ({ open, setOpen, symbol }) => {
+  const handleClose = () => setOpen(false);
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Add to Watchlist</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {stockSymbol} has been added to your watchlist.
+          {symbol} has been added to your watchlist.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="inherit" autoFocus>
-          OK
+          Ok
         </Button>
       </DialogActions>
     </Dialog>

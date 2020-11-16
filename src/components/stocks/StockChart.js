@@ -14,7 +14,10 @@ import ReactApexChart from "react-apexcharts";
 import { addStock, WatchlistContext } from "../../services/watchlist";
 import { stockCandles } from "../../services/stock";
 import { NotificationContext } from "../ui/Notification";
-import { WatchlistAddConfirmation } from "../watchlist/WatchListConfirmation";
+import {
+  WatchlistAddConfirmation,
+  WatchlistRemoveConfirmation,
+} from "../watchlist/WatchListConfirmation";
 import {
   changeArrow,
   formatPerc,
@@ -113,10 +116,11 @@ const getOptions = (range) => ({
 
 export const StockChart = ({ details }) => {
   const { setNotification } = useContext(NotificationContext);
-  const { watchlist } = useContext(WatchlistContext);
+  const { watchlist, setWatchlist } = useContext(WatchlistContext);
   const [series, setSeries] = useState([]);
   const [range, setRange] = useState("W");
-  const [open, setOpen] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openRemove, setOpenRemove] = useState(false);
   const options = getOptions(range);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -152,7 +156,18 @@ export const StockChart = ({ details }) => {
   const handleAdd = async () => {
     const body = { symbol: details.symbol };
     const res = await addStock(body);
-    if (res.error) {
+    if (!res.error) {
+      setWatchlist([
+        ...watchlist,
+        {
+          name: details.name,
+          symbol: details.symbol,
+          date_added: Date.now(),
+        },
+      ]);
+      setOpenAdd(true);
+      // add the stock to the watchlist
+    } else {
       setNotification({
         open: true,
         message: `Error adding ${details.symbol} to watchlist`,
@@ -166,13 +181,16 @@ export const StockChart = ({ details }) => {
   const changePerc = getQuoteChangePerc(details.quote.c, details.quote.pc);
   return (
     <>
-      {!watchlistDetails && (
-        <WatchlistAddConfirmation
-          open={open}
-          handleClose={() => setOpen(false)}
-          stockSymbol={details.symbol}
-        />
-      )}
+      <WatchlistAddConfirmation
+        open={openAdd}
+        setOpen={setOpenAdd}
+        symbol={details.symbol}
+      />
+      <WatchlistRemoveConfirmation
+        open={openRemove}
+        setOpen={setOpenRemove}
+        symbol={details.symbol}
+      />
       <Box overflow="hidden">
         <Box ml="0.5rem" mt="1rem">
           <Box
@@ -200,19 +218,23 @@ export const StockChart = ({ details }) => {
                 {details.exchange}: {details.symbol} - {details.industry}
               </Typography>
             </Box>
-            {!watchlistDetails && (
+            {
               <Box mr="1rem" position="relative" top="0.5rem">
                 <Button
+                  color={dateAdded ? "primary" : "inherit"}
                   variant="outlined"
                   onClick={() => {
-                    handleAdd();
-                    setOpen(true);
+                    if (!dateAdded) {
+                      handleAdd();
+                    } else {
+                      setOpenRemove(true);
+                    }
                   }}
                 >
-                  Add To Watchlist
+                  {dateAdded ? "✓ In Watchlist" : "Add To Watchlist"}
                 </Button>
               </Box>
-            )}
+            }
           </Box>
           <PriceWrapper>
             <Typography variant="h6">{details.quote.c}</Typography>

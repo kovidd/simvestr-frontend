@@ -11,11 +11,7 @@ import {
   LinearProgress,
 } from "@material-ui/core";
 import { MainWrapper } from "../ui";
-import {
-  getWatchlist,
-  removeStock,
-  WatchlistContext,
-} from "../../services/watchlist";
+import { getWatchlist, WatchlistContext } from "../../services/watchlist";
 import { WatchlistRemoveConfirmation } from "./WatchListConfirmation";
 import { NotificationContext } from "../ui/Notification";
 import {
@@ -51,34 +47,12 @@ export const WatchListSummary = () => {
     getWatchListDetails();
   }, [setNotification, setWatchlist, setIsLoading]);
 
-  const handleRemove = async () => {
-    const body = { symbol: stockRemove };
-    const res = await removeStock(body);
-    if (!res.error) {
-      const remaining = watchlist.filter(
-        (stock) => stockRemove !== stock.symbol
-      );
-      setWatchlist(remaining);
-      setNotification({
-        open: true,
-        message: `${stockRemove} removed from watchlist.`,
-      });
-    } else {
-      setNotification({
-        open: true,
-        message: `Error removing ${stockRemove} from watchlist.`,
-      });
-    }
-    setOpen(false);
-  };
-
   return (
     <>
       <WatchlistRemoveConfirmation
         open={open}
-        handleClose={() => setOpen(false)}
-        handleRemove={handleRemove}
-        stockSymbol={stockRemove}
+        setOpen={setOpen}
+        symbol={stockRemove}
       />
       <MainWrapper>
         <Box mt="1rem">
