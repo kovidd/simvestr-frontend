@@ -4,12 +4,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Please follow the instructions below to run development and production versions of the application:
 
 ## Available Scripts
-
-To download all the required dependencies for the application to run, you can run:
+In the project directory, you can run:
 
 ### `yarn install`
 
-In the project directory, you can run:
+Downloads all the required dependencies for the application to run.
 
 ### `yarn start`
 
