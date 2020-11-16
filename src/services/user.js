@@ -42,7 +42,6 @@ export function refreshToken() {
  */
 export function forgotPassword(payload) {
   const path = `/forgotuser`;
-
   return POSTRequest(path, payload);
 }
 
