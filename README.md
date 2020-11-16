@@ -1,4 +1,4 @@
-# Simvestr Front-end Application
+# Simvestr Front-end
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Please follow the instructions below to run development and production versions of the application:
