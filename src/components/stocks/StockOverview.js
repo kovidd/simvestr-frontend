@@ -6,10 +6,12 @@ import { StockSearch } from "./StockSearch";
 import { StockDetails } from "./StockDetails";
 import { NotificationContext } from "../ui/Notification";
 import { stockDetails } from "../../services/stock";
+import { getWatchlist, WatchlistContext } from "../../services/watchlist";
 
 export const StockOverview = () => {
   let { symbol } = useParams();
   let location = useLocation();
+  const { setWatchlist } = useContext(WatchlistContext);
   const { setNotification } = useContext(NotificationContext);
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +45,21 @@ export const StockOverview = () => {
       getStockDetails(symbol);
     }
   }, [setIsLoading, setNotification, symbol]);
+
+  useEffect(() => {
+    async function getWatchListDetails() {
+      const res = await getWatchlist();
+      if (!res.error) {
+        setWatchlist(res.data.watchlist);
+      } else {
+        setNotification({
+          open: true,
+          message: `Error loading watchlist.`,
+        });
+      }
+    }
+    getWatchListDetails();
+  }, [setNotification, setWatchlist]);
 
   useEffect(() => {
     if (location.pathname === "/stocks") {

@@ -11,7 +11,7 @@ import {
 import * as dayjs from "dayjs";
 import ReactApexChart from "react-apexcharts";
 
-import { addStock } from "../../services/watchlist";
+import { addStock, WatchlistContext } from "../../services/watchlist";
 import { stockCandles } from "../../services/stock";
 import { NotificationContext } from "../ui/Notification";
 import { WatchlistAddConfirmation } from "../watchlist/WatchListConfirmation";
@@ -55,9 +55,11 @@ const PriceTypography = styled(Typography)`
 `;
 
 const rangeCopy = {
-  W: "week",
-  M: "month",
-  Y: "year",
+  W: "last week",
+  M: "last month",
+  Y: "last year",
+  "3Y": "last 3 years",
+  AWL: "since added to watchlist",
 };
 
 const getOptions = (range) => ({
@@ -109,17 +111,24 @@ const getOptions = (range) => ({
   },
 });
 
-export const StockChart = ({ details, disableWatchlist = false }) => {
+export const StockChart = ({ details }) => {
   const { setNotification } = useContext(NotificationContext);
+  const { watchlist } = useContext(WatchlistContext);
   const [series, setSeries] = useState([]);
   const [range, setRange] = useState("W");
   const [open, setOpen] = useState(false);
   const options = getOptions(range);
   const [isLoading, setIsLoading] = useState(false);
+
+  const watchlistDetails = details
+    ? watchlist.find((item) => item.symbol === details.symbol)
+    : undefined;
+  const dateAdded = watchlistDetails?.date_added;
+
   useEffect(() => {
-    async function getStockCandles(symbol, range) {
+    async function getStockCandles(symbol, range, dateAdded) {
       setIsLoading(true);
-      const res = await stockCandles(symbol, range);
+      const res = await stockCandles(symbol, range, dateAdded);
       if (!res.error) {
         const dataPoints = parseCandles(res.data);
         setSeries([
@@ -128,16 +137,17 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
             data: dataPoints,
           },
         ]);
-        setIsLoading(false);
       } else {
         setNotification({
           open: true,
           message: "Error getting the stock candles",
         });
+        setSeries([]);
       }
+      setIsLoading(false);
     }
-    getStockCandles(details.symbol, range);
-  }, [details.symbol, range, setNotification]);
+    getStockCandles(details.symbol, range, dateAdded);
+  }, [details.symbol, range, dateAdded, setNotification]);
 
   const handleAdd = async () => {
     const body = { symbol: details.symbol };
@@ -151,11 +161,12 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
   };
 
   if (!details) return null;
+
   const change = getQuoteChange(details.quote.c, details.quote.pc);
   const changePerc = getQuoteChangePerc(details.quote.c, details.quote.pc);
   return (
     <>
-      {!disableWatchlist && (
+      {!watchlistDetails && (
         <WatchlistAddConfirmation
           open={open}
           handleClose={() => setOpen(false)}
@@ -189,7 +200,7 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
                 {details.exchange}: {details.symbol} - {details.industry}
               </Typography>
             </Box>
-            {!disableWatchlist && (
+            {!watchlistDetails && (
               <Box mr="1rem" position="relative" top="0.5rem">
                 <Button
                   variant="outlined"
@@ -216,7 +227,7 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
           </PriceWrapper>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Box width="9rem">
+          <Box width="15rem">
             <Tabs
               variant="fullWidth"
               indicatorColor="primary"
@@ -227,13 +238,15 @@ export const StockChart = ({ details, disableWatchlist = false }) => {
               <StyledTab value="W" label="W" />
               <StyledTab value="M" label="M" />
               <StyledTab value="Y" label="Y" />
+              <StyledTab value="3Y" label="3Y" />
+              {dateAdded && <StyledTab value="AWL" label="AWL" />}
             </Tabs>
           </Box>
           <Box mr="1rem">
             <Typography
               variant="body1"
               align="right"
-            >{`Historical Performance - (last ${rangeCopy[range]})`}</Typography>
+            >{`Historical Performance - (${rangeCopy[range]})`}</Typography>
           </Box>
         </Box>
         <Box minHeight={270}>
