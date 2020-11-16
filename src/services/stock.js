@@ -24,7 +24,7 @@ export function searchStockByName(name) {
  * @param {string} stockSymbol
  * @param {"day" | "week" | "month"} range
  */
-export function stockCandles(stockSymbol, range = "Y", dateAdded = null) {
+export function stockCandles(stockSymbol, range = "M", dateAdded = null) {
   let from = new Date();
   let resolution;
   switch (range) {
@@ -53,9 +53,9 @@ export function stockCandles(stockSymbol, range = "Y", dateAdded = null) {
       from = new Date(dateAdded * 1000);
       break;
     default:
-      // defaults to the week
+      // defaults to the month
       resolution = "60";
-      from.setDate(from.getDate() - 7);
+      from.setMonth(from.getMonth() - 1);
       break;
   }
   from = Math.round(from.getTime() / 1000);

@@ -118,7 +118,7 @@ export const StockChart = ({ details }) => {
   const { setNotification } = useContext(NotificationContext);
   const { watchlist, setWatchlist } = useContext(WatchlistContext);
   const [series, setSeries] = useState([]);
-  const [range, setRange] = useState("W");
+  const [range, setRange] = useState("M");
   const [openAdd, setOpenAdd] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
   const options = getOptions(range);
@@ -152,6 +152,13 @@ export const StockChart = ({ details }) => {
     }
     getStockCandles(details.symbol, range, dateAdded);
   }, [details.symbol, range, dateAdded, setNotification]);
+
+  useEffect(() => {
+    if (!dateAdded) {
+      setSeries([]);
+      setRange("M");
+    }
+  }, [dateAdded, setRange]);
 
   const handleAdd = async () => {
     const body = { symbol: details.symbol };
