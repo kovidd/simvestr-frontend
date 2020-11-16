@@ -40,10 +40,10 @@ export function refreshToken() {
  * Send OTP to registered email
  * @param {{email: string}} payload
  */
-export function forgotPassword(email) {
-  let options = { headers: { "Content-Type": "application/text" } };
-  const path = `/forgotuser?email=${email}`;
-  return GETRequest(path, options);
+export function forgotPassword(payload) {
+  const path = `/forgotuser`;
+
+  return POSTRequest(path, payload);
 }
 
 /**
