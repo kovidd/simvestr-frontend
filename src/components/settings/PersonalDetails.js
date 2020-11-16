@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Grid, Box, Typography, TextField, Button } from "@material-ui/core";
-import { MainWrapper, FormErrorMessage } from "../ui";
+import { FormErrorMessage } from "../ui";
 import { changeName, UserContext, userDetails } from "../../services/user";
 import { NotificationContext } from "../ui/Notification";
 
@@ -119,16 +119,14 @@ const PersonalDetailsForm = () => {
 
 export const PersonalDetails = () => {
   return (
-    <MainWrapper>
-      <Box
-        display="flex"
-        height="100%"
-        flexDirection="column"
-        alignItems="center"
-        p="2rem"
-      >
-        <PersonalDetailsForm />
-      </Box>
-    </MainWrapper>
+    <Box
+      display="flex"
+      height="100%"
+      flexDirection="column"
+      alignItems="center"
+      p="2rem"
+    >
+      <PersonalDetailsForm />
+    </Box>
   );
 };

@@ -8,7 +8,7 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
-import { MainWrapper, FormErrorMessage } from "../ui";
+import { FormErrorMessage, LinkRouter } from "../ui";
 import { forgotPassword } from "../../services/user";
 import { NotificationContext } from "../ui/Notification";
 
@@ -42,7 +42,7 @@ const ForgotPasswordForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography>
-        <Link href="./">Back to Login Page</Link>
+        <LinkRouter to="/">Back to Login Page</LinkRouter>
       </Typography>
       <Typography variant="h2" align="center">
         Simvestr
@@ -83,16 +83,14 @@ const ForgotPasswordForm = () => {
 
 export const ForgotPassword = () => {
   return (
-    <MainWrapper>
-      <Box
-        display="flex"
-        height="100%"
-        flexDirection="column"
-        alignItems="center"
-        p="2rem"
-      >
-        <ForgotPasswordForm />
-      </Box>
-    </MainWrapper>
+    <Box
+      display="flex"
+      height="100%"
+      flexDirection="column"
+      alignItems="center"
+      p="2rem"
+    >
+      <ForgotPasswordForm />
+    </Box>
   );
 };

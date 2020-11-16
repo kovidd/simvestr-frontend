@@ -12,7 +12,7 @@ import {
   TableCell,
   LinearProgress,
 } from "@material-ui/core";
-import { MainWrapper, LinkRouter, PriceTableCell } from "../ui";
+import { LinkRouter, PriceTableCell } from "../ui";
 import { getTrades } from "../../services/trades";
 import { NotificationContext } from "../ui/Notification";
 import { formatCurrency } from "../../helpers";
@@ -55,57 +55,51 @@ export const HistoricalTrades = () => {
   }, [setNotification, setTransactions, setIsLoading]);
 
   return (
-    <>
-      <MainWrapper>
-        <Box mt="1rem">
-          {isLoading ? (
-            <LinearProgress />
-          ) : (
-            transactions && (
-              <TableContainer style={{ maxHeight: "80vh" }}>
-                <Table stickyHeader>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Symbol</TableCell>
-                      <TableCell>Date</TableCell>
-                      <TableCell>Trade Type</TableCell>
-                      <TableCell align="right">Quantity</TableCell>
-                      <TableCell align="right">Quote</TableCell>
-                      <TableCell align="right">Total Value</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {transactions.map((trade) => (
-                      <TableRow key={trade.timestamp}>
-                        <TableCell>
-                          <LinkRouter to={`stocks/${trade.symbol}`}>
-                            {trade.symbol}
-                          </LinkRouter>
-                        </TableCell>
-                        <TableCell>
-                          {dayjs
-                            .tz(trade.timestamp)
-                            .format("MMM DD YYYY HH:mm")}
-                        </TableCell>
-                        <PriceTableCell change={trade.type === "buy" ? 1 : -1}>
-                          {trade.type.toUpperCase()}
-                        </PriceTableCell>
-                        <TableCell align="right">{trade.quantity}</TableCell>
-                        <TableCell align="right">
-                          {formatCurrency(trade.quote)}
-                        </TableCell>
-                        <TableCell align="right">
-                          {formatCurrency(trade.total)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )
-          )}
-        </Box>
-      </MainWrapper>
-    </>
+    <Box mt="1rem">
+      {isLoading ? (
+        <LinearProgress />
+      ) : (
+        transactions && (
+          <TableContainer style={{ maxHeight: "80vh" }}>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Symbol</TableCell>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Trade Type</TableCell>
+                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="right">Quote</TableCell>
+                  <TableCell align="right">Total Value</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {transactions.map((trade) => (
+                  <TableRow key={trade.timestamp}>
+                    <TableCell>
+                      <LinkRouter to={`stocks/${trade.symbol}`}>
+                        {trade.symbol}
+                      </LinkRouter>
+                    </TableCell>
+                    <TableCell>
+                      {dayjs.tz(trade.timestamp).format("MMM DD YYYY HH:mm")}
+                    </TableCell>
+                    <PriceTableCell change={trade.type === "buy" ? 1 : -1}>
+                      {trade.type.toUpperCase()}
+                    </PriceTableCell>
+                    <TableCell align="right">{trade.quantity}</TableCell>
+                    <TableCell align="right">
+                      {formatCurrency(trade.quote)}
+                    </TableCell>
+                    <TableCell align="right">
+                      {formatCurrency(trade.total)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )
+      )}
+    </Box>
   );
 };

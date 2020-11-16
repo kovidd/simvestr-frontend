@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { LinearProgress } from "@material-ui/core";
-import { MainWrapper } from "../ui";
+import { Box, LinearProgress } from "@material-ui/core";
 import { StockSearch } from "./StockSearch";
 import { StockDetails } from "./StockDetails";
 import { NotificationContext } from "../ui/Notification";
@@ -69,13 +68,13 @@ export const StockOverview = () => {
   }, [location.pathname]);
 
   return (
-    <MainWrapper>
+    <Box>
       <StockSearch />
       {isLoading ? (
         <LinearProgress />
       ) : (
         details && <StockDetails details={details} />
       )}
-    </MainWrapper>
+    </Box>
   );
 };

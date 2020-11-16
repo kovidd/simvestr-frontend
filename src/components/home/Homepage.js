@@ -99,7 +99,7 @@ export const Homepage = () => {
   }, [setPortfolio]);
 
   return (
-    <MainWrapper>
+    <Box>
       <Box display="flex" justifyContent="space-between">
         <Box display="inline-flex" alignItems="center">
           <Box mr="1rem">
@@ -247,6 +247,6 @@ export const Homepage = () => {
           </form>
         </ListItem>
       </List>
-    </MainWrapper>
+    </Box>
   );
 };

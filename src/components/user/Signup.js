@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
-  Container,
   Grid,
   Box,
   Typography,
@@ -10,9 +9,8 @@ import {
   Checkbox,
   TextField,
   Button,
-  Link,
 } from "@material-ui/core";
-import { MainWrapper, FormErrorMessage, LinkRouter } from "../ui";
+import { FormErrorMessage, LinkRouter } from "../ui";
 import { signup } from "../../services/user";
 import { AuthContext } from "../../services/api";
 import { NotificationContext } from "../ui/Notification";
@@ -180,7 +178,7 @@ const SignupForm = () => {
 
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Typography>
-          Already a member? <Link href="./login">Log In</Link>
+          Already a member? <LinkRouter to="login">Log In</LinkRouter>
         </Typography>
         <Box display="flex" justifyContent="center">
           <Button type="submit" variant="contained" color="primary">
@@ -199,17 +197,13 @@ export const Signup = () => {
     history.replace("/");
   }
   return (
-    <Container maxWidth="sm">
-      <MainWrapper>
-        <Box
-          display="flex"
-          height="100%"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <SignupForm />
-        </Box>
-      </MainWrapper>
-    </Container>
+    <Box
+      display="flex"
+      height="100%"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <SignupForm />
+    </Box>
   );
 };
