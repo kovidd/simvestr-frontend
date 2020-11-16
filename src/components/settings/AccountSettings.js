@@ -1,28 +1,9 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { MainWrapper } from "../ui";
+import { MainWrapper, StyledListItem, StyledListItemText } from "../ui";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import { ExportDialog } from "./ExportDialog";
-
-const StyledListItemText = styled(ListItemText)`
-  & > :before {
-    display: inline-block;
-    content: "";
-    border-top: 1px solid black;
-    width: 0.7rem;
-    transform: translateY(-4px);
-    margin-right: 3px;
-  }
-`;
-
-const StyledListItem = styled(ListItem)`
-  border-left: 1px solid black;
-  &:hover {
-    color: #007f7f;
-  }
-`;
 
 export const AccountSettings = () => {
   const history = useHistory();
@@ -37,10 +18,10 @@ export const AccountSettings = () => {
       />
       <ExportDialog open={openExportDialog} setOpen={setOpenExportDialog} />
       <MainWrapper>
-        <List>
+        <List disablePadding>
           <ListItem disableGutters>
             <ListItemText>
-              {`Select one of the options to update your account settings.`}{" "}
+              Select one of the options to update your account settings.
             </ListItemText>
           </ListItem>
           <StyledListItem
@@ -48,28 +29,28 @@ export const AccountSettings = () => {
             disableGutters
             onClick={() => history.push("/settings/personaldetails")}
           >
-            <StyledListItemText>{`Personal Details`}</StyledListItemText>
+            <StyledListItemText>Personal Details</StyledListItemText>
           </StyledListItem>
           <StyledListItem
             button
             disableGutters
             onClick={() => history.push("/settings/password")}
           >
-            <StyledListItemText>{`Password`}</StyledListItemText>
+            <StyledListItemText>Change Password</StyledListItemText>
           </StyledListItem>
           <StyledListItem
             button
             disableGutters
             onClick={() => setOpenExportDialog(true)}
           >
-            <StyledListItemText>{`Export Portfolio`}</StyledListItemText>
+            <StyledListItemText>Export Portfolio</StyledListItemText>
           </StyledListItem>
           <StyledListItem
             button
             disableGutters
             onClick={() => setOpenDeleteAccountDialog(true)}
           >
-            <StyledListItemText>{`Delete Account`}</StyledListItemText>
+            <StyledListItemText>Delete Account</StyledListItemText>
           </StyledListItem>
           <StyledListItem
             button
@@ -78,21 +59,15 @@ export const AccountSettings = () => {
               history.push("/settings/terms-and-conditions-settings")
             }
           >
-            <StyledListItemText>{`Terms and Conditions`}</StyledListItemText>
+            <StyledListItemText>Terms and Conditions</StyledListItemText>
           </StyledListItem>
           <StyledListItem
             button
             disableGutters
             onClick={() => history.push("/settings/faq")}
           >
-            <StyledListItemText>{`FAQ`}</StyledListItemText>
+            <StyledListItemText>FAQ</StyledListItemText>
           </StyledListItem>
-          <ListItem disableGutters>
-            <form
-              style={{ display: "flex" }}
-              onSubmit={(e) => e.preventDefault()}
-            ></form>
-          </ListItem>
         </List>
       </MainWrapper>
     </div>

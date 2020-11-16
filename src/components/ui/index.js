@@ -7,6 +7,8 @@ import {
   Link,
   Typography,
   TableCell,
+  ListItemText,
+  ListItem,
 } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
@@ -129,5 +131,23 @@ export const PriceTypography = styled(Typography)`
 export const PriceTableCell = styled(TableCell)`
   && {
     color: ${(props) => (props.change >= 0 ? "green" : "red")};
+  }
+`;
+
+export const StyledListItemText = styled(ListItemText)`
+  & > :before {
+    display: inline-block;
+    content: "";
+    border-top: 1px solid black;
+    width: 0.7rem;
+    transform: translateY(-4px);
+    margin-right: 3px;
+  }
+`;
+
+export const StyledListItem = styled(ListItem)`
+  border-left: 1px solid black;
+  &:hover {
+    color: #007f7f;
   }
 `;
