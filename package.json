@@ -10,7 +10,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "apexcharts": "^3.22.1",
+    "apexcharts": "^3.24.0",
     "autosuggest-highlight": "^3.1.1",
     "dayjs": "^1.9.5",
     "email-validator": "^2.0.4",
